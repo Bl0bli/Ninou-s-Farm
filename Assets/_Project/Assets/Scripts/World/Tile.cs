@@ -3,6 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public enum Biome
 {
+    WATER,
     HILLS,
     FOREST,
     DESERT,

@@ -27,12 +27,26 @@ public class GridWorld : MonoBehaviour
                 noiseMap[x, y] = noiseValue;
             }
         }
-                
+
+        float[,] falloffMap = new float[_size, _size];
         for (int y = 0; y < _size; y++)
         {
             for (int x = 0; x < _size; x++)
             {
-                Tile tile = ComputeTile(noiseMap[x, y], biomesThresholds, tilesTypeThresholds);
+                float xv = x / (float)_size * 2 - 1;
+                float yv = y / (float)_size * 2 - 1;
+                float v = Mathf.Max(Mathf.Abs(xv), Mathf.Abs(yv));
+                falloffMap[x, y] = Mathf.Pow(v, 3f) / (Mathf.Pow(v, 3f) + Mathf.Pow(2.2f - 2.2f * v, 3f));
+            }
+        }
+        
+        for (int y = 0; y < _size; y++)
+        {
+            for (int x = 0; x < _size; x++)
+            {
+                float noiseValue = noiseMap[x, y];
+                noiseValue -= falloffMap[x, y];
+                Tile tile = ComputeTile(noiseValue, biomesThresholds, tilesTypeThresholds);
                 _grid[x, y] = tile;
             }
         }
@@ -90,6 +104,9 @@ public class GridWorld : MonoBehaviour
                 Tile tile = _grid[x, y];
                 switch (tile.Biome)
                 {
+                    case Biome.WATER:
+                        Gizmos.color = Color.cornflowerBlue;
+                        break;
                     case Biome.HILLS:
                         Gizmos.color = Color.springGreen;
                         break;
