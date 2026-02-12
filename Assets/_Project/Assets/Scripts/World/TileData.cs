@@ -3,24 +3,24 @@ using UnityEngine;
 [System.Serializable]
 public enum TileType
 {
-    DIRT,
-    GRASS,
-    STONE,
-    WALL,
+    GROUND,
+    FLOOR,
     WATER
 }
 
 [System.Serializable]
-public struct Tile
+public struct TileData
 {
-    public Vector2 Position;
+    public Vector2Int Position;
     public BiomeType Biome;
     public TileType Type;
+    public int Mask;
 
-    public Tile(Vector2 position, BiomeType biome, TileType tileType)
+    public TileData(Vector2Int position, BiomeType biome, TileType tileType, int mask = 0)
     {
         Position = position;
         Biome = biome;
         Type = tileType;
+        Mask = mask;
     }
 }

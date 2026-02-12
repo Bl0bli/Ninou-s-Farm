@@ -9,11 +9,13 @@ public class GridWorld : MonoBehaviour
     [SerializeField] private int _size = 100;
     [SerializeField] private float _scale = 0.1f;
     [SerializeField] private float _mixScale = 0.4f;
+    [SerializeField] private float _waterPercentage = 0.45f;
+    [SerializeField] private float _wallPercentage = 0.1f;
     [SerializeField] private float _margeX;
     [SerializeField] private float _margeY;
-    private Tile[,] _grid;
+    private TileData[,] _grid;
     private List<Biome> _biomes = new List<Biome>();
-
+    
     private int _rows, _cols;
     private void Start()
     {
@@ -22,7 +24,7 @@ public class GridWorld : MonoBehaviour
         
         float xoffset = Random.Range(-1000, 1000);
         float yOffset = Random.Range(-1000, 1000);
-        _grid = new Tile[_size, _size];
+        _grid = new TileData[_size, _size];
 
         SetupBiomes();
         
@@ -55,12 +57,45 @@ public class GridWorld : MonoBehaviour
             {
                 float noiseValue = noiseMap[x, y];
                 noiseValue -= falloffMap[x, y];
-                Tile tile = ComputeTile(new Vector2(x, y), noiseValue, tilesTypeThresholds);
-                _grid[x, y] = tile;
+                TileData tileData = ComputeTile(new Vector2Int(x, y), noiseValue, tilesTypeThresholds);
+                _grid[x, y] = tileData;
             }
         }
+
+        CollapseTiles();
     }
 
+    private void CollapseTiles()
+    {
+        for (int y = 0; y < _size; y++)
+        {
+            for (int x = 0; x < _size; x++)
+            {
+                _grid[x,y].Mask = SetBitMask(_grid[x, y]);
+                CollapseTile(_grid[x, y]);
+            }
+        }
+        
+    }
+
+    private int SetBitMask(TileData tileData)
+    {
+        int mask = 0;
+        int x = tileData.Position.x;
+        int y = tileData.Position.y;
+        
+        if (y + 1 < _size && _grid[x, y + 1].Type != tileData.Type) mask += 1;
+        if (y - 1 >= 0 && _grid[x, y - 1].Type != tileData.Type) mask += 2;
+        if (x - 1 >= 0 && _grid[x - 1, y].Type != tileData.Type) mask += 4;
+        if (x + 1 < _size && _grid[x + 1, y].Type != tileData.Type) mask += 8;
+
+
+        return mask;
+    }
+    private void CollapseTile(TileData tileData)
+    {
+        WorldState.Instance.CreateTile(tileData);
+    }
     private void SetupBiomes()
     {
         float biomeCenterX = 0;
@@ -115,18 +150,18 @@ public class GridWorld : MonoBehaviour
         }
     }
 
-    private Tile ComputeTile(Vector2 position, float noiseVal, Dictionary<float, TileType> tilesTypeThresholds)
+    private TileData ComputeTile(Vector2Int position, float noiseVal, Dictionary<float, TileType> tilesTypeThresholds)
     {
-        Tile tile = new Tile(position, GetBiome(position), GetTileTypeByNoiseValue(noiseVal, tilesTypeThresholds));
-        if (tile.Type == TileType.WATER) tile.Biome = BiomeType.WATER;
-        return tile;
+        TileData tileData = new TileData(position, GetBiome(position), GetTileTypeByNoiseValue(noiseVal, tilesTypeThresholds));
+        if (tileData.Type == TileType.WATER) tileData.Biome = BiomeType.WATER;
+        return tileData;
     }
 
     private TileType GetTileTypeByNoiseValue(float noiseVal, Dictionary<float, TileType> tilesTypeThresholds)
     {
-        if (noiseVal < 0.2f) return TileType.WATER;
-        else if (noiseVal > 0.7f) return TileType.WALL;
-        return TileType.GRASS;
+        if (noiseVal < _waterPercentage) return TileType.WATER;
+        else if (noiseVal > 1 - _wallPercentage) return TileType.FLOOR;
+        return TileType.GROUND;
     }
 
     private BiomeType GetBiome(Vector2 position)
@@ -155,8 +190,8 @@ public class GridWorld : MonoBehaviour
         {
             for (int x = 0; x < _size; x++)
             {
-                Tile tile = _grid[x, y];
-                switch (tile.Biome)
+                TileData tileData = _grid[x, y];
+                switch (tileData.Biome)
                 {
                     case BiomeType.WATER:
                         Gizmos.color = Color.cornflowerBlue;
@@ -177,7 +212,8 @@ public class GridWorld : MonoBehaviour
                         Gizmos.color = Color.grey;
                         break;
                 }
-                
+
+                if (tileData.Type == TileType.FLOOR) Gizmos.color = Color.blueViolet;
                 //float height = (tile.Type == TileType.WALL) ? 1.0f : 0f;
                 Vector3 pos = new Vector3(x, 0, y);
                 Gizmos.DrawCube(pos, Vector3.one);
