@@ -490,6 +490,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridWorld
   _size: 100
   _scale: 0.1
+  _mixScale: 0.5
+  _margeX: 25
+  _margeY: 25
 --- !u!4 &989033669
 Transform:
   m_ObjectHideFlags: 0

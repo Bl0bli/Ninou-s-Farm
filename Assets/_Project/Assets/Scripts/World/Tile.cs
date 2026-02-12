@@ -1,16 +1,6 @@
 using UnityEngine;
 
 [System.Serializable]
-public enum Biome
-{
-    WATER,
-    HILLS,
-    FOREST,
-    DESERT,
-    DEADZONE,
-    MOUNTAINS
-}
-
 public enum TileType
 {
     DIRT,
@@ -19,8 +9,18 @@ public enum TileType
     WALL,
     WATER
 }
+
+[System.Serializable]
 public struct Tile
 {
-    public Biome Biome;
+    public Vector2 Position;
+    public BiomeType Biome;
     public TileType Type;
+
+    public Tile(Vector2 position, BiomeType biome, TileType tileType)
+    {
+        Position = position;
+        Biome = biome;
+        Type = tileType;
+    }
 }
