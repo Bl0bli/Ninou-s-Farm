@@ -13,6 +13,8 @@ public class GridWorld : MonoBehaviour
     [SerializeField] private float _wallPercentage = 0.1f;
     [SerializeField] private float _margeX;
     [SerializeField] private float _margeY;
+    [SerializeField, Range(1f, 10f)] private float _falloffPower = 3f;
+    [SerializeField, Range(1f, 5f)] private float _falloffRange = 2.2f;
     private TileData[,] _grid;
     private List<Biome> _biomes = new List<Biome>();
     
@@ -47,7 +49,7 @@ public class GridWorld : MonoBehaviour
                 float xv = x / (float)_size * 2 - 1;
                 float yv = y / (float)_size * 2 - 1;
                 float v = Mathf.Max(Mathf.Abs(xv), Mathf.Abs(yv));
-                falloffMap[x, y] = Mathf.Pow(v, 3f) / (Mathf.Pow(v, 3f) + Mathf.Pow(2.2f - 2.2f * v, 3f));
+                falloffMap[x, y] = Mathf.Pow(v, _falloffPower) / (Mathf.Pow(v, _falloffPower) + Mathf.Pow(_falloffRange - _falloffPower * v, _falloffPower));
             }
         }
         

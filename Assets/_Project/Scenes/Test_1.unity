@@ -489,13 +489,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c057721bca75b834c80939389025f482, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridWorld
-  _size: 100
+  _size: 200
   _scale: 0.2
   _mixScale: 0.5
   _waterPercentage: 0.45
   _wallPercentage: 0.3
   _margeX: 25
   _margeY: 25
+  _falloffPower: 2.75
+  _falloffRange: 3.25
 --- !u!4 &989033669
 Transform:
   m_ObjectHideFlags: 0
