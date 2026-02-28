@@ -2,10 +2,23 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
+[System.Serializable]
+public struct BiomeRuleTileMapping
+{
+    public BiomeType Biome;
+    public TileType Type;
+    public RuleTile RuleTile;
+}
 public class GridWorld : MonoBehaviour
 {
+    [Header("Tilemap Params")] 
+    [SerializeField] private Tilemap _tileMap;
+    [SerializeField] private List<BiomeRuleTileMapping> _tileMappings;
+    
+    [Header ("Procedural Generation Params")]
     [SerializeField] private int _size = 100;
     [SerializeField] private float _scale = 0.1f;
     [SerializeField] private float _mixScale = 0.4f;
@@ -19,6 +32,8 @@ public class GridWorld : MonoBehaviour
     private List<Biome> _biomes = new List<Biome>();
     
     private int _rows, _cols;
+
+    public TileData GetTileAt(Vector2Int gridPos) => _grid[gridPos.x, gridPos.y];
     private void Start()
     {
         Dictionary<float, TileType> tilesTypeThresholds = new Dictionary<float, TileType>();
@@ -73,30 +88,34 @@ public class GridWorld : MonoBehaviour
         {
             for (int x = 0; x < _size; x++)
             {
-                _grid[x,y].Mask = SetBitMask(_grid[x, y]);
                 CollapseTile(_grid[x, y]);
             }
         }
         
     }
-
-    private int SetBitMask(TileData tileData)
-    {
-        int mask = 0;
-        int x = tileData.Position.x;
-        int y = tileData.Position.y;
-        
-        if (y + 1 < _size && _grid[x, y + 1].Type != tileData.Type) mask += 1;
-        if (y - 1 >= 0 && _grid[x, y - 1].Type != tileData.Type) mask += 2;
-        if (x - 1 >= 0 && _grid[x - 1, y].Type != tileData.Type) mask += 4;
-        if (x + 1 < _size && _grid[x + 1, y].Type != tileData.Type) mask += 8;
-
-
-        return mask;
-    }
+    
     private void CollapseTile(TileData tileData)
     {
-        WorldState.Instance.CreateTile(tileData);
+        RuleTile tileToPlace = null;
+
+        foreach (BiomeRuleTileMapping mapping in _tileMappings)
+        {
+            if (mapping.Biome == tileData.Biome && mapping.Type == tileData.Type)
+            {
+                tileToPlace = mapping.RuleTile;
+                break;
+            }
+        }
+
+        if (tileToPlace != null)
+        {
+            Vector3Int tilePosition = new Vector3Int((int)tileData.Position.x, (int)tileData.Position.y, 0);
+            _tileMap.SetTile(tilePosition, tileToPlace);
+        }
+        else
+        {
+            Debug.LogWarning($"Aucun RuleTile trouvé pour {tileData.Biome} - {tileData.Type}");
+        }
     }
     private void SetupBiomes()
     {

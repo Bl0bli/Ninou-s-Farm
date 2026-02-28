@@ -47,30 +47,32 @@ public class WorldState : MonoBehaviour
             switch (biome)
             {
                 case BiomeType.HILLS:
-                    return _spriteTileHILL[bitMask];
+                    return _spriteTileHighHILL[bitMask];
                 case BiomeType.FOREST:
-                    return _spriteTileFOREST[bitMask];
+                    return _spriteTileHighFOREST[bitMask];
                 case BiomeType.DESERT:
-                    return _spriteTileDESERT[bitMask];
+                    return _spriteTileHighDESERT[bitMask];
                 case BiomeType.DEADZONE:
-                    return _spriteTileDEADZONE[bitMask];
+                    return _spriteTileHighDEADZONE[bitMask];
                 case BiomeType.MOUNTAINS:
-                    return _spriteTileMOUNTAINS[bitMask];
+                    return _spriteTileHighMOUNTAINS[bitMask];
             }
         }
+        
         switch (biome)
         {
             case BiomeType.HILLS:
-                return _spriteTileHighHILL[bitMask];
+                return _spriteTileHILL[bitMask];
             case BiomeType.FOREST:
-                return _spriteTileHighFOREST[bitMask];
+                return _spriteTileFOREST[bitMask];
             case BiomeType.DESERT:
-                return _spriteTileHighDESERT[bitMask];
+                return _spriteTileDESERT[bitMask];
             case BiomeType.DEADZONE:
-                return _spriteTileHighDEADZONE[bitMask];
+                return _spriteTileDEADZONE[bitMask];
             case BiomeType.MOUNTAINS:
-                return _spriteTileHighMOUNTAINS[bitMask];
+                return _spriteTileMOUNTAINS[bitMask];
         }
+
         return _spriteTileWATER[bitMask]; 
     }
 }
