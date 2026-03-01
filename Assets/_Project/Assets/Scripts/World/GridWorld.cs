@@ -14,8 +14,10 @@ public struct BiomeRuleTileMapping
 }
 public class GridWorld : MonoBehaviour
 {
-    [Header("Tilemap Params")] 
-    [SerializeField] private Tilemap _tileMap;
+    [Header("Tilemaps (Layers)")] 
+    [SerializeField] private Tilemap _waterTilemap;
+    [SerializeField] private Tilemap _groundTilemap;
+    [SerializeField] private Tilemap _floorTilemap;
     [SerializeField] private List<BiomeRuleTileMapping> _tileMappings;
     
     [Header ("Procedural Generation Params")]
@@ -28,6 +30,13 @@ public class GridWorld : MonoBehaviour
     [SerializeField] private float _margeY;
     [SerializeField, Range(1f, 10f)] private float _falloffPower = 3f;
     [SerializeField, Range(1f, 5f)] private float _falloffRange = 2.2f;
+    
+    [Header("Lakes & Rivers Params")]
+    [SerializeField] private int _maxLakesPerBiome = 3;
+    [SerializeField] private int _maxLakeSize = 25; // Nombre de cases max par lac
+    [SerializeField] private int _maxRiversPerBiome = 2;
+    [SerializeField] private int _maxRiverLength = 40;
+    [SerializeField] private int _maxRiverThickness = 2;
     private TileData[,] _grid;
     private List<Biome> _biomes = new List<Biome>();
     
@@ -46,77 +55,75 @@ public class GridWorld : MonoBehaviour
         SetupBiomes();
         
         float[,] noiseMap = new float[_size, _size];
-        
         for (int y = 0; y < _size; y++)
         {
             for (int x = 0; x < _size; x++)
             {
-                float noiseValue = Mathf.PerlinNoise(xoffset + x * _scale, yOffset + y * _scale);
-                noiseMap[x, y] = noiseValue;
+                noiseMap[x, y] = Mathf.PerlinNoise(xoffset + x * _scale, yOffset + y * _scale);
             }
         }
 
-        float[,] falloffMap = new float[_size, _size];
         for (int y = 0; y < _size; y++)
         {
             for (int x = 0; x < _size; x++)
             {
-                float xv = x / (float)_size * 2 - 1;
-                float yv = y / (float)_size * 2 - 1;
-                float v = Mathf.Max(Mathf.Abs(xv), Mathf.Abs(yv));
-                falloffMap[x, y] = Mathf.Pow(v, _falloffPower) / (Mathf.Pow(v, _falloffPower) + Mathf.Pow(_falloffRange - _falloffPower * v, _falloffPower));
-            }
-        }
-        
-        for (int y = 0; y < _size; y++)
-        {
-            for (int x = 0; x < _size; x++)
-            {
-                float noiseValue = noiseMap[x, y];
-                noiseValue -= falloffMap[x, y];
-                TileData tileData = ComputeTile(new Vector2Int(x, y), noiseValue, tilesTypeThresholds);
+                // On passe uniquement la position et le bruit brut, la fonction s'occupe du reste
+                TileData tileData = ComputeTile(new Vector2Int(x, y), noiseMap[x, y]);
                 _grid[x, y] = tileData;
             }
         }
 
+        GenerateLakes();
+        GenerateRivers();
         CollapseTiles();
     }
 
     private void CollapseTiles()
     {
+        RuleTile waterTile = GetRuleTile(BiomeType.WATER, TileType.WATER);
+
         for (int y = 0; y < _size; y++)
         {
             for (int x = 0; x < _size; x++)
             {
-                CollapseTile(_grid[x, y]);
+                TileData tileData = _grid[x, y];
+                Vector3Int pos = new Vector3Int(x, y, 0);
+                
+                if (waterTile != null)
+                {
+                    _waterTilemap.SetTile(pos, waterTile);
+                }
+                if (tileData.Type == TileType.GROUND || tileData.Type == TileType.FLOOR)
+                {
+                    RuleTile groundTile = GetRuleTile(tileData.Biome, TileType.GROUND);
+                    if (groundTile != null)
+                    {
+                        _groundTilemap.SetTile(pos, groundTile);
+                    }
+                }
+                if (tileData.Type == TileType.FLOOR)
+                {
+                    RuleTile floorTile = GetRuleTile(tileData.Biome, TileType.FLOOR);
+                    if (floorTile != null)
+                    {
+                        _floorTilemap.SetTile(pos, floorTile);
+                    }
+                }
             }
         }
-        
     }
-    
-    private void CollapseTile(TileData tileData)
+    private RuleTile GetRuleTile(BiomeType biome, TileType type)
     {
-        RuleTile tileToPlace = null;
-
         foreach (BiomeRuleTileMapping mapping in _tileMappings)
         {
-            if (mapping.Biome == tileData.Biome && mapping.Type == tileData.Type)
+            if (mapping.Biome == biome && mapping.Type == type)
             {
-                tileToPlace = mapping.RuleTile;
-                break;
+                return mapping.RuleTile;
             }
         }
-
-        if (tileToPlace != null)
-        {
-            Vector3Int tilePosition = new Vector3Int((int)tileData.Position.x, (int)tileData.Position.y, 0);
-            _tileMap.SetTile(tilePosition, tileToPlace);
-        }
-        else
-        {
-            Debug.LogWarning($"Aucun RuleTile trouvé pour {tileData.Biome} - {tileData.Type}");
-        }
+        return null; // Si aucune tuile n'est configurée
     }
+    
     private void SetupBiomes()
     {
         float biomeCenterX = 0;
@@ -171,23 +178,30 @@ public class GridWorld : MonoBehaviour
         }
     }
 
-    private TileData ComputeTile(Vector2Int position, float noiseVal, Dictionary<float, TileType> tilesTypeThresholds)
+    private TileData ComputeTile(Vector2Int position, float baseNoise)
     {
-        TileData tileData = new TileData(position, GetBiome(position), GetTileTypeByNoiseValue(noiseVal, tilesTypeThresholds));
-        if (tileData.Type == TileType.WATER) tileData.Biome = BiomeType.WATER;
-        return tileData;
-    }
+        Biome localBiome = GetClosestBiome(position);
+        float distToCenter = Vector2.Distance(position, localBiome.Position);
+        float maxIslandRadius = (_size / (float)Mathf.Max(_rows, _cols)) * 0.7f;
+        float islandFalloff = Mathf.Clamp01(distToCenter / maxIslandRadius);
+        
+        if (islandFalloff > 0.75f + (baseNoise * 0.2f)) 
+        {
+            return new TileData(position, BiomeType.WATER, TileType.WATER);
+        }
+        
+        TileType type = TileType.GROUND;
+        
+        if (baseNoise > (1 - _wallPercentage) && islandFalloff < 0.5f) 
+        {
+            type = TileType.FLOOR;
+        }
 
-    private TileType GetTileTypeByNoiseValue(float noiseVal, Dictionary<float, TileType> tilesTypeThresholds)
-    {
-        if (noiseVal < _waterPercentage) return TileType.WATER;
-        else if (noiseVal > 1 - _wallPercentage) return TileType.FLOOR;
-        return TileType.GROUND;
+        return new TileData(position, localBiome.Type, type);
     }
-
-    private BiomeType GetBiome(Vector2 position)
+    private Biome GetClosestBiome(Vector2 position)
     {
-        BiomeType biome = BiomeType.WATER;
+        Biome closestBiome = _biomes[0];
         float minDistSq = Mathf.Infinity;
 
         foreach (Biome b in _biomes)
@@ -196,13 +210,135 @@ public class GridWorld : MonoBehaviour
             if (distSq < minDistSq)
             {
                 minDistSq = distSq;
-                biome = b.Type;
+                closestBiome = b;
             }
         }
 
-        return biome;
+        return closestBiome;
     }
 
+    private void GenerateLakes()
+    {
+        foreach (Biome biome in _biomes)
+        {
+            int lakesCreated = 0;
+            int attempts = 0;
+            
+            while (lakesCreated < _maxLakesPerBiome && attempts < 100)
+            {
+                attempts++;
+                int startX = Random.Range(1, _size - 1);
+                int startY = Random.Range(1, _size - 1);
+
+                // Si on a trouvé un bout de terre de ce biome, on creuse un lac
+                if (_grid[startX, startY].Type == TileType.GROUND && _grid[startX, startY].Biome == biome.Type)
+                {
+                    CarveLake(startX, startY);
+                    lakesCreated++;
+                }
+            }
+        }
+    }
+
+    private void CarveLake(int startX, int startY)
+    {
+        int targetSize = Random.Range(_maxLakeSize / 2, _maxLakeSize);
+        List<Vector2Int> currentLakeTiles = new List<Vector2Int> { new Vector2Int(startX, startY) };
+        int currentSize = 0;
+        
+        while (currentSize < targetSize && currentLakeTiles.Count > 0) //Flood filled
+        {
+            int randomIndex = Random.Range(0, currentLakeTiles.Count);
+            Vector2Int pos = currentLakeTiles[randomIndex];
+            currentLakeTiles.RemoveAt(randomIndex);
+
+            if (pos.x >= 0 && pos.x < _size && pos.y >= 0 && pos.y < _size)
+            {
+                if (_grid[pos.x, pos.y].Type == TileType.GROUND)
+                {
+                    // On transforme la terre en eau
+                    _grid[pos.x, pos.y] = new TileData(pos, BiomeType.WATER, TileType.WATER);
+                    currentSize++;
+
+                    // On ajoute les voisins pour la prochaine itération
+                    currentLakeTiles.Add(new Vector2Int(pos.x + 1, pos.y));
+                    currentLakeTiles.Add(new Vector2Int(pos.x - 1, pos.y));
+                    currentLakeTiles.Add(new Vector2Int(pos.x, pos.y + 1));
+                    currentLakeTiles.Add(new Vector2Int(pos.x, pos.y - 1));
+                }
+            }
+        }
+    }
+
+    private void GenerateRivers()
+    {
+        foreach (Biome biome in _biomes)
+        {
+            for (int i = 0; i < _maxRiversPerBiome; i++)
+            {
+                int startX = Random.Range(1, _size - 1);
+                int startY = Random.Range(1, _size - 1);
+
+                if (_grid[startX, startY].Type == TileType.GROUND && _grid[startX, startY].Biome == biome.Type)
+                {
+                    CarveRiver(startX, startY);
+                }
+            }
+        }
+    }
+
+    private void CarveRiver(int x, int y)
+    {
+        Vector2 currentPos = new Vector2(x, y);
+
+        //angle aleatoiure
+        float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+
+        int currentLength = 0;
+
+        while (currentLength < _maxRiverLength)
+        {
+            int cx = Mathf.RoundToInt(currentPos.x);
+            int cy = Mathf.RoundToInt(currentPos.y);
+            
+            for (int tx = -_maxRiverThickness; tx <= _maxRiverThickness; tx++)
+            {
+                for (int ty = -_maxRiverThickness; ty <= _maxRiverThickness; ty++)
+                {
+                    if (tx * tx + ty * ty <= _maxRiverThickness * _maxRiverThickness)  //si on est dans le cercle
+                    {
+                        int carveX = cx + tx;
+                        int carveY = cy + ty;
+
+                        if (carveX >= 0 && carveX < _size && carveY >= 0 && carveY < _size)
+                        {
+                            // On creuse si ce n'est pas une montagne/étage et que ce n'est pas DÉJÀ de l'eau
+                            if (_grid[carveX, carveY].Type != TileType.FLOOR && _grid[carveX, carveY].Type != TileType.WATER) 
+                            {
+                                _grid[carveX, carveY] = new TileData(new Vector2Int(carveX, carveY), BiomeType.WATER, TileType.WATER);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            angle += Random.Range(-0.25f, 0.25f); 
+            direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+            
+            currentPos += direction;
+            currentLength++;
+            
+            int forwardX = Mathf.RoundToInt(currentPos.x + direction.x * (_maxRiverThickness + 2));
+            int forwardY = Mathf.RoundToInt(currentPos.y + direction.y * (_maxRiverThickness + 2));
+            
+            if (forwardX >= 0 && forwardX < _size && forwardY >= 0 && forwardY < _size)
+            {
+                if (_grid[forwardX, forwardY].Type == TileType.WATER) break; 
+            }
+        }
+    }
+    
     private void OnDrawGizmos()
     {
         if(!Application.isPlaying) return;
