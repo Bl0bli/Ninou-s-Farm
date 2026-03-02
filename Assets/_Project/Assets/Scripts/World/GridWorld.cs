@@ -21,6 +21,7 @@ public class GridWorld : MonoBehaviour
     [SerializeField] private List<BiomeRuleTileMapping> _tileMappings;
     
     [Header ("Procedural Generation Params")]
+    [SerializeField] WorldItemsGeneration _itemsGeneration;
     [SerializeField] private int _size = 100;
     [SerializeField] private float _scale = 0.1f;
     [SerializeField] private float _mixScale = 0.4f;
@@ -43,6 +44,15 @@ public class GridWorld : MonoBehaviour
     private int _rows, _cols;
 
     public TileData GetTileAt(Vector2Int gridPos) => _grid[gridPos.x, gridPos.y];
+    public int GridSize => _size;
+    public static GridWorld Instance;
+
+    private void Awake()
+    {
+        if(Instance != null) Destroy(this);
+        Instance = this;
+    }
+
     private void Start()
     {
         Dictionary<float, TileType> tilesTypeThresholds = new Dictionary<float, TileType>();
@@ -76,6 +86,7 @@ public class GridWorld : MonoBehaviour
         GenerateLakes();
         GenerateRivers();
         CollapseTiles();
+        _itemsGeneration.Init();
     }
 
     private void CollapseTiles()
