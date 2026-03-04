@@ -425,7 +425,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 671625847}
   - {fileID: 1593861504}
   - {fileID: 780430350}
   - {fileID: 168452552}
@@ -462,7 +461,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 654248426}
+  m_Father: {fileID: 797023284}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &671625848
 TilemapRenderer:
@@ -888,6 +887,51 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &797023282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 797023284}
+  - component: {fileID: 797023283}
+  m_Layer: 0
+  m_Name: Grid (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!156049354 &797023283
+Grid:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797023282}
+  m_Enabled: 1
+  m_CellSize: {x: 0.25, y: 0.25, z: 0}
+  m_CellGap: {x: 0, y: 0, z: 0}
+  m_CellLayout: 0
+  m_CellSwizzle: 0
+--- !u!4 &797023284
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797023282}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 671625847}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &989033667
 GameObject:
   m_ObjectHideFlags: 0
@@ -999,11 +1043,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItemsGeneration
   _tilemap: {fileID: 671625849}
   _basicCommonTiles:
-  - {fileID: 11400000, guid: 5ecae643fdf5a3641956b145fb8c05b2, type: 2}
   - {fileID: 11400000, guid: e5f1266b295832b4289bdd8d9d0f8bff, type: 2}
-  - {fileID: 11400000, guid: bd24174e192d4cf46b57594f6ede3175, type: 2}
   - {fileID: 11400000, guid: 16d70790239def845927c06ade78cedc, type: 2}
-  - {fileID: 11400000, guid: e910a705622be914598d456dba887930, type: 2}
   - {fileID: 11400000, guid: ce0a9e6d8a35f9240b9a9d6624579a7f, type: 2}
   - {fileID: 11400000, guid: 734ec3b0a19655744aa103812cc57901, type: 2}
   - {fileID: 11400000, guid: e28546b1263dc4141b524efaeae1bebb, type: 2}
@@ -1012,8 +1053,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e658959a9624a9b4fa077db367c3c058, type: 2}
   - {fileID: 11400000, guid: 3a8530cd47dd97143914ca105c77b31a, type: 2}
   - {fileID: 11400000, guid: 965614d0921d2644e8004f650dc87c55, type: 2}
+  _basicBiomeTiles:
+  - {fileID: 11400000, guid: 217be57e50b7e9f418770b263b4fd885, type: 2}
+  - {fileID: 11400000, guid: 2c12467376192be41b26f438769e2ed1, type: 2}
+  - {fileID: 11400000, guid: f90ae8358cac8ba4c8e57a276c772ff5, type: 2}
+  - {fileID: 11400000, guid: 06841e0bcc64aa949bd6ed0d38798689, type: 2}
+  - {fileID: 11400000, guid: 444029349f5d34448b599a26ccc1ad2e, type: 2}
+  - {fileID: 11400000, guid: 2ad2e76f84b348e40917e35162d31c14, type: 2}
   _basicCommonInteractiveItems: []
   _scale: 0.1
+  _gridItemSpawnRate: 0.025
+  _gridItemBiomeSpawnRate: 0.75
 --- !u!1 &1593861503
 GameObject:
   m_ObjectHideFlags: 0
@@ -1263,3 +1313,4 @@ SceneRoots:
   - {fileID: 794123420}
   - {fileID: 989033669}
   - {fileID: 654248426}
+  - {fileID: 797023284}

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
-  m_Name: Tile 7
+  m_Name: Red_Mushroom 2
   m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.Tilemaps.AnimatedTile
   m_AnimatedSprites:
-  - {fileID: -4965320564970719169, guid: 699e3d4e1fb36c743a0ab108cc55d7e7, type: 3}
+  - {fileID: -7606222139826228369, guid: 699e3d4e1fb36c743a0ab108cc55d7e7, type: 3}
   m_MinSpeed: 1
   m_MaxSpeed: 1
   m_AnimationStartTime: 0

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c038e2537bef9ad45bfb7edcca5a8900, type: 3}
+  m_Name: MOUNTAINS_Items
+  m_EditorClassIdentifier: Assembly-CSharp::BiomeCommonItem
+  Biome: 5
+  ItemTiles:
+  - {fileID: 11400000, guid: ce0a9e6d8a35f9240b9a9d6624579a7f, type: 2}
+  - {fileID: 11400000, guid: 734ec3b0a19655744aa103812cc57901, type: 2}
+  - {fileID: 11400000, guid: e28546b1263dc4141b524efaeae1bebb, type: 2}
+  - {fileID: 11400000, guid: f1f1660c6217a91408768131f0537690, type: 2}
+  - {fileID: 11400000, guid: 22bd95c8f545cf64a90c2eb932a54064, type: 2}
+  - {fileID: 11400000, guid: 847d62c84e972d743b84c4c405ce92bd, type: 2}
