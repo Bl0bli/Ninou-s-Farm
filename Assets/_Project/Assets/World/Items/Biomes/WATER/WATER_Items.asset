@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BiomeCommonItem
   Biome: 0
   ItemTiles:
-  - {fileID: 11400000, guid: cb0d4d082ce31ba4cba2318f6ebab52e, type: 2}
-  - {fileID: 11400000, guid: 2b419ad6e560b59418182bad7564d5cd, type: 2}
-  - {fileID: 11400000, guid: 132b9c45e885f29499fc55279eb6ee56, type: 2}
-  - {fileID: 11400000, guid: 88d9d885d2ed3cc458e6f9bf6e09acdd, type: 2}
+  - {fileID: 11400000, guid: 6047d28921ae6ec4993f7cb521d1b61e, type: 2}
+  - {fileID: 11400000, guid: 3f4297aff3d29374abdeaa5124dfcf39, type: 2}
+  - {fileID: 11400000, guid: a9fde6a9a99d0fc4ba8cd315c16e93df, type: 2}
+  - {fileID: 11400000, guid: 2398dcd29ba2d8945819f42e0a35253e, type: 2}

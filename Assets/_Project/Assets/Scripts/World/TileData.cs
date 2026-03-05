@@ -23,4 +23,5 @@ public struct TileData
         Type = tileType;
         Mask = mask;
     }
+    
 }

@@ -17,19 +17,21 @@ public class WorldItemsGeneration : MonoBehaviour
 
     private BasicItemData[,] _gridBasicItems;
     private int _gridSize;
+    private int _gridItemSize;
 
     public void Init()
     {
         float xoffset = Random.Range(-1000, 1000);
         float yOffset = Random.Range(-1000, 1000);
 
-        _gridSize = GridWorld.Instance.GridSize * 4;
-        _gridBasicItems = new BasicItemData[_gridSize, _gridSize];
+        _gridSize = GridWorld.Instance.GridSize;
+        _gridItemSize = _gridSize * 3;
+        _gridBasicItems = new BasicItemData[_gridItemSize, _gridItemSize];
         
-        float[,] noiseMap = new float[_gridSize, _gridSize];
-        for (int y = 0; y < _gridSize; y++)
+        float[,] noiseMap = new float[_gridItemSize, _gridItemSize];
+        for (int y = 0; y < _gridItemSize; y++)
         {
-            for (int x = 0; x < _gridSize; x++)
+            for (int x = 0; x < _gridItemSize; x++)
             {
                 noiseMap[x, y] = Mathf.PerlinNoise(xoffset + x * _scale, yOffset + y * _scale);
             }
@@ -40,30 +42,60 @@ public class WorldItemsGeneration : MonoBehaviour
 
     private void GenerateTileMap(float[,] noiseMap)
     {
-        for (int y = 0; y < _gridSize; y++)
+        for (int worldY = 0; worldY < _gridSize; worldY++)
         {
-            for (int x = 0; x < _gridSize; x++)
+            for (int worldX = 0; worldX < _gridSize; worldX++)
             {
-                if (Random.value < 1 - _gridItemSpawnRate) continue;
-                TileBase tile;
-                TileData tileData = GridWorld.Instance.GetTileAt(new Vector2Int(x / 4, y / 4));
-                if (Random.value < 1 - _gridItemBiomeSpawnRate)
-                {
-                    int index = NoiseValueToIndex(noiseMap[x,y], GetSizeListOfItemsBiome(tileData.Biome));
-                    if(index == -1) continue;
-                    tile = GetTileToSpawnInBiome(tileData.Biome, index);
-                    if (tile == null) continue;
-                }
-                else
-                {
-                    if (tileData.Type == TileType.WATER) continue;
-                    int index = NoiseValueToIndex(noiseMap[x,y], _basicCommonTiles.Count);
-                    tile = _basicCommonTiles[index];
-                }
+               TileData currentTile = GridWorld.Instance.GetTileAt(new Vector2Int(worldX, worldY));
+                
+                if (currentTile.Type == TileType.WATER) continue;
 
-                _tilemap.SetTile(new Vector3Int(x, y), tile);
+                bool diffLeft = worldX == 0 || IsDifferent(currentTile, worldX - 1, worldY);
+                bool diffRight = worldX == _gridSize - 1 || IsDifferent(currentTile, worldX + 1, worldY);
+                bool diffBottom = worldY == 0 || IsDifferent(currentTile, worldX, worldY - 1);
+                bool diffTop = worldY == _gridSize - 1 || IsDifferent(currentTile, worldX, worldY + 1);
+                
+                for (int subY = 0; subY < 3; subY++)
+                {
+                    for (int subX = 0; subX < 3; subX++)
+                    {
+                        if (diffLeft && subX <= 1) continue;
+                        if (diffRight && subX >= 1) continue; 
+                        if (diffBottom && subY <= 1) continue;
+                        if (diffTop && subY >= 1) continue;
+                        
+                        int itemX = (worldX * 3) + subX;
+                        int itemY = (worldY * 3) + subY;
+
+                        if (Random.value < 1 - _gridItemSpawnRate) continue;
+
+                        TileBase tile = null;
+                        
+                        if (Random.value < _gridItemBiomeSpawnRate) 
+                        {
+                            int index = NoiseValueToIndex(noiseMap[itemX, itemY], GetSizeListOfItemsBiome(currentTile.Biome));
+                            if(index != -1) tile = GetTileToSpawnInBiome(currentTile.Biome, index);
+                        }
+                        else
+                        {
+                            int index = NoiseValueToIndex(noiseMap[itemX, itemY], _basicCommonTiles.Count);
+                            if(index != -1) tile = _basicCommonTiles[index];
+                        }
+
+                        if (tile != null)
+                        {
+                            _tilemap.SetTile(new Vector3Int(itemX, itemY, 0), tile);
+                        }
+                    }
+                }
             }
         }
+    }
+
+    private bool IsDifferent(TileData currentTile, int worldX, int worldY)
+    {
+        TileData neighbor = GridWorld.Instance.GetTileAt(new Vector2Int(worldX, worldY));
+        return neighbor.Type != currentTile.Type || neighbor.Biome != currentTile.Biome;
     }
 
     private int GetSizeListOfItemsBiome(BiomeType biome)
@@ -85,7 +117,7 @@ public class WorldItemsGeneration : MonoBehaviour
         {
             if (biomeItems.Biome == biome)
             {
-                return biomeItems.ItemTiles[index];
+                return biomeItems.ItemTiles[index].ItemTile;
             }
         }
 
