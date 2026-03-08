@@ -10,7 +10,7 @@ public class PlayerMovements : MonoBehaviour
     [SerializeField] private float _speedIdle = 1.25f;
     private Vector2 _currentInput;
     private Vector2 _lastDirection;
-    private bool _isMoving = false;
+    private bool _isMoving = false, _isGrounded = true;
 
     public void OnPlayerMove(InputAction.CallbackContext context)
     {
@@ -32,10 +32,26 @@ public class PlayerMovements : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_isMoving)
+        _rb.MovePosition(_rb.position + _currentInput * _speedScaler * Time.fixedDeltaTime);
+        /*if (_isMoving)
         {
-            _rb.MovePosition(_rb.position + _currentInput * _speedScaler * Time.fixedDeltaTime);
-        }
+            Vector2 nextPosition = _rb.position + _currentInput * _speedScaler * Time.fixedDeltaTime;
+            TileData targetTile = GridWorld.Instance.GetTileAt(nextPosition);
+
+            bool wasGroundedBeforePhysics = _isGrounded;
+
+            if (targetTile.Type != TileType.WATER)
+            {
+                _rb.MovePosition(nextPosition);
+                _isGrounded = true;
+            }
+            else
+            {
+                _isGrounded = false;
+            }
+
+            if(wasGroundedBeforePhysics != _isGrounded) UpdateAnimator();
+        }*/
     }
 
     private void UpdateAnimator()
@@ -46,6 +62,6 @@ public class PlayerMovements : MonoBehaviour
         
         _animator.SetFloat("Dir_x", dir.x);
         _animator.SetFloat("Dir_y", dir.y);
-        _animator.SetBool("IsMoving", _isMoving);
+        _animator.SetBool("IsMoving", _isMoving && _isGrounded);
     }
 }

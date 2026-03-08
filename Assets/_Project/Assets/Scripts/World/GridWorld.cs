@@ -18,6 +18,7 @@ public class GridWorld : MonoBehaviour
     [SerializeField] private Tilemap _waterTilemap;
     [SerializeField] private Tilemap _groundTilemap;
     [SerializeField] private Tilemap _floorTilemap;
+    [SerializeField] private Tilemap _collisionTilemap;
     [SerializeField] private List<BiomeRuleTileMapping> _tileMappings;
     
     [Header ("Procedural Generation Params")]
@@ -44,9 +45,18 @@ public class GridWorld : MonoBehaviour
     private int _rows, _cols;
 
     public TileData GetTileAt(Vector2Int gridPos) => _grid[gridPos.x, gridPos.y];
+
+    public TileData GetTileAt(Vector3 worldPos)
+    {
+        //Debug.Log(dir);
+        Vector3Int cellPos = _groundTilemap.WorldToCell(worldPos);
+        if (cellPos.x >= 0 && cellPos.x < _size && cellPos.y >= 0 && cellPos.y < _size)
+            return _grid[cellPos.x, cellPos.y];
+        return new TileData(new Vector2Int(cellPos.x, cellPos.y), BiomeType.WATER, TileType.WATER);
+    }
     public int GridSize => _size;
     public static GridWorld Instance;
-
+    public event Action<Vector2> OnWorldInit;
     private void Awake()
     {
         if(Instance != null) Destroy(this);
@@ -55,6 +65,8 @@ public class GridWorld : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.Init();
+        
         Dictionary<float, TileType> tilesTypeThresholds = new Dictionary<float, TileType>();
         SetupThresholds(tilesTypeThresholds);
         
@@ -87,6 +99,52 @@ public class GridWorld : MonoBehaviour
         GenerateRivers();
         CollapseTiles();
         _itemsGeneration.Init();
+        OnWorldInit?.Invoke(GetSpawnableTile());
+    }
+
+    private Vector2 GetSpawnableTile()
+    {
+        List<Vector2Int> validSpawnPoints = new List<Vector2Int>();
+        for (int y = 0; y < _size; y++)
+        {
+            for (int x = 0; x < _size; x++)
+            {
+                TileData tile = _grid[x, y];
+                
+                if (tile.Biome == BiomeType.HILLS && tile.Type == TileType.GROUND)
+                {
+                    validSpawnPoints.Add(new Vector2Int(x, y));
+                }
+            }
+        }
+        
+        if (validSpawnPoints.Count > 0)
+        {
+            Vector2Int gridPos = validSpawnPoints[Random.Range(0, validSpawnPoints.Count)];
+            Vector3 worldPos = _groundTilemap.GetCellCenterWorld(new Vector3Int(gridPos.x, gridPos.y, 0));
+            
+            return new Vector2(worldPos.x, worldPos.y);
+        }
+
+        Debug.LogWarning("Aucun point de spawn valide trouvé dans le biome Hills. Spawn au centre par défaut.");
+        
+        Vector3 defaultWorldPos = _groundTilemap.GetCellCenterWorld(new Vector3Int(_size / 2, _size / 2, 0));
+        return new Vector2(defaultWorldPos.x, defaultWorldPos.y);
+    }
+    
+    public Vector2 GridToWorldPos(Vector2Int gridpos, TileType type)
+    {
+        switch (type)
+        {
+            case TileType.GROUND:
+                return _groundTilemap.GetCellCenterWorld(new Vector3Int(gridpos.x, gridpos.y, 0));
+            case TileType.FLOOR:
+                return _floorTilemap.GetCellCenterWorld(new Vector3Int(gridpos.x, gridpos.y, 0));
+            case TileType.WATER:
+                return _waterTilemap.GetCellCenterWorld(new Vector3Int(gridpos.x, gridpos.y, 0));
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
     }
 
     private void CollapseTiles()
@@ -103,6 +161,11 @@ public class GridWorld : MonoBehaviour
                 if (waterTile != null)
                 {
                     _waterTilemap.SetTile(pos, waterTile);
+                }
+
+                if (tileData.Type == TileType.WATER)
+                {
+                    if(waterTile != null) _collisionTilemap.SetTile(pos, waterTile);
                 }
                 if (tileData.Type == TileType.GROUND || tileData.Type == TileType.FLOOR)
                 {

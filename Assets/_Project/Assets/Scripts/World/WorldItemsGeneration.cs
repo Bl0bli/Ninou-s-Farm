@@ -18,6 +18,7 @@ public class WorldItemsGeneration : MonoBehaviour
     private BasicItemData[,] _gridBasicItems;
     private int _gridSize;
     private int _gridItemSize;
+    
 
     public void Init()
     {
