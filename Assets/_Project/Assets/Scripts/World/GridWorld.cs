@@ -12,6 +12,13 @@ public struct BiomeRuleTileMapping
     public TileType Type;
     public RuleTile RuleTile;
 }
+
+[Serializable]
+public struct Slope
+{
+    public BiomeType Biome;
+    public TileBase[] Tile;
+}
 public class GridWorld : MonoBehaviour
 {
     [Header("Tilemaps (Layers)")] 
@@ -19,6 +26,7 @@ public class GridWorld : MonoBehaviour
     [SerializeField] private Tilemap _groundTilemap;
     [SerializeField] private Tilemap _floorTilemap;
     [SerializeField] private Tilemap _collisionTilemap;
+    [SerializeField] private List<Slope> _slopes = new List<Slope>();
     [SerializeField] private List<BiomeRuleTileMapping> _tileMappings;
     
     [Header ("Procedural Generation Params")]
@@ -32,6 +40,10 @@ public class GridWorld : MonoBehaviour
     [SerializeField] private float _margeY;
     [SerializeField, Range(1f, 10f)] private float _falloffPower = 3f;
     [SerializeField, Range(1f, 5f)] private float _falloffRange = 2.2f;
+
+    [Header("Slopes Generation Params")] 
+    [SerializeField] private int _horizontalDistBetweenSlopes = 8;
+    [SerializeField] private int _maxSlopesPerHill = 3;
     
     [Header("Lakes & Rivers Params")]
     [SerializeField] private int _maxLakesPerBiome = 3;
@@ -98,8 +110,106 @@ public class GridWorld : MonoBehaviour
         GenerateLakes();
         GenerateRivers();
         CollapseTiles();
+        GenerateSlopes();
         _itemsGeneration.Init();
         OnWorldInit?.Invoke(GetSpawnableTile());
+    }
+
+    private void GenerateSlopes()
+    {
+        bool[,] visited = new bool[_size, _size];
+        for (int x = 0; x < _size; x++)
+        {
+            for (int y = 0; y < _size; y++)
+            {
+                TileData tile = _grid[x, y];
+                if (tile.Type == TileType.FLOOR && !visited[x, y])
+                {
+                    Queue<Vector2Int> tilesToCheck = new Queue<Vector2Int>();
+                    List<Vector2Int> potentialSlopes = new List<Vector2Int>();
+                    tilesToCheck.Enqueue(new Vector2Int(x, y));
+                    visited[x, y] = true;
+
+                    while (tilesToCheck.Count > 0)
+                    {
+                        Vector2Int currentTile = tilesToCheck.Dequeue();
+                        if (currentTile.x - 1 >= 0 && currentTile.x + 2 < _size && currentTile.y - 1 >= 0)                        
+                        {
+                            bool topRowIsFloor = 
+                                _grid[currentTile.x - 1, currentTile.y].Type == TileType.FLOOR &&
+                                _grid[currentTile.x, currentTile.y].Type == TileType.FLOOR &&
+                                _grid[currentTile.x + 1, currentTile.y].Type == TileType.FLOOR &&
+                                _grid[currentTile.x + 2, currentTile.y].Type == TileType.FLOOR;  
+                            
+                            bool bottomRowIsGround = 
+                                _grid[currentTile.x - 1, currentTile.y - 1].Type == TileType.GROUND &&
+                                _grid[currentTile.x, currentTile.y - 1].Type == TileType.GROUND &&
+                                _grid[currentTile.x + 1, currentTile.y - 1].Type == TileType.GROUND &&
+                                _grid[currentTile.x + 2, currentTile.y - 1].Type == TileType.GROUND;
+                            
+                            if (topRowIsFloor && bottomRowIsGround)
+                            {
+                                potentialSlopes.Add(currentTile);
+                            }
+                        }
+                        Propagate(currentTile, visited, tilesToCheck);
+                    }
+
+                    if (potentialSlopes.Count > 0)
+                    {
+                        int slopesToPlace = Mathf.Clamp(potentialSlopes.Count / _horizontalDistBetweenSlopes, 1, _maxSlopesPerHill);
+                        CollapseTilesToSlopes(potentialSlopes, slopesToPlace, tile.Biome);
+                    }
+                }
+            }
+        }
+    }
+
+    private void CollapseTilesToSlopes(List<Vector2Int> potentialSlopes, int slopesToPlace, BiomeType biome)
+    {
+        TileBase[] tile = null; 
+        foreach (Slope slope in _slopes)
+        {
+            if (slope.Biome == biome)
+            {
+                tile = slope.Tile;
+                break;
+            }
+        }
+        
+        if (tile == null) return; 
+        for (int i = 0; i < slopesToPlace; i++)
+        {
+            if (potentialSlopes.Count == 0) break;
+
+            int randIndex = Random.Range(0, potentialSlopes.Count);
+            Vector2Int anchor = potentialSlopes[randIndex];
+            
+            _floorTilemap.SetTile(new Vector3Int(anchor.x, anchor.y, 0), tile[0]);
+            _floorTilemap.SetTile(new Vector3Int(anchor.x + 1, anchor.y, 0), tile[1]);
+            _floorTilemap.SetTile(new Vector3Int(anchor.x, anchor.y - 1, 0), tile[2]);
+            _floorTilemap.SetTile(new Vector3Int(anchor.x + 1, anchor.y - 1, 0), tile[3]);
+            
+            potentialSlopes.RemoveAll(p => p.x >= anchor.x - 2 && p.x <= anchor.x + 2 && p.y == anchor.y);
+        }
+    }
+
+    private void Propagate(Vector2Int currentTile, bool[,] visited, Queue<Vector2Int> tilesToCheck)
+    {
+        Vector2Int[] dirs = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+        foreach (Vector2Int dir in dirs)
+        {
+            Vector2Int pos = currentTile + dir;
+            if (pos.x >= 0 && pos.x < _size && pos.y >= 0 && pos.y < _size)
+            {
+                TileData tile = _grid[pos.x, pos.y];
+                if (tile.Type == TileType.FLOOR && !visited[pos.x, pos.y])
+                {
+                    visited[pos.x, pos.y] = true;
+                    tilesToCheck.Enqueue(tile.Position);
+                }
+            }
+        }
     }
 
     private Vector2 GetSpawnableTile()

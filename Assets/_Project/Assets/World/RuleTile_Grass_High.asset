@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
+  m_Script: {fileID: 11500000, guid: 83af57ee2e8ce9241b99316e9ad14db0, type: 3}
   m_Name: RuleTile_Grass_High
   m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.RuleTile
   m_DefaultSprite: {fileID: 0}
@@ -918,3 +918,6 @@ MonoBehaviour:
     - {x: -1, y: -1, z: 0}
     - {x: -1, y: 1, z: 0}
     m_RuleTransform: 0
+  SlopesToConnect:
+  - {fileID: 11400000, guid: 5e21db20a2d62cc4797dfd7ec258f4e2, type: 2}
+  - {fileID: 11400000, guid: 1401f36d1b668a0428e8ff9c22b59745, type: 2}

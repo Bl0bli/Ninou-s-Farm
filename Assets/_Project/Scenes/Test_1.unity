@@ -1107,6 +1107,37 @@ MonoBehaviour:
   _groundTilemap: {fileID: 780430352}
   _floorTilemap: {fileID: 1593861506}
   _collisionTilemap: {fileID: 1007235007}
+  _slopes:
+  - Biome: 1
+    Tile:
+    - {fileID: 11400000, guid: 5e21db20a2d62cc4797dfd7ec258f4e2, type: 2}
+    - {fileID: 11400000, guid: 1401f36d1b668a0428e8ff9c22b59745, type: 2}
+    - {fileID: 11400000, guid: 870a4c55bdcd0534e89556c08dd34835, type: 2}
+    - {fileID: 11400000, guid: 2c49c998d05449d40ada41fd222396bb, type: 2}
+  - Biome: 2
+    Tile:
+    - {fileID: 11400000, guid: 656e401bdfb646c44903e64a510e7774, type: 2}
+    - {fileID: 11400000, guid: d859ac6573dd1394594a3d9d135edc24, type: 2}
+    - {fileID: 11400000, guid: 0864d2bdba543614d96cbe2f03b6a640, type: 2}
+    - {fileID: 11400000, guid: 3481b7e3ac5e9094daa2449d7d6bee1a, type: 2}
+  - Biome: 3
+    Tile:
+    - {fileID: 11400000, guid: 783a5470353021c4191a61d235bb1b21, type: 2}
+    - {fileID: 11400000, guid: c67d2d42ffda50e4bab6fdd7272ed200, type: 2}
+    - {fileID: 11400000, guid: 6a00415ff30255444b295d915d140311, type: 2}
+    - {fileID: 11400000, guid: 359007c0d8cc57e449d0984646e1e829, type: 2}
+  - Biome: 4
+    Tile:
+    - {fileID: 11400000, guid: 9914dcd892f54ab46a41d1de6d5e591d, type: 2}
+    - {fileID: 11400000, guid: a149f9c892eb8334294fa6bb2140040c, type: 2}
+    - {fileID: 11400000, guid: 9a4ff493cf1a9234f8e33443e9f394cb, type: 2}
+    - {fileID: 11400000, guid: f878ef54ee0268f4cb080991790557d9, type: 2}
+  - Biome: 5
+    Tile:
+    - {fileID: 11400000, guid: e1181e1f5cb01424884fb6f6b9acc9cc, type: 2}
+    - {fileID: 11400000, guid: 349ad71928ae12140ab80274a1e4fc0d, type: 2}
+    - {fileID: 11400000, guid: f74c30e4a81276b468825703a6e7cb07, type: 2}
+    - {fileID: 11400000, guid: fb0f80c5341e8c34bbae5e8e0671d75f, type: 2}
   _tileMappings:
   - Biome: 0
     Type: 2
@@ -1151,6 +1182,8 @@ MonoBehaviour:
   _margeY: 25
   _falloffPower: 2.75
   _falloffRange: 3
+  _horizontalDistBetweenSlopes: 8
+  _maxSlopesPerHill: 0
   _maxLakesPerBiome: 5
   _maxLakeSize: 50
   _maxRiversPerBiome: 10
