@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -21,6 +22,7 @@ public struct Slope
 }
 public class GridWorld : MonoBehaviour
 {
+    [SerializeField] private Camera _camera;
     [Header("Tilemaps (Layers)")] 
     [SerializeField] private Tilemap _waterTilemap;
     [SerializeField] private Tilemap _groundTilemap;
@@ -28,8 +30,15 @@ public class GridWorld : MonoBehaviour
     [SerializeField] private Tilemap _collisionTilemap;
     [SerializeField] private List<Slope> _slopes = new List<Slope>();
     [SerializeField] private List<BiomeRuleTileMapping> _tileMappings;
-    
-    [Header ("Procedural Generation Params")]
+
+    [Header("Procedural Generation Params")] 
+    [SerializeField] private int current;
+
+    [SerializeField] private float currentFPS;
+    [SerializeField] int _MINtilesPerFrame = 100;
+    [SerializeField] int _MAXtilesPerFrame = 500;
+    [SerializeField] private float _minFPS = 30f;          // Le seuil critique de lag
+    [SerializeField] private float _maxFPS = 60f;
     [SerializeField] WorldItemsGeneration _itemsGeneration;
     [SerializeField] private int _size = 100;
     [SerializeField] private float _scale = 0.1f;
@@ -51,8 +60,10 @@ public class GridWorld : MonoBehaviour
     [SerializeField] private int _maxRiversPerBiome = 2;
     [SerializeField] private int _maxRiverLength = 40;
     [SerializeField] private int _maxRiverThickness = 2;
+    
     private TileData[,] _grid;
     private List<Biome> _biomes = new List<Biome>();
+    private Dictionary<(BiomeType, TileType), RuleTile> _ruleTileCache;
     
     private int _rows, _cols;
 
@@ -77,8 +88,20 @@ public class GridWorld : MonoBehaviour
 
     private void Start()
     {
+        _camera.transform.position = new Vector3(_size / 2, _size / 2, -10);
+        _camera.orthographicSize = _size / 2;
+        _ruleTileCache = new Dictionary<(BiomeType, TileType), RuleTile>();
+        foreach (BiomeRuleTileMapping mapping in _tileMappings)
+        {
+            _ruleTileCache[(mapping.Biome, mapping.Type)] = mapping.RuleTile;
+        }
         GameManager.Instance.Init();
-        
+
+        StartCoroutine(GenerateWorldRoutine());
+    }
+
+    IEnumerator GenerateWorldRoutine()
+    {
         Dictionary<float, TileType> tilesTypeThresholds = new Dictionary<float, TileType>();
         SetupThresholds(tilesTypeThresholds);
         
@@ -87,6 +110,8 @@ public class GridWorld : MonoBehaviour
         _grid = new TileData[_size, _size];
 
         SetupBiomes();
+
+        yield return null;
         
         float[,] noiseMap = new float[_size, _size];
         for (int y = 0; y < _size; y++)
@@ -107,16 +132,83 @@ public class GridWorld : MonoBehaviour
             }
         }
 
+        yield return null;
         GenerateLakes();
+        yield return null;
         GenerateRivers();
-        CollapseTiles();
-        GenerateSlopes();
+        yield return null;
+        yield return StartCoroutine(CollapseTilesRoutine());
         _itemsGeneration.Init();
         OnWorldInit?.Invoke(GetSpawnableTile());
     }
 
-    private void GenerateSlopes()
+    private IEnumerator CollapseTilesRoutine()
     {
+        RuleTile waterTile = GetRuleTile(BiomeType.WATER, TileType.WATER);
+
+        int tilesDrawn = 0;
+
+        current = _MAXtilesPerFrame;
+        
+        TilemapCollider2D collisionTilemapCollider = _collisionTilemap.GetComponent<TilemapCollider2D>();
+        TilemapCollider2D groundTilemapCollider = _groundTilemap.GetComponent<TilemapCollider2D>();
+        
+        if (collisionTilemapCollider != null) collisionTilemapCollider.enabled = false;
+        if (groundTilemapCollider != null) groundTilemapCollider.enabled = false;
+
+        for (int y = 0; y < _size; y++)
+        {
+            for (int x = 0; x < _size; x++)
+            {
+                TileData tileData = _grid[x, y];
+                Vector3Int pos = new Vector3Int(x, y, 0);
+                
+                if (waterTile != null)
+                {
+                    _waterTilemap.SetTile(pos, waterTile);
+                }
+
+                if (tileData.Type == TileType.WATER)
+                {
+                    if(waterTile != null) _collisionTilemap.SetTile(pos, waterTile);
+                }
+                if (tileData.Type == TileType.GROUND || tileData.Type == TileType.FLOOR)
+                {
+                    RuleTile groundTile = GetRuleTile(tileData.Biome, TileType.GROUND);
+                    if (groundTile != null)
+                    {
+                        _groundTilemap.SetTile(pos, groundTile);
+                    }
+                }
+                if (tileData.Type == TileType.FLOOR)
+                {
+                    RuleTile floorTile = GetRuleTile(tileData.Biome, TileType.FLOOR);
+                    if (floorTile != null)
+                    {
+                        _floorTilemap.SetTile(pos, floorTile);
+                    }
+                }
+
+                tilesDrawn++;
+                if (tilesDrawn >= current)
+                {
+                    tilesDrawn = 0;
+                    yield return null;
+
+                    currentFPS = 1f / Time.smoothDeltaTime;
+
+                    float t = Mathf.InverseLerp(_minFPS, _maxFPS, currentFPS);
+
+                    current = Mathf.RoundToInt(Mathf.Lerp(_MINtilesPerFrame, _MAXtilesPerFrame, t));
+                }
+            }
+        }
+
+        yield return null;
+        
+        if (collisionTilemapCollider != null) collisionTilemapCollider.enabled = true;
+        if (groundTilemapCollider != null) groundTilemapCollider.enabled = true;
+        
         bool[,] visited = new bool[_size, _size];
         for (int x = 0; x < _size; x++)
         {
@@ -256,54 +348,11 @@ public class GridWorld : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
     }
-
-    private void CollapseTiles()
-    {
-        RuleTile waterTile = GetRuleTile(BiomeType.WATER, TileType.WATER);
-
-        for (int y = 0; y < _size; y++)
-        {
-            for (int x = 0; x < _size; x++)
-            {
-                TileData tileData = _grid[x, y];
-                Vector3Int pos = new Vector3Int(x, y, 0);
-                
-                if (waterTile != null)
-                {
-                    _waterTilemap.SetTile(pos, waterTile);
-                }
-
-                if (tileData.Type == TileType.WATER)
-                {
-                    if(waterTile != null) _collisionTilemap.SetTile(pos, waterTile);
-                }
-                if (tileData.Type == TileType.GROUND || tileData.Type == TileType.FLOOR)
-                {
-                    RuleTile groundTile = GetRuleTile(tileData.Biome, TileType.GROUND);
-                    if (groundTile != null)
-                    {
-                        _groundTilemap.SetTile(pos, groundTile);
-                    }
-                }
-                if (tileData.Type == TileType.FLOOR)
-                {
-                    RuleTile floorTile = GetRuleTile(tileData.Biome, TileType.FLOOR);
-                    if (floorTile != null)
-                    {
-                        _floorTilemap.SetTile(pos, floorTile);
-                    }
-                }
-            }
-        }
-    }
     private RuleTile GetRuleTile(BiomeType biome, TileType type)
     {
-        foreach (BiomeRuleTileMapping mapping in _tileMappings)
+        if(_ruleTileCache.TryGetValue((biome, type), out RuleTile tile))
         {
-            if (mapping.Biome == biome && mapping.Type == type)
-            {
-                return mapping.RuleTile;
-            }
+            return tile;
         }
         return null; // Si aucune tuile n'est configurée
     }
@@ -519,45 +568,6 @@ public class GridWorld : MonoBehaviour
             if (forwardX >= 0 && forwardX < _size && forwardY >= 0 && forwardY < _size)
             {
                 if (_grid[forwardX, forwardY].Type == TileType.WATER) break; 
-            }
-        }
-    }
-    
-    private void OnDrawGizmos()
-    {
-        if(!Application.isPlaying) return;
-
-        for (int y = 0; y < _size; y++)
-        {
-            for (int x = 0; x < _size; x++)
-            {
-                TileData tileData = _grid[x, y];
-                switch (tileData.Biome)
-                {
-                    case BiomeType.WATER:
-                        Gizmos.color = Color.cornflowerBlue;
-                        break;
-                    case BiomeType.HILLS:
-                        Gizmos.color = Color.springGreen;
-                        break;
-                    case BiomeType.FOREST:
-                        Gizmos.color = Color.darkGreen;
-                        break;
-                    case BiomeType.DESERT:
-                        Gizmos.color = Color.darkKhaki;
-                        break;
-                    case BiomeType.DEADZONE:
-                        Gizmos.color = Color.white;
-                        break;
-                    case BiomeType.MOUNTAINS:
-                        Gizmos.color = Color.grey;
-                        break;
-                }
-
-                if (tileData.Type == TileType.FLOOR) Gizmos.color = Color.blueViolet;
-                //float height = (tile.Type == TileType.WALL) ? 1.0f : 0f;
-                Vector3 pos = new Vector3(x, 0, y);
-                Gizmos.DrawCube(pos, Vector3.one);
             }
         }
     }
