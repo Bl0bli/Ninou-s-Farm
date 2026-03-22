@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
@@ -22,6 +23,7 @@ public struct Slope
 }
 public class GridWorld : MonoBehaviour
 {
+    [SerializeField] private UnityEvent _onWorldInit;
     [SerializeField] private Camera _camera;
     [Header("Tilemaps (Layers)")] 
     [SerializeField] private Tilemap _waterTilemap;
@@ -140,6 +142,7 @@ public class GridWorld : MonoBehaviour
         yield return StartCoroutine(CollapseTilesRoutine());
         _itemsGeneration.Init();
         OnWorldInit?.Invoke(GetSpawnableTile());
+        _onWorldInit?.Invoke();
     }
 
     private IEnumerator CollapseTilesRoutine()
