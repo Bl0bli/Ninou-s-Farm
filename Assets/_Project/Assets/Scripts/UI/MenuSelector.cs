@@ -11,10 +11,11 @@ public class MenuSelector : MonoBehaviour
     [SerializeField] private Ease _easeIn = Ease.InBounce;
     [SerializeField] private Ease _easeOut = Ease.OutBounce;
 
-    public void AnimateSelection(RectTransform clickedSlot)
+    public void AnimateSelection(Transform clickedSlot)
     {
         _selectorRect.DOKill();
-        _selectorRect.position = clickedSlot.position;
+        transform.SetParent(clickedSlot);
+        //_selectorRect.position = clickedSlot.position;
 
         Sequence anim = DOTween.Sequence();
 
