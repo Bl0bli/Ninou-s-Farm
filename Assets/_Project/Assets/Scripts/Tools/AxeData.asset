@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0270e1b021f33b545adfa475aefdd09d, type: 3}
+  m_Name: AxeData
+  m_EditorClassIdentifier: Assembly-CSharp::AxeData
+  WorldSprite: {fileID: 7856000931257088127, guid: 774a8cf3488218c44a7f23692433f95b, type: 3}
+  Icon: {fileID: 7856000931257088127, guid: 774a8cf3488218c44a7f23692433f95b, type: 3}
+  Name: Axe
+  Description: 
+  Amount: 1
+  StaminaCost: 1
+  Cooldown: 1
+  Damage: 1
