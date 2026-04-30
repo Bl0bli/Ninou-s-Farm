@@ -2,32 +2,39 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ItemPickable : MonoBehaviour
+public class ItemPickable : MonoBehaviour, ICollectible
 {
+    [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] UnityEvent OnPickup;
     [SerializeField] ItemData _itemData;
 
-    private SpriteRenderer _renderer;
-
     private void Start()
     {
-        if (_itemData != null)
-        {
-            _renderer = GetComponent<SpriteRenderer>();
-            _renderer.sprite = _itemData.WorldSprite;
-        }
+        SetupItemPickable();
     }
 
     public void Init(ItemData item)
     {
         _itemData = item;
+        SetupItemPickable();
     }
-    private void OnTriggerEnter2D(Collider2D other)
+
+    private void SetupItemPickable()
     {
-        if (other.TryGetComponent<PlayerInventory>(out PlayerInventory inventory))
+        if (_itemData != null)
         {
-            Debug.Log("[ItemPickable] Hit Player, Try PickUp Item");
-            if(inventory.PickUp(_itemData)) OnPickup?.Invoke();
+            if(_renderer == null)_renderer = GetComponent<SpriteRenderer>();
+            _renderer.sprite = _itemData.WorldSprite;
+        }
+    }
+    
+    public void Collect(PlayerInventory inventory)
+    {
+        if (inventory.PickUp(_itemData))
+        {
+            OnPickup?.Invoke();
+            
+            Destroy(gameObject);
         }
     }
 }

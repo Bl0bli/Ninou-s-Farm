@@ -1,5 +1,7 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public struct InventorySlot
 {
@@ -18,6 +20,8 @@ public class PlayerInventory : MonoBehaviour
 {
     private InventorySlot[] _inventory;
     private int _maxInventorySize = 10;
+    
+    public InventorySlot[] Inventory => _inventory;
 
     private void Start()
     {
