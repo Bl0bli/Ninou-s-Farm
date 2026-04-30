@@ -65,6 +65,7 @@ public class PlayerInventory : MonoBehaviour
 
     private bool TryStack(ItemData item)
     {
+		if(!item.IsStackable) return false;
         for (int i = 0; i < _inventory.Length; i++)
         {
             if (!_inventory[i].IsEmpty && !_inventory[i].IsFull && _inventory[i].Item == item)

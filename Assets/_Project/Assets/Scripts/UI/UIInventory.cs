@@ -90,7 +90,7 @@ public class UIInventory : MonoBehaviour
         
         uiSlot.Icon.sprite = inventorySlot.Item.Icon;
         uiSlot.Icon.color = Color.white;
-        uiSlot.Quantity.text = inventorySlot.Quantity.ToString();
+        if(inventorySlot.Item.IsStackable) uiSlot.Quantity.text = inventorySlot.Quantity.ToString();
         
         if (isNewItem)
         {

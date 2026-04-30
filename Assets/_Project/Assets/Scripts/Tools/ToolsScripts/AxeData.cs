@@ -8,6 +8,7 @@ public class AxeData : ToolData
     
     public override bool Use()
     {
+        Debug.Log("Axe used");
         return true;
     }
 }
