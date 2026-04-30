@@ -5207,7 +5207,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.3
+  m_Radius: 0.25
 --- !u!114 &900603984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5232,7 +5232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0a4658449b73f428bb7d05e68aba80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCollector
-  _radius: 0.3
+  _radius: 0.25
   _inventory: {fileID: 900603984}
 --- !u!1 &930765014
 GameObject:
@@ -9579,7 +9579,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1694666265}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999535
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
