@@ -22,6 +22,9 @@ public class PlayerInventory : MonoBehaviour
     private int _maxInventorySize = 10;
     
     public InventorySlot[] Inventory => _inventory;
+    
+    public event Action OnInit; 
+    public event Action<int> OnSlotChanged;
 
     private void Start()
     {
@@ -29,8 +32,10 @@ public class PlayerInventory : MonoBehaviour
         for (int i = 0; i < _maxInventorySize; i++)
         {
             _inventory[i] = new InventorySlot();
-        }    }
-
+        }    
+        OnInit?.Invoke();
+    }
+    
     public bool PickUp(ItemData item)
     {
         if (TryStack(item))
@@ -43,15 +48,13 @@ public class PlayerInventory : MonoBehaviour
     
     private bool TryAddNewItem(ItemData item)
     {
-        Debug.Log($"[PlayerInventory] TryAddNewItem {item.Name}");
         for (int i = 0; i < _inventory.Length; i++)
         {
             if (_inventory[i].IsEmpty)
             {
                 _inventory[i].Item = item;
                 _inventory[i].Quantity = item.Amount;
-                // TODO : Notifier l'UI de se mettre à jour
-                Debug.Log($"[PlayerInventory] Added {item.Name}");
+                OnSlotChanged?.Invoke(i);
                 return true; 
             }
         }
@@ -62,13 +65,12 @@ public class PlayerInventory : MonoBehaviour
 
     private bool TryStack(ItemData item)
     {
-        Debug.Log($"[PlayerInventory] TryStack {item.Name}");
         for (int i = 0; i < _inventory.Length; i++)
         {
-            InventorySlot slot = _inventory[i];
-            if (!slot.IsEmpty && !slot.IsFull && slot.Item == item)
+            if (!_inventory[i].IsEmpty && !_inventory[i].IsFull && _inventory[i].Item == item)
             {
-                Debug.Log($"[PlayerInventory] Stack {item.Name}");
+                _inventory[i].Quantity += item.Amount;
+                OnSlotChanged?.Invoke(i);
                 return true;
             }
         }
