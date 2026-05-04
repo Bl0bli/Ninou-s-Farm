@@ -11,11 +11,15 @@ public class MenuSelector : MonoBehaviour
     [SerializeField] private Ease _easeIn = Ease.InBounce;
     [SerializeField] private Ease _easeOut = Ease.OutBounce;
 
+    /// <summary>
+    /// Anime le sélecteur vers l'emplacement cliqué avec un effet de rebond.
+    /// </summary>
+    /// <param name="clickedSlot">Le transform de l'emplacement d'inventaire sélectionné.</param>
     public void AnimateSelection(Transform clickedSlot)
     {
         _selectorRect.DOKill();
         transform.SetParent(clickedSlot);
-        //_selectorRect.position = clickedSlot.position;
+        _selectorRect.position = clickedSlot.position;
 
         Sequence anim = DOTween.Sequence();
 

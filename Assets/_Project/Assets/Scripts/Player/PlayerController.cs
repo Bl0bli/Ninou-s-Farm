@@ -1,14 +1,107 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private GameObject _uiWindow;
+    [SerializeField] private PlayerInventory _inventory;
+
+    [Header("State")] 
+    private ItemData _currentItem;
+    private int _currentSlotIndex = 0;
 
     private bool _uiToggle = false;
+    private bool _isInUI = false;
+    
+    public event Action<int> OnSlotSelected;
 
+    private void Start()
+    {
+        _inventory.OnSlotChanged += OnSlotChanged;
+        SelectSlot(0);
+    }
+
+    /// <summary>
+    /// Alterne l'affichage de l'interface utilisateur.
+    /// </summary>
     public void ToogleUI()
     {
         _uiToggle = !_uiToggle;
         _uiWindow.SetActive(_uiToggle);
+    }
+    
+    /// <summary>
+    /// Gère le changement d'emplacement sélectionné dans l'inventaire via la molette de la souris.
+    /// </summary>
+    /// <param name="context">Le contexte de l'action contenant les données de défilement.</param>
+    public void HandleScrollWheel(InputAction.CallbackContext context)
+    {
+        if (_isInUI) return; 
+
+        if (!context.performed) return;
+
+        Vector2 scroll = context.ReadValue<Vector2>();
+        if (scroll.y == 0) return;
+
+        int newIndex = _currentSlotIndex;
+        
+        if (scroll.y > 0)
+            newIndex--;
+        else if (scroll.y < 0)
+            newIndex++;
+        
+        int maxSlots = _inventory.Inventory.Length; 
+        
+        if (newIndex < 0) 
+            newIndex = maxSlots - 1;
+        else if (newIndex >= maxSlots) 
+            newIndex = 0;
+
+        SelectSlot(newIndex);
+    }
+
+    /// <summary>
+    /// Utilise l'objet actuellement tenu dans la main du joueur.
+    /// </summary>
+    /// <param name="context">Le contexte de l'action de déclenchement.</param>
+    public void Use(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (_currentItem != null && _currentItem is IUsable usable)
+            {
+                usable.Use(this, transform.position/*GridWorld.Instance.WorldToGridPos((Vector2)transform.position + Vector2.up)*/);
+            }
+        }
+    }
+    
+    private void SelectSlot(int index)
+    {
+        if (_inventory == null) return;
+        if (_inventory.Inventory == null || _inventory.Inventory.Length == 0) return;
+        if (index < 0 || index >= _inventory.Inventory.Length) return;
+        
+        _currentSlotIndex = index;
+
+        CheckSlot();
+
+        OnSlotSelected?.Invoke(_currentSlotIndex);
+    }
+
+    private void CheckSlot()
+    {
+        InventorySlot selectedSlot = _inventory.Inventory[_currentSlotIndex];
+        
+        _currentItem = selectedSlot.IsEmpty ? null : selectedSlot.Item;
+
+        Debug.Log($"[Toolbar] Case {_currentSlotIndex} sélectionnée. En main : {(_currentItem != null ? _currentItem.Name : "Mains vides")}");
+    }
+
+    private void OnSlotChanged(int index)
+    {
+        if(index == _currentSlotIndex) 
+            CheckSlot();
     }
 }
