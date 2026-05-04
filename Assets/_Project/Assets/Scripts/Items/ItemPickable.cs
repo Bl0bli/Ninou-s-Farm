@@ -21,6 +21,10 @@ public class ItemPickable : MonoBehaviour, ICollectible
         StartIdleFloatingAnimation();
     }
 
+    /// <summary>
+    /// Initialise l'objet ramassable avec les données d'item spécifiées.
+    /// </summary>
+    /// <param name="item">Les données de l'item à associer.</param>
     public void Init(ItemData item)
     {
         _itemData = item;
@@ -51,6 +55,10 @@ public class ItemPickable : MonoBehaviour, ICollectible
             .SetLink(gameObject);
     }
 
+    /// <summary>
+    /// Collecte l'objet et tente de l'ajouter à l'inventaire du joueur.
+    /// </summary>
+    /// <param name="inventory">L'inventaire dans lequel stocker l'objet.</param>
     public void Collect(PlayerInventory inventory)
     {
         if (inventory.PickUp(_itemData))

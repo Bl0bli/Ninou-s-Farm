@@ -28,6 +28,10 @@ public class WorldState : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// Crée une tuile visuelle dans le monde à partir des données de tuile fournies.
+    /// </summary>
+    /// <param name="tileData">Les données de la tuile à instancier.</param>
     public void CreateTile(TileData tileData)
     {
         GameObject go = Instantiate(_prefabTile);

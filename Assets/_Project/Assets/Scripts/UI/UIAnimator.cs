@@ -31,6 +31,9 @@ public class UIAnimator : MonoBehaviour
         if (_rect == null) _rect = GetComponent<RectTransform>();
     }
 
+    /// <summary>
+    /// Déclenche l'animation de l'élément UI en fonction du type d'animation configuré.
+    /// </summary>
     public void Animate()
     {
         if (!_isInitialized)

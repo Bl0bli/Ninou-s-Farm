@@ -12,6 +12,10 @@ public class PlayerMovements : MonoBehaviour
     private Vector2 _lastDirection;
     private bool _isMoving = false, _isGrounded = true;
 
+    /// <summary>
+    /// Gère les entrées de mouvement du joueur via l'Input System.
+    /// </summary>
+    /// <param name="context">Le contexte de l'action contenant la valeur du mouvement.</param>
     public void OnPlayerMove(InputAction.CallbackContext context)
     {
         _currentInput = context.ReadValue<Vector2>();

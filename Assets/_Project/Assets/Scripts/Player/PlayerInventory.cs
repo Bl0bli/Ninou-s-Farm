@@ -10,6 +10,9 @@ public struct InventorySlot
     public bool IsEmpty => Item == null || Quantity <= 0;
     public bool IsFull => Quantity >= 99;
 
+    /// <summary>
+    /// Réinitialise l'emplacement d'inventaire en le vidant de son contenu.
+    /// </summary>
     public void Clear()
     {
         Item = null;
@@ -36,6 +39,11 @@ public class PlayerInventory : MonoBehaviour
         OnInit?.Invoke();
     }
     
+    /// <summary>
+    /// Récupère un objet et tente de le stocker dans l'inventaire.
+    /// </summary>
+    /// <param name="item">Les données de l'objet à ajouter.</param>
+    /// <returns>Retourne true si l'objet a pu être stocké, sinon false.</returns>
     public bool PickUp(ItemData item)
     {
         if (TryStack(item))

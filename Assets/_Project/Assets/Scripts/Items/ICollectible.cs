@@ -1,6 +1,0 @@
-using UnityEngine;
-
-public interface ICollectible
-{
-    void Collect(PlayerInventory inventory);
-}
