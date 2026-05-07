@@ -519,8 +519,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _itemData: {fileID: 11400000, guid: 83abf77d19831da49ac183922bbbdd12, type: 2}
-  _floatHeight: 0.15
-  _floatDuration: 1.2
 --- !u!1 &158326272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,8 +1128,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _itemData: {fileID: 11400000, guid: 83abf77d19831da49ac183922bbbdd12, type: 2}
-  _floatHeight: 0.15
-  _floatDuration: 1.2
 --- !u!114 &528392182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1805,7 +1801,6 @@ GameObject:
   m_Component:
   - component: {fileID: 768725415}
   - component: {fileID: 768725417}
-  - component: {fileID: 768725418}
   - component: {fileID: 768725416}
   m_Layer: 7
   m_Name: Brain
@@ -1845,7 +1840,6 @@ MonoBehaviour:
   _rb: {fileID: 794123422}
   _speedScaler: 3
   _speedIdle: 1.25
-  CanMove: 1
 --- !u!114 &768725417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1891,62 +1885,11 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 687030d5-4504-4137-b78f-b9da743c059e
     m_ActionName: 'Player_UI/ToggleUI[/Keyboard/tab]'
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 768725418}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: Use
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 004de622-732e-4d81-8a9f-8363000bec0f
-    m_ActionName: 'Player_Moves/Use[/Mouse/leftButton]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 5b714b1a-0fe2-48b0-a7a0-83a227e88398
-    m_ActionName: 'Player_Moves/Specific[/Mouse/rightButton]'
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 768725418}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: HandleScrollWheel
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 560ca9ef-60ee-4a67-94ae-d7d73295212a
-    m_ActionName: 'Player_Moves/Scroll[/Mouse/scroll]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player_Moves
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &768725418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 768725414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a52f5e94ea53c94f99be8018fe96f59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  _animator: {fileID: 2083554621}
-  _uiWindow: {fileID: 0}
-  _inventory: {fileID: 900603984}
 --- !u!1 &780430349
 GameObject:
   m_ObjectHideFlags: 0
@@ -3410,8 +3353,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _itemData: {fileID: 11400000, guid: 83abf77d19831da49ac183922bbbdd12, type: 2}
-  _floatHeight: 0.15
-  _floatDuration: 1.2
 --- !u!114 &1115424361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4132,8 +4073,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _itemData: {fileID: 11400000, guid: 83abf77d19831da49ac183922bbbdd12, type: 2}
-  _floatHeight: 0.15
-  _floatDuration: 1.2
 --- !u!114 &1785637429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4635,8 +4574,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3084291926983185345}
   - component: {fileID: 8544191891433882306}
-  - component: {fileID: 8544191891433882307}
-  - component: {fileID: 8544191891433882308}
   m_Layer: 5
   m_Name: Menus
   m_TagString: Untagged
@@ -4700,8 +4637,8 @@ RectTransform:
   - {fileID: 6239095787555378944}
   m_Father: {fileID: 5572551054231037844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.86}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5183,13 +5120,14 @@ GameObject:
   - component: {fileID: 1262674679744864181}
   - component: {fileID: 2274492674937499782}
   - component: {fileID: 2700359009158758145}
+  - component: {fileID: 8402747553186680976}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &5461357616205555683
 GameObject:
   m_ObjectHideFlags: 0
@@ -5224,8 +5162,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00024414062}
-  m_SizeDelta: {x: 0, y: -458.0878}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &5572551054231037844
 RectTransform:
@@ -5672,11 +5610,34 @@ RectTransform:
   - {fileID: 4843553196323311268}
   m_Father: {fileID: 3084291926983185345}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -800}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 960, y: 510}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8402747553186680976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5377075451606449982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4475462296ac69d4aaa41ffbf48d9e4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIInventory
+  _playerInventory: {fileID: 900603984}
+  _inventorySlotParent: {fileID: 5523881597811715504}
+  _inventorySlotPrefab: {fileID: 4767762886653985449, guid: 2ae19c9a7370ea1409fa47f7946b6663, type: 3}
+  _toolbar: {fileID: 4930628100458252773}
+  _startInventorySize: 36
+  _slotAnimDuration: 0.15
+  _slotShrinkScale: 0.8
+  _slotEaseIn: 6
+  _slotEaseOut: 27
+  _textAnimDuration: 0.15
+  _textPopScale: 1.5
 --- !u!114 &8544191891433882306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5703,53 +5664,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &8544191891433882307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1716603726429522880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4475462296ac69d4aaa41ffbf48d9e4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIInventory
-  _playerInventory: {fileID: 900603984}
-  _inventorySlotParent: {fileID: 5523881597811715504}
-  _inventorySlotPrefab: {fileID: 4767762886653985449, guid: 2ae19c9a7370ea1409fa47f7946b6663, type: 3}
-  _toolbar: {fileID: 4930628100458252773}
-  _startInventorySize: 36
-  _slotAnimDuration: 0.15
-  _slotShrinkScale: 0.8
-  _slotEaseIn: 6
-  _slotEaseOut: 27
-  _textAnimDuration: 0.15
-  _textPopScale: 1.5
---- !u!114 &8544191891433882308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1716603726429522880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 941e69476d2f9a84b83a56fe5e7abf5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIToolbar
-  _playerController: {fileID: 768725418}
-  _menuSelector: {fileID: 3668909616670213433}
-  _uiSlotTransforms:
-  - {fileID: 999459420}
-  - {fileID: 5712197}
-  - {fileID: 529983339}
-  - {fileID: 705610915}
-  - {fileID: 1066442185}
-  - {fileID: 1015315296}
-  - {fileID: 502598419}
-  - {fileID: 1021656526}
-  - {fileID: 551841378}
 --- !u!224 &8829824421375911274
 RectTransform:
   m_ObjectHideFlags: 0

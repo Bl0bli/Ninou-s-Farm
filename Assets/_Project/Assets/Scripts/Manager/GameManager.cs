@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// Initialise le gestionnaire de jeu et s'abonne aux événements d'initialisation du monde.
+    /// </summary>
     public void Init()
     {
         GridWorld.Instance.OnWorldInit += SpawnPlayer;

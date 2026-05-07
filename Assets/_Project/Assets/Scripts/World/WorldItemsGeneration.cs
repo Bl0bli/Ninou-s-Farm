@@ -20,6 +20,9 @@ public class WorldItemsGeneration : MonoBehaviour
     private int _gridItemSize;
     
 
+    /// <summary>
+    /// Initialise la génération des objets et éléments de décor dans le monde.
+    /// </summary>
     public void Init()
     {
         float xoffset = Random.Range(-1000, 1000);

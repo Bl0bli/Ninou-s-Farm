@@ -69,8 +69,18 @@ public class GridWorld : MonoBehaviour
     
     private int _rows, _cols;
 
+    /// <summary>
+    /// Récupère les données de la tuile à une position de grille spécifique.
+    /// </summary>
+    /// <param name="gridPos">La position dans la grille.</param>
+    /// <returns>Les données de la tuile à cette position.</returns>
     public TileData GetTileAt(Vector2Int gridPos) => _grid[gridPos.x, gridPos.y];
 
+    /// <summary>
+    /// Récupère les données de la tuile correspondant à une position dans le monde.
+    /// </summary>
+    /// <param name="worldPos">La position dans l'espace mondial.</param>
+    /// <returns>Les données de la tuile correspondante.</returns>
     public TileData GetTileAt(Vector3 worldPos)
     {
         //Debug.Log(dir);
@@ -337,6 +347,12 @@ public class GridWorld : MonoBehaviour
         return new Vector2(defaultWorldPos.x, defaultWorldPos.y);
     }
     
+    /// <summary>
+    /// Convertit une position de grille en position mondiale selon le type de tuile.
+    /// </summary>
+    /// <param name="gridpos">La position dans la grille.</param>
+    /// <param name="type">Le type de tuile pour déterminer la couche.</param>
+    /// <returns>La position mondiale au centre de la cellule.</returns>
     public Vector2 GridToWorldPos(Vector2Int gridpos, TileType type)
     {
         switch (type)
@@ -350,6 +366,18 @@ public class GridWorld : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
+    }
+
+    /// <summary>
+    /// Convertit une position mondiale en position de grille.
+    /// </summary>
+    /// <param name="worldPose">La position dans l'espace mondial.</param>
+    /// <returns>La position correspondante dans la grille.</returns>
+    public Vector2 WorldToGridPos(Vector2 worldPose)
+    {
+        Vector3Int cellPos = _groundTilemap.WorldToCell(worldPose);
+        return new Vector2(cellPos.x, cellPos.y);
+
     }
     private RuleTile GetRuleTile(BiomeType biome, TileType type)
     {

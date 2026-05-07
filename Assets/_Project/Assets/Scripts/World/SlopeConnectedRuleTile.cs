@@ -8,6 +8,12 @@ public class SlopeConnectedRuleTile : RuleTile
     [Header("Tuiles amies (qui connectent avec l'herbe)")]
     public List<TileBase> SlopesToConnect;
     
+    /// <summary>
+    /// Détermine si une tuile voisine correspond aux règles de connexion, incluant les pentes amies.
+    /// </summary>
+    /// <param name="neighbor">Le type de voisin testé.</param>
+    /// <param name="tile">La tuile voisine à tester.</param>
+    /// <returns>Retourne true si la tuile correspond à la règle, sinon false.</returns>
     public override bool RuleMatch(int neighbor, TileBase tile)
     {
         bool isSlope = SlopesToConnect != null && SlopesToConnect.Contains(tile);
