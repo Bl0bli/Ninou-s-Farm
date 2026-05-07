@@ -12,6 +12,23 @@ public class PlayerMovements : MonoBehaviour
     private Vector2 _lastDirection;
     private bool _isMoving = false, _isGrounded = true;
 
+    public bool CanMove = true;
+
+    private void Start()
+    {
+        LockMovementBehaviour[] lockBehaviours = _animator.GetBehaviours<LockMovementBehaviour>();
+            
+        // On leur donne notre propre référence
+        foreach (LockMovementBehaviour behaviour in lockBehaviours)
+        {
+            behaviour.Init(this);
+        }
+    }
+
+    /// <summary>
+    /// Gère les entrées de mouvement du joueur via l'Input System.
+    /// </summary>
+    /// <param name="context">Le contexte de l'action contenant la valeur du mouvement.</param>
     public void OnPlayerMove(InputAction.CallbackContext context)
     {
         _currentInput = context.ReadValue<Vector2>();
@@ -32,6 +49,7 @@ public class PlayerMovements : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!CanMove) return;
         _rb.MovePosition(_rb.position + _currentInput * _speedScaler * Time.fixedDeltaTime);
         /*if (_isMoving)
         {
