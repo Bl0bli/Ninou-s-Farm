@@ -22,6 +22,6 @@ MonoBehaviour:
   _animationTriggerName: CHOP
   _treeLayer:
     serializedVersion: 2
-    m_Bits: 0
-  _damage: 0
+    m_Bits: 512
+  _damage: 1
   _hitRadius: 0

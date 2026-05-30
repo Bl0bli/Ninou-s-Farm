@@ -6,14 +6,15 @@ public class PlayerController : MonoBehaviour
 {
     [Header("References")]
 	[SerializeField] private Animator _animator;
-    [SerializeField] private GameObject _uiWindow;
+    [SerializeField] private GameObject _uiInventory;
     [SerializeField] private PlayerInventory _inventory;
+    [SerializeField] private PlayerMovements _movements;
 
     [Header("State")] 
     private ItemData _currentItem;
     private int _currentSlotIndex = 0;
 
-    private bool _uiToggle = false;
+    private bool _inventoryToggle = false;
     private bool _isInUI = false;
     
     public event Action<int> OnSlotSelected;
@@ -27,10 +28,10 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Alterne l'affichage de l'interface utilisateur.
     /// </summary>
-    public void ToogleUI()
+    public void ToogleInventory()
     {
-        _uiToggle = !_uiToggle;
-        _uiWindow.SetActive(_uiToggle);
+        _inventoryToggle = !_inventoryToggle;
+        _uiInventory.SetActive(_inventoryToggle);
     }
     
     /// <summary>
@@ -73,7 +74,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_currentItem != null && _currentItem is IUsable usable)
             {
-                usable.Use(this, transform.position/*GridWorld.Instance.WorldToGridPos((Vector2)transform.position + Vector2.up)*/);
+                usable.Use(this, (Vector2)transform.position + _movements.LastDirection/*GridWorld.Instance.WorldToGridPos((Vector2)transform.position + Vector2.up)*/);
             }
         }
     }

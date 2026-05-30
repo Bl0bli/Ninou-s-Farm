@@ -14,6 +14,8 @@ public class PlayerMovements : MonoBehaviour
 
     public bool CanMove = true;
 
+    public Vector2 LastDirection => _lastDirection;
+
     private void Start()
     {
         LockMovementBehaviour[] lockBehaviours = _animator.GetBehaviours<LockMovementBehaviour>();

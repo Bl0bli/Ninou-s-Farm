@@ -41,6 +41,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ToggleInventory",
+                    "type": "Button",
+                    "id": "f01fca6d-6311-411f-812c-93a2c5cf5210",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -131,32 +140,15 @@
                     "action": "Scroll",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Player_UI",
-            "id": "1ec78e56-4e77-4acf-8faa-47b778204595",
-            "actions": [
-                {
-                    "name": "ToggleUI",
-                    "type": "Button",
-                    "id": "687030d5-4504-4137-b78f-b9da743c059e",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "3441908e-0cec-47ee-bc6b-0edbb0dd4a8e",
-                    "path": "<Keyboard>/tab",
+                    "id": "e2cb1f7d-ef3a-4fac-a044-91a8b705e345",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ToggleUI",
+                    "action": "ToggleInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
