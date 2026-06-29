@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 public interface IUsable
 {
+
     /// <summary>
     /// Définit l'action d'utilisation de l'objet sur une position cible.
     /// </summary>

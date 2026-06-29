@@ -10,10 +10,14 @@ public class WorldItemsGeneration : MonoBehaviour
     [SerializeField] private List<TileBase> _basicCommonTiles;
     [SerializeField] private List<BiomeCommonItem> _basicBiomeTiles;
     [SerializeField] private List<GameObject> _basicCommonInteractiveItems;
-    
+    [SerializeField] private List<BiomeInteractiveItem> _biomeInteractiveItems;
+    [SerializeField] private Transform _interactiveItemsParent;
+
     [SerializeField] private float _scale = 0.1f;
     [SerializeField] private float _gridItemSpawnRate;
     [SerializeField] private float _gridItemBiomeSpawnRate;
+    [Range(0f, 1f)]
+    [SerializeField] private float _interactiveItemSpawnRate = 0.1f;
 
     private BasicItemData[,] _gridBasicItems;
     private int _gridSize;
@@ -73,6 +77,17 @@ public class WorldItemsGeneration : MonoBehaviour
 
                         if (Random.value < 1 - _gridItemSpawnRate) continue;
 
+                        if (Random.value < _interactiveItemSpawnRate)
+                        {
+                            GameObject prefab = GetInteractivePrefabForBiome(currentTile.Biome);
+                            if (prefab != null)
+                            {
+                                Vector3 worldPos = _tilemap.GetCellCenterWorld(new Vector3Int(itemX, itemY, 0));
+                                Instantiate(prefab, worldPos, Quaternion.identity, _interactiveItemsParent);
+                                continue;
+                            }
+                        }
+
                         TileBase tile = null;
                         
                         if (Random.value < _gridItemBiomeSpawnRate) 
@@ -100,6 +115,19 @@ public class WorldItemsGeneration : MonoBehaviour
     {
         TileData neighbor = GridWorld.Instance.GetTileAt(new Vector2Int(worldX, worldY));
         return neighbor.Type != currentTile.Type || neighbor.Biome != currentTile.Biome;
+    }
+
+    private GameObject GetInteractivePrefabForBiome(BiomeType biome)
+    {
+        foreach (BiomeInteractiveItem entry in _biomeInteractiveItems)
+        {
+            if (entry.Biome == biome && entry.Prefabs != null && entry.Prefabs.Count > 0)
+            {
+                return entry.Prefabs[Random.Range(0, entry.Prefabs.Count)];
+            }
+        }
+
+        return null;
     }
 
     private int GetSizeListOfItemsBiome(BiomeType biome)

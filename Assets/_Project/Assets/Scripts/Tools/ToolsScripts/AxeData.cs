@@ -3,34 +3,24 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "AxeData", menuName = "Items/Tools/AxeData")]
 public class AxeData : ToolData
 {
-    [Header("Specific Settings")] 
-    [SerializeField] private LayerMask _treeLayer;
-    [SerializeField] private int _damage;
-    [SerializeField] private float _hitRadius;
+    [Header("Specific Settings")]
+    [SerializeField] private AAction _actionPrefab;
+    [SerializeField] private LayerMask _targetLayers;
+    [SerializeField] private int _damage = 1;
+    [SerializeField] private float _actionDuration = 0.3f;
+    [SerializeField] private float _spawnOffset = 0.5f;
 
     /// <summary>
-    /// Utilise la hache pour frapper et infliger des dégâts aux objets destructibles.
+    /// Utilise la hache : déclenche l'animation puis instancie la hitbox devant le joueur.
     /// </summary>
-    /// <param name="player">Le contrôleur du joueur utilisant la hache.</param>
-    /// <param name="targetPosition">La position visée par le coup de hache.</param>
-    /// <returns>Retourne true si une cible a été touchée, sinon false.</returns>
     public override bool Use(PlayerController player, Vector2 targetPosition)
     {
-        if (!string.IsNullOrEmpty(_animationTriggerName))
-        {
-            player.TriggerAnimation(_animationTriggerName);
-        }
-        Collider2D hit = Physics2D.OverlapCircle(targetPosition, _hitRadius, _treeLayer);
+        if (player.Actions == null || _actionPrefab == null) return false;
 
-        if (hit != null)
-        {
-            if (hit.TryGetComponent<IDamageable>(out IDamageable damageable))
-            {
-                damageable.TakeDamage(_damage);
-                Debug.Log($"[AxeData] Used on {hit.name} and took {_damage} damage");
-                return true;
-            }
-        }
-        return false;
+        if (!string.IsNullOrEmpty(_animationTriggerName))
+            player.TriggerAnimation(_animationTriggerName);
+
+        player.Actions.SpawnAction(_actionPrefab, _damage, _targetLayers, _actionDuration, _spawnOffset);
+        return true;
     }
 }

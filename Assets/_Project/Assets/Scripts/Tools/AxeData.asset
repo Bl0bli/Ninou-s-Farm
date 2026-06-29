@@ -20,8 +20,10 @@ MonoBehaviour:
   StaminaCost: 1
   Cooldown: 1
   _animationTriggerName: CHOP
-  _treeLayer:
+  _actionPrefab: {fileID: 3922687065472727512, guid: 0f93fb85d5019df40ad2b2088233c60a, type: 3}
+  _targetLayers:
     serializedVersion: 2
     m_Bits: 512
   _damage: 1
-  _hitRadius: 0
+  _actionDuration: 0.3
+  _spawnOffset: 0.5

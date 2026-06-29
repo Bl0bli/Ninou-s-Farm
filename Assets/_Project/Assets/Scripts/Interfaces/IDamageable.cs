@@ -6,5 +6,11 @@ public interface IDamageable
     /// Applique un montant de dégâts à l'objet.
     /// </summary>
     /// <param name="amount">Le montant de dégâts à infliger.</param>
-    void TakeDamage(int amount);
+    void TakeDamage(int amount, Attacker attacker);
+}
+
+public struct Attacker
+{
+    public Vector2 AttackDirection;
+    //TODO complete on demand
 }

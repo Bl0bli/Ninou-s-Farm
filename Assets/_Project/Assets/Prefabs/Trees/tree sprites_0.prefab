@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7724548168583450692}
   - component: {fileID: 8392872091582450871}
   - component: {fileID: 4869005958298589849}
-  - component: {fileID: 6476838088763213739}
   - component: {fileID: 7094034621413820296}
+  - component: {fileID: 4376907638458323673}
   m_Layer: 9
   m_Name: tree sprites_0
   m_TagString: Untagged
@@ -81,9 +81,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1809535111
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 29257680210164191, guid: f1ec0d3f828ac92458b9d95af8e94803, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -94,7 +94,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &4869005958298589849
 Animator:
   serializedVersion: 7
@@ -117,22 +117,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6476838088763213739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5990979387098566659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aedb35d0833cc547b0a50ab0280a2db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tree
-  _maxHealth: 3
-  _idleAnimName: 
-  _hitAnimName: Hit
-  _animator: {fileID: 4869005958298589849}
 --- !u!61 &7094034621413820296
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -167,18 +151,36 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.16535822}
+  m_Offset: {x: -0.005138159, y: 0.8516691}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 1.3, y: 1.65}
     newSize: {x: 3.2, y: 2.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.3, y: 1.3192837}
+  m_Size: {x: 1.0841947, y: 1.5208106}
   m_EdgeRadius: 0
+--- !u!114 &4376907638458323673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5990979387098566659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aedb35d0833cc547b0a50ab0280a2db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Tree
+  _itemDropped: {fileID: 11400000, guid: eb67778682e640b47989f414b0184db2, type: 2}
+  _maxHealth: 3
+  _idleAnimName: Idle
+  _hitAnimName: Hit
+  _cutAnimName: Cut
+  _animator: {fileID: 4869005958298589849}
 --- !u!1 &6349519908579360066
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,7 +247,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0026999712, y: -0.61597747}
+  m_Offset: {x: -0.0026999712, y: 0.18538162}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -255,5 +257,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.51940274, y: 0.24067938}
+  m_Size: {x: 0.51940274, y: 0.18135244}
   m_EdgeRadius: 0

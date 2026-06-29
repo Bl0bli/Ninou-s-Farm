@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject _uiInventory;
     [SerializeField] private PlayerInventory _inventory;
     [SerializeField] private PlayerMovements _movements;
+    [SerializeField] private PlayerActions _actions;
+
+    public PlayerActions Actions => _actions;
 
     [Header("State")] 
     private ItemData _currentItem;
@@ -74,7 +77,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_currentItem != null && _currentItem is IUsable usable)
             {
-                usable.Use(this, (Vector2)transform.position + _movements.LastDirection/*GridWorld.Instance.WorldToGridPos((Vector2)transform.position + Vector2.up)*/);
+                usable.Use(this, (Vector2)transform.position + _movements.LastDirection / 2/*GridWorld.Instance.WorldToGridPos((Vector2)transform.position + Vector2.up)*/);
             }
         }
     }

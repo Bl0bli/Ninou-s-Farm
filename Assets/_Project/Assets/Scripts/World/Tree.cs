@@ -17,7 +17,7 @@ public class Tree : Dropable, IDamageable
         _currentHealth = _maxHealth;
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(int amount, Attacker attacker)
     {
         if (_isCut)
             return;
@@ -30,6 +30,8 @@ public class Tree : Dropable, IDamageable
         if (_currentHealth <= 0)
         {
             _isCut = true;
+            if (attacker.AttackDirection == Vector2.down || attacker.AttackDirection == Vector2.right)
+                GetComponent<SpriteRenderer>().flipX = true;
             _animator.SetBool(_cutAnimName, true);
             StartCoroutine(WaitForCutAnimationThenDrop());
         }

@@ -21,12 +21,14 @@ public struct InventorySlot
 }
 public class PlayerInventory : MonoBehaviour
 {
+    [SerializeField] private ItemData[] _startingItems;
+
     private InventorySlot[] _inventory;
     private int _maxInventorySize = 10;
-    
+
     public InventorySlot[] Inventory => _inventory;
-    
-    public event Action OnInit; 
+
+    public event Action OnInit;
     public event Action<int> OnSlotChanged;
 
     private void Start()
@@ -35,8 +37,14 @@ public class PlayerInventory : MonoBehaviour
         for (int i = 0; i < _maxInventorySize; i++)
         {
             _inventory[i] = new InventorySlot();
-        }    
+        }
+
         OnInit?.Invoke();
+
+        foreach (ItemData item in _startingItems)
+        {
+            if (item != null) PickUp(item);
+        }
     }
     
     /// <summary>
