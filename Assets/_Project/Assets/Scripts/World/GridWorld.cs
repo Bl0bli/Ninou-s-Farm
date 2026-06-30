@@ -25,6 +25,11 @@ public class GridWorld : MonoBehaviour
 {
     [SerializeField] private UnityEvent _onWorldInit;
     [SerializeField] private Camera _camera;
+    
+    [Header("Seed Params")]
+    [SerializeField] private int _seed;
+    [SerializeField] private bool _useRandomSeed = true;
+    
     [Header("Tilemaps (Layers)")] 
     [SerializeField] private Tilemap _waterTilemap;
     [SerializeField] private Tilemap _groundTilemap;
@@ -34,6 +39,7 @@ public class GridWorld : MonoBehaviour
     [SerializeField] private List<BiomeRuleTileMapping> _tileMappings;
 
     [Header("Procedural Generation Params")] 
+    
     [SerializeField] private int current;
 
     [SerializeField] private float currentFPS;
@@ -112,8 +118,42 @@ public class GridWorld : MonoBehaviour
         StartCoroutine(GenerateWorldRoutine());
     }
 
+    [ContextMenu("Regenerate World")]
+    private void Regenerate()
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.LogError("Regenerate only in PlayMode.");
+            return;
+        }
+        
+        StopAllCoroutines();
+        ResetWorld();
+        StartCoroutine(GenerateWorldRoutine());   
+        
+    }
+
+    private void InitRandom()
+    {
+        if (_useRandomSeed) _seed = System.Environment.TickCount; //le nombre de millisecondes écoulées depuis le démarrage du système
+        
+        Random.InitState(_seed); //defini l'état du RNG
+    }
+
+    private void ResetWorld()
+    {
+        _waterTilemap.ClearAllTiles();
+        _groundTilemap.ClearAllTiles();
+        _floorTilemap.ClearAllTiles();
+        _collisionTilemap.ClearAllTiles();
+        _biomes.Clear();
+        _itemsGeneration.Clear(); 
+    }
+    
     IEnumerator GenerateWorldRoutine()
     {
+        InitRandom();
+        
         Dictionary<float, TileType> tilesTypeThresholds = new Dictionary<float, TileType>();
         SetupThresholds(tilesTypeThresholds);
         
@@ -150,7 +190,8 @@ public class GridWorld : MonoBehaviour
         GenerateRivers();
         yield return null;
         yield return StartCoroutine(CollapseTilesRoutine());
-        _itemsGeneration.Init();
+        yield return StartCoroutine(_itemsGeneration.InitRoutine());
+        
         OnWorldInit?.Invoke(GetSpawnableTile());
         _onWorldInit?.Invoke();
     }
@@ -267,6 +308,7 @@ public class GridWorld : MonoBehaviour
                     }
                 }
             }
+            if (x % 5 == 0) yield return null;
         }
     }
 

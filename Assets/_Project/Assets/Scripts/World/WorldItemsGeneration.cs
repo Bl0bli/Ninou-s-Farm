@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -27,7 +28,7 @@ public class WorldItemsGeneration : MonoBehaviour
     /// <summary>
     /// Initialise la génération des objets et éléments de décor dans le monde.
     /// </summary>
-    public void Init()
+    public IEnumerator InitRoutine()
     {
         float xoffset = Random.Range(-1000, 1000);
         float yOffset = Random.Range(-1000, 1000);
@@ -43,12 +44,23 @@ public class WorldItemsGeneration : MonoBehaviour
             {
                 noiseMap[x, y] = Mathf.PerlinNoise(xoffset + x * _scale, yOffset + y * _scale);
             }
+            if (y % 10 == 0) yield return null;
         }
 
-        GenerateTileMap(noiseMap);
+        yield return StartCoroutine(GenerateTileMapRoutine(noiseMap));    }
+
+    public void Clear()
+    {
+        _tilemap.ClearAllTiles();
+        
+        if(_interactiveItemsParent != null)
+        {
+            for (int i = _interactiveItemsParent.childCount - 1; i >= 0; i--)
+                Destroy(_interactiveItemsParent.GetChild(i).gameObject);
+        }
     }
 
-    private void GenerateTileMap(float[,] noiseMap)
+    private IEnumerator GenerateTileMapRoutine(float[,] noiseMap)
     {
         for (int worldY = 0; worldY < _gridSize; worldY++)
         {
@@ -108,6 +120,7 @@ public class WorldItemsGeneration : MonoBehaviour
                     }
                 }
             }
+            yield return null;
         }
     }
 
@@ -160,7 +173,7 @@ public class WorldItemsGeneration : MonoBehaviour
     {
         if (sizeArray <= 0)
         {
-            Debug.LogWarning("sizeArray is less than 1");
+            //Debug.LogWarning("sizeArray is less than 1");
             return -1;
         }
         int index = Mathf.FloorToInt(noise * sizeArray);
