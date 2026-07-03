@@ -6,26 +6,18 @@ public class WorldState : MonoBehaviour
 {
     [SerializeField] private GameObject _prefabTile;
 
-    [Header("Biome sprites tiles")] 
-    [SerializeField] private List<Sprite> _spriteTileHILL = new List<Sprite>();
-    [SerializeField] private List<Sprite> _spriteTileFOREST = new List<Sprite>();
-    [SerializeField] private List<Sprite> _spriteTileDESERT = new List<Sprite>();
-    [SerializeField] private List<Sprite> _spriteTileDEADZONE = new List<Sprite>();
-    [SerializeField] private List<Sprite> _spriteTileMOUNTAINS = new List<Sprite>();
-    [SerializeField] private List<Sprite> _spriteTileWATER = new List<Sprite>();
+    [SerializeField] private List<SO_BiomeConfig> _biomes;
     
-    [Header("Biome sprites high tiles")] 
-    [SerializeField] private List<Sprite> _spriteTileHighHILL = new List<Sprite>();
-    [SerializeField] private List<Sprite> _spriteTileHighFOREST = new List<Sprite>();
-    [SerializeField] private List<Sprite> _spriteTileHighDESERT = new List<Sprite>();
-    [SerializeField] private List<Sprite> _spriteTileHighDEADZONE = new List<Sprite>();
-    [SerializeField] private List<Sprite> _spriteTileHighMOUNTAINS = new List<Sprite>();
+    private Dictionary<BiomeType, SO_BiomeConfig> _biomeConfigMap;
+    private bool _initialized = false;
 
     public static WorldState Instance;
     private void Awake()
     {
         if(Instance != null) Destroy(this);
         Instance = this;
+        
+        if(!_initialized)   InitBiomeConfigMap();
     }
 
     /// <summary>
@@ -42,41 +34,20 @@ public class WorldState : MonoBehaviour
 
     private Sprite GetSpriteForBiomeByBitMask(BiomeType biome, int bitMask, TileType type)
     {
-        if (type == TileType.WATER)
-        {
-            return _spriteTileWATER[bitMask]; 
-        }
-        if (type == TileType.FLOOR)
-        {
-            switch (biome)
-            {
-                case BiomeType.HILLS:
-                    return _spriteTileHighHILL[bitMask];
-                case BiomeType.FOREST:
-                    return _spriteTileHighFOREST[bitMask];
-                case BiomeType.DESERT:
-                    return _spriteTileHighDESERT[bitMask];
-                case BiomeType.DEADZONE:
-                    return _spriteTileHighDEADZONE[bitMask];
-                case BiomeType.MOUNTAINS:
-                    return _spriteTileHighMOUNTAINS[bitMask];
-            }
-        }
+        if (!_initialized) InitBiomeConfigMap();
+        if (type == TileType.FLOOR) return _biomeConfigMap[biome].FloorSprites[bitMask];
         
-        switch (biome)
+        return _biomeConfigMap[biome].GroundSprites[bitMask];
+    }
+
+    private void InitBiomeConfigMap()
+    {
+        _biomeConfigMap = new Dictionary<BiomeType, SO_BiomeConfig>();
+        foreach (SO_BiomeConfig biomeConfig in _biomes)
         {
-            case BiomeType.HILLS:
-                return _spriteTileHILL[bitMask];
-            case BiomeType.FOREST:
-                return _spriteTileFOREST[bitMask];
-            case BiomeType.DESERT:
-                return _spriteTileDESERT[bitMask];
-            case BiomeType.DEADZONE:
-                return _spriteTileDEADZONE[bitMask];
-            case BiomeType.MOUNTAINS:
-                return _spriteTileMOUNTAINS[bitMask];
+            _biomeConfigMap[biomeConfig.Biome] = biomeConfig;
         }
 
-        return _spriteTileWATER[bitMask]; 
+        _initialized = true;
     }
 }

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2fd113050e6e45a47be9676ada8ef939, type: 3}
-  m_Name: CommonItem_YellowFlower
+  m_Name: CommonItem_Rock
   m_EditorClassIdentifier: Assembly-CSharp::CommonItem
   SpawnRate: 1
-  FootPrint: {x: 2, y: 2}
-  ItemTile: {fileID: 11400000, guid: b7aa4e28d273f5d40bb971147b461056, type: 2}
+  FootPrint: {x: 1, y: 1}
+  ItemTile: {fileID: 11400000, guid: ce0a9e6d8a35f9240b9a9d6624579a7f, type: 2}

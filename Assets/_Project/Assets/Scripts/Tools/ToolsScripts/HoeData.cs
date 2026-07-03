@@ -25,6 +25,10 @@ public class HoeData : ToolData
             TileData tile = GridWorld.Instance.GetTileAt(targetPosition);
             
             //TODO si la tile est non null on essaie de la labourer (toggle)
-            return true;
+            if (tile.Type != TileType.FLOOR) return false;
+            
+            //tile.
+			return true;
+
         }
 }

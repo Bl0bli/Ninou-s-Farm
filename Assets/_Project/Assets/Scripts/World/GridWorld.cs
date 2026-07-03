@@ -26,9 +26,7 @@ public class GridWorld : MonoBehaviour
     [SerializeField] private UnityEvent _onWorldInit;
     [SerializeField] private Camera _camera;
     
-    [Header("Seed Params")]
-    [SerializeField] private int _seed;
-    [SerializeField] private bool _useRandomSeed = true;
+    [SerializeField] private SO_WorldGenConfig _worldGenConfig;
     
     [Header("Tilemaps (Layers)")] 
     [SerializeField] private Tilemap _waterTilemap;
@@ -48,29 +46,18 @@ public class GridWorld : MonoBehaviour
     [SerializeField] private float _minFPS = 30f;          // Le seuil critique de lag
     [SerializeField] private float _maxFPS = 60f;
     [SerializeField] WorldItemsGeneration _itemsGeneration;
-    [SerializeField] private int _size = 100;
-    [SerializeField] private float _scale = 0.1f;
-    [SerializeField] private float _mixScale = 0.4f;
+
     [SerializeField] private float _waterPercentage = 0.45f;
     [SerializeField] private float _wallPercentage = 0.1f;
     [SerializeField] private float _margeX;
     [SerializeField] private float _margeY;
     [SerializeField, Range(1f, 10f)] private float _falloffPower = 3f;
     [SerializeField, Range(1f, 5f)] private float _falloffRange = 2.2f;
-
-    [Header("Slopes Generation Params")] 
-    [SerializeField] private int _horizontalDistBetweenSlopes = 8;
-    [SerializeField] private int _maxSlopesPerHill = 3;
-    
-    [Header("Lakes & Rivers Params")]
-    [SerializeField] private int _maxLakesPerBiome = 3;
-    [SerializeField] private int _maxLakeSize = 25; // Nombre de cases max par lac
-    [SerializeField] private int _maxRiversPerBiome = 2;
-    [SerializeField] private int _maxRiverLength = 40;
-    [SerializeField] private int _maxRiverThickness = 2;
     
     private TileData[,] _grid;
     private List<Biome> _biomes = new List<Biome>();
+    private Biome[,] _biomeMap;
+    public bool SkipGeneration { get; private set; }
     private Dictionary<(BiomeType, TileType), RuleTile> _ruleTileCache;
     
     private int _rows, _cols;
@@ -91,11 +78,11 @@ public class GridWorld : MonoBehaviour
     {
         //Debug.Log(dir);
         Vector3Int cellPos = _groundTilemap.WorldToCell(worldPos);
-        if (cellPos.x >= 0 && cellPos.x < _size && cellPos.y >= 0 && cellPos.y < _size)
+        if (cellPos.x >= 0 && cellPos.x < _worldGenConfig.Size && cellPos.y >= 0 && cellPos.y < _worldGenConfig.Size)
             return _grid[cellPos.x, cellPos.y];
         return new TileData(new Vector2Int(cellPos.x, cellPos.y), BiomeType.WATER, TileType.WATER);
     }
-    public int GridSize => _size;
+    public int GridSize => _worldGenConfig.Size;
     public static GridWorld Instance;
     public event Action<Vector2> OnWorldInit;
     private void Awake()
@@ -106,8 +93,8 @@ public class GridWorld : MonoBehaviour
 
     private void Start()
     {
-        _camera.transform.position = new Vector3(_size / 2, _size / 2, -10);
-        _camera.orthographicSize = _size / 2;
+        _camera.transform.position = new Vector3(_worldGenConfig.Size / 2, _worldGenConfig.Size / 2, -10);
+        _camera.orthographicSize = _worldGenConfig.Size / 2;
         _ruleTileCache = new Dictionary<(BiomeType, TileType), RuleTile>();
         foreach (BiomeRuleTileMapping mapping in _tileMappings)
         {
@@ -133,11 +120,51 @@ public class GridWorld : MonoBehaviour
         
     }
 
+    [ContextMenu("Debug HeightMap")]
+    private void DebugHeightMap()
+    {
+        int n = _worldGenConfig.Size;
+        Texture2D tex = new Texture2D(n, n);
+        for (int y = 0; y < n; y++)
+        {
+            for (int x = 0; x < n; x++)
+            {
+                float height = _grid[x, y].Height;
+                tex.SetPixel(x, y, new Color(height, height, height));
+            }
+        }
+        tex.Apply();
+        System.IO.File.WriteAllBytes(
+            Application.dataPath + "/heightmap_debug.png", tex.EncodeToPNG());
+        Debug.Log("Heightmap exportée dans Assets/heightmap_debug.png");
+    }
+
+    private float Fbm(float x, float y, float xOffset, float yOffset)
+    {
+        float val = 0f;
+        float amplitude = 1f;
+        float freq = 1f;
+        float normalization = 0f;
+        
+        for(int i = 0; i < _worldGenConfig.Octaves; i++)
+        {
+            
+            float sx = (xOffset + x * _worldGenConfig.Scale) * freq;
+            float sy = (yOffset + y * _worldGenConfig.Scale) * freq;
+            val += amplitude * Mathf.PerlinNoise(sx * freq, sy * freq);
+            normalization += amplitude;
+            amplitude *= _worldGenConfig.Persistence;
+            freq *= _worldGenConfig.Lacunarity;
+        }
+
+        return val / normalization;
+    }
+
     private void InitRandom()
     {
-        if (_useRandomSeed) _seed = System.Environment.TickCount; //le nombre de millisecondes écoulées depuis le démarrage du système
+        if (_worldGenConfig.UseRandomSeed) _worldGenConfig.Seed = System.Environment.TickCount; //le nombre de millisecondes écoulées depuis le démarrage du système
         
-        Random.InitState(_seed); //defini l'état du RNG
+        Random.InitState(_worldGenConfig.Seed); //defini l'état du RNG
     }
 
     private void ResetWorld()
@@ -159,24 +186,26 @@ public class GridWorld : MonoBehaviour
         
         float xoffset = Random.Range(-1000, 1000);
         float yOffset = Random.Range(-1000, 1000);
-        _grid = new TileData[_size, _size];
+        _grid = new TileData[_worldGenConfig.Size, _worldGenConfig.Size];
+        SkipGeneration = false;
 
         SetupBiomes();
+        ComputeBiomeMap();
 
         yield return null;
         
-        float[,] noiseMap = new float[_size, _size];
-        for (int y = 0; y < _size; y++)
+        float[,] noiseMap = new float[_worldGenConfig.Size, _worldGenConfig.Size];
+        for (int y = 0; y < _worldGenConfig.Size; y++)
         {
-            for (int x = 0; x < _size; x++)
+            for (int x = 0; x < _worldGenConfig.Size; x++)
             {
-                noiseMap[x, y] = Mathf.PerlinNoise(xoffset + x * _scale, yOffset + y * _scale);
+                noiseMap[x, y] = Fbm(x, y, xoffset, yOffset);
             }
         }
 
-        for (int y = 0; y < _size; y++)
+        for (int y = 0; y < _worldGenConfig.Size; y++)
         {
-            for (int x = 0; x < _size; x++)
+            for (int x = 0; x < _worldGenConfig.Size; x++)
             {
                 // On passe uniquement la position et le bruit brut, la fonction s'occupe du reste
                 TileData tileData = ComputeTile(new Vector2Int(x, y), noiseMap[x, y]);
@@ -184,10 +213,13 @@ public class GridWorld : MonoBehaviour
             }
         }
 
+        SmoothCliffs(_worldGenConfig.CliffSmoothingIterations);
         yield return null;
         GenerateLakes();
         yield return null;
         GenerateRivers();
+        yield return null;
+        RemoveSmallWaterBodies();
         yield return null;
         yield return StartCoroutine(CollapseTilesRoutine());
         yield return StartCoroutine(_itemsGeneration.InitRoutine());
@@ -199,10 +231,6 @@ public class GridWorld : MonoBehaviour
     private IEnumerator CollapseTilesRoutine()
     {
         RuleTile waterTile = GetRuleTile(BiomeType.WATER, TileType.WATER);
-
-        int tilesDrawn = 0;
-
-        current = _MAXtilesPerFrame;
         
         TilemapCollider2D collisionTilemapCollider = _collisionTilemap.GetComponent<TilemapCollider2D>();
         TilemapCollider2D groundTilemapCollider = _groundTilemap.GetComponent<TilemapCollider2D>();
@@ -210,50 +238,78 @@ public class GridWorld : MonoBehaviour
         if (collisionTilemapCollider != null) collisionTilemapCollider.enabled = false;
         if (groundTilemapCollider != null) groundTilemapCollider.enabled = false;
 
-        for (int y = 0; y < _size; y++)
+        int chunkSize = 32; 
+        
+        for (int chunkX = 0; chunkX < _worldGenConfig.Size; chunkX += chunkSize)
         {
-            for (int x = 0; x < _size; x++)
+            for (int chunkY = 0; chunkY < _worldGenConfig.Size; chunkY += chunkSize)
             {
-                TileData tileData = _grid[x, y];
-                Vector3Int pos = new Vector3Int(x, y, 0);
+                if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.spaceKey.isPressed) SkipGeneration = true;
                 
-                if (waterTile != null)
-                {
-                    _waterTilemap.SetTile(pos, waterTile);
-                }
+                List<Vector3Int> waterPos = new List<Vector3Int>();
+                List<TileBase> waterTiles = new List<TileBase>();
+                
+                List<Vector3Int> collisionPos = new List<Vector3Int>();
+                List<TileBase> collisionTiles = new List<TileBase>();
 
-                if (tileData.Type == TileType.WATER)
+                List<Vector3Int> groundPos = new List<Vector3Int>();
+                List<TileBase> groundTiles = new List<TileBase>();
+
+                List<Vector3Int> floorPos = new List<Vector3Int>();
+                List<TileBase> floorTiles = new List<TileBase>();
+
+                int endX = Mathf.Min(chunkX + chunkSize, _worldGenConfig.Size);
+                int endY = Mathf.Min(chunkY + chunkSize, _worldGenConfig.Size);
+
+                for (int x = chunkX; x < endX; x++)
                 {
-                    if(waterTile != null) _collisionTilemap.SetTile(pos, waterTile);
-                }
-                if (tileData.Type == TileType.GROUND || tileData.Type == TileType.FLOOR)
-                {
-                    RuleTile groundTile = GetRuleTile(tileData.Biome, TileType.GROUND);
-                    if (groundTile != null)
+                    for (int y = chunkY; y < endY; y++)
                     {
-                        _groundTilemap.SetTile(pos, groundTile);
+                        TileData tileData = _grid[x, y];
+                        Vector3Int pos = new Vector3Int(x, y, 0);
+                        
+                        if (waterTile != null)
+                        {
+                            waterPos.Add(pos);
+                            waterTiles.Add(waterTile);
+                        }
+
+                        if (tileData.Type == TileType.WATER && waterTile != null)
+                        {
+                            collisionPos.Add(pos);
+                            collisionTiles.Add(waterTile);
+                        }
+                        
+                        if (tileData.Type == TileType.GROUND || tileData.Type == TileType.FLOOR)
+                        {
+                            RuleTile groundTile = GetRuleTile(tileData.Biome, TileType.GROUND);
+                            if (groundTile != null)
+                            {
+                                groundPos.Add(pos);
+                                groundTiles.Add(groundTile);
+                            }
+                        }
+                        
+                        if (tileData.Type == TileType.FLOOR)
+                        {
+                            RuleTile floorTile = GetRuleTile(tileData.Biome, TileType.FLOOR);
+                            if (floorTile != null)
+                            {
+                                floorPos.Add(pos);
+                                floorTiles.Add(floorTile);
+                            }
+                        }
                     }
                 }
-                if (tileData.Type == TileType.FLOOR)
+                
+                if (waterPos.Count > 0) _waterTilemap.SetTiles(waterPos.ToArray(), waterTiles.ToArray());
+                if (collisionPos.Count > 0) _collisionTilemap.SetTiles(collisionPos.ToArray(), collisionTiles.ToArray());
+                if (groundPos.Count > 0) _groundTilemap.SetTiles(groundPos.ToArray(), groundTiles.ToArray());
+                if (floorPos.Count > 0) _floorTilemap.SetTiles(floorPos.ToArray(), floorTiles.ToArray());
+
+                if (!SkipGeneration)
                 {
-                    RuleTile floorTile = GetRuleTile(tileData.Biome, TileType.FLOOR);
-                    if (floorTile != null)
-                    {
-                        _floorTilemap.SetTile(pos, floorTile);
-                    }
-                }
-
-                tilesDrawn++;
-                if (tilesDrawn >= current)
-                {
-                    tilesDrawn = 0;
-                    yield return null;
-
-                    currentFPS = 1f / Time.smoothDeltaTime;
-
-                    float t = Mathf.InverseLerp(_minFPS, _maxFPS, currentFPS);
-
-                    current = Mathf.RoundToInt(Mathf.Lerp(_MINtilesPerFrame, _MAXtilesPerFrame, t));
+                    yield return null; 
                 }
             }
         }
@@ -263,10 +319,11 @@ public class GridWorld : MonoBehaviour
         if (collisionTilemapCollider != null) collisionTilemapCollider.enabled = true;
         if (groundTilemapCollider != null) groundTilemapCollider.enabled = true;
         
-        bool[,] visited = new bool[_size, _size];
-        for (int x = 0; x < _size; x++)
+        bool[,] visited = new bool[_worldGenConfig.Size, _worldGenConfig.Size];
+        for (int x = 0; x < _worldGenConfig.Size; x++)
         {
-            for (int y = 0; y < _size; y++)
+            if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.spaceKey.isPressed) SkipGeneration = true;
+            for (int y = 0; y < _worldGenConfig.Size; y++)
             {
                 TileData tile = _grid[x, y];
                 if (tile.Type == TileType.FLOOR && !visited[x, y])
@@ -279,7 +336,7 @@ public class GridWorld : MonoBehaviour
                     while (tilesToCheck.Count > 0)
                     {
                         Vector2Int currentTile = tilesToCheck.Dequeue();
-                        if (currentTile.x - 1 >= 0 && currentTile.x + 2 < _size && currentTile.y - 1 >= 0)                        
+                        if (currentTile.x - 1 >= 0 && currentTile.x + 2 < _worldGenConfig.Size && currentTile.y - 1 >= 0)                        
                         {
                             bool topRowIsFloor = 
                                 _grid[currentTile.x - 1, currentTile.y].Type == TileType.FLOOR &&
@@ -303,12 +360,12 @@ public class GridWorld : MonoBehaviour
 
                     if (potentialSlopes.Count > 0)
                     {
-                        int slopesToPlace = Mathf.Clamp(potentialSlopes.Count / _horizontalDistBetweenSlopes, 1, _maxSlopesPerHill);
+                        int slopesToPlace = Mathf.Clamp(potentialSlopes.Count / _worldGenConfig.HorizontalDistBetweenSlopes, 1, _worldGenConfig.MaxSlopesPerHill);
                         CollapseTilesToSlopes(potentialSlopes, slopesToPlace, tile.Biome);
                     }
                 }
             }
-            if (x % 5 == 0) yield return null;
+            if (!SkipGeneration && x % 5 == 0) yield return null;
         }
     }
 
@@ -347,7 +404,7 @@ public class GridWorld : MonoBehaviour
         foreach (Vector2Int dir in dirs)
         {
             Vector2Int pos = currentTile + dir;
-            if (pos.x >= 0 && pos.x < _size && pos.y >= 0 && pos.y < _size)
+            if (pos.x >= 0 && pos.x < _worldGenConfig.Size && pos.y >= 0 && pos.y < _worldGenConfig.Size)
             {
                 TileData tile = _grid[pos.x, pos.y];
                 if (tile.Type == TileType.FLOOR && !visited[pos.x, pos.y])
@@ -362,9 +419,9 @@ public class GridWorld : MonoBehaviour
     private Vector2 GetSpawnableTile()
     {
         List<Vector2Int> validSpawnPoints = new List<Vector2Int>();
-        for (int y = 0; y < _size; y++)
+        for (int y = 0; y < _worldGenConfig.Size; y++)
         {
-            for (int x = 0; x < _size; x++)
+            for (int x = 0; x < _worldGenConfig.Size; x++)
             {
                 TileData tile = _grid[x, y];
                 
@@ -385,7 +442,7 @@ public class GridWorld : MonoBehaviour
 
         Debug.LogWarning("Aucun point de spawn valide trouvé dans le biome Hills. Spawn au centre par défaut.");
         
-        Vector3 defaultWorldPos = _groundTilemap.GetCellCenterWorld(new Vector3Int(_size / 2, _size / 2, 0));
+        Vector3 defaultWorldPos = _groundTilemap.GetCellCenterWorld(new Vector3Int(_worldGenConfig.Size / 2, _worldGenConfig.Size / 2, 0));
         return new Vector2(defaultWorldPos.x, defaultWorldPos.y);
     }
     
@@ -446,8 +503,8 @@ public class GridWorld : MonoBehaviour
         _cols = Mathf.CeilToInt(Mathf.Sqrt(totalBiomes));
         _rows = Mathf.CeilToInt((float)totalBiomes / _cols);
         
-        float secteurWidth = (float)_size / _cols;
-        float secteurHeight = (float)_size / _rows;
+        float secteurWidth = (float)_worldGenConfig.Size / _cols;
+        float secteurHeight = (float)_worldGenConfig.Size / _rows;
         
         int biomeIndex = 0;
         for (int r = 0; r < _rows; r++) {
@@ -488,25 +545,102 @@ public class GridWorld : MonoBehaviour
     {
         Biome localBiome = GetClosestBiome(position);
         float distToCenter = Vector2.Distance(position, localBiome.Position);
-        float maxIslandRadius = (_size / (float)Mathf.Max(_rows, _cols)) * 0.7f;
+        float maxIslandRadius = (_worldGenConfig.Size / (float)Mathf.Max(_rows, _cols)) * _worldGenConfig.IslandRadiusFactor;
         float islandFalloff = Mathf.Clamp01(distToCenter / maxIslandRadius);
         
-        if (islandFalloff > 0.75f + (baseNoise * 0.2f)) 
-        {
-            return new TileData(position, BiomeType.WATER, TileType.WATER);
-        }
+        float finalHeight = baseNoise * (1 - islandFalloff);
         
-        TileType type = TileType.GROUND;
-        
-        if (baseNoise > (1 - _wallPercentage) && islandFalloff < 0.5f) 
+        if(finalHeight < _worldGenConfig.SeaLevel)
         {
-            type = TileType.FLOOR;
+            return new TileData(position, BiomeType.WATER, TileType.WATER, 0, finalHeight);
         }
-
-        return new TileData(position, localBiome.Type, type);
+        if(finalHeight > _worldGenConfig.CliffLevel)
+        {
+            return new TileData(position, localBiome.Type, TileType.FLOOR, 0, finalHeight);
+        }
+        return new TileData(position, localBiome.Type, TileType.GROUND, 0, finalHeight);
     }
+
+    private void SmoothCliffs(int iterations)
+    {
+        int size = _worldGenConfig.Size;
+        TileType[,] nextTypes = new TileType[size, size];
+        
+        for (int i = 0; i < iterations; i++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                for (int y = 0; y < size; y++)
+                {
+                    nextTypes[x, y] = _grid[x, y].Type;
+                    if (nextTypes[x, y] == TileType.WATER) continue;
+                    
+                    int n = GetNeighbours(x, y, TileType.FLOOR);
+                    
+                    if(n > _worldGenConfig.FloorNeighboursRequired) nextTypes[x, y] = TileType.FLOOR;
+                    else if(n < _worldGenConfig.FloorNeighboursRequired) nextTypes[x, y] = TileType.GROUND;
+                }
+            }
+            
+            for (int x = 0; x < size; x++)
+            {
+                for (int y = 0; y < size; y++)
+                {
+                    _grid[x, y].Type = nextTypes[x, y];
+                }
+            }
+        }
+    }
+
+    private int GetNeighbours(int x, int y, TileType type)
+    {
+        int count = 0;
+        for (int dx = -1; dx <= 1; dx++)
+        for (int dy = -1; dy <= 1; dy++)
+        {
+            if (dx == 0 && dy == 0) continue;
+            int nx = x + dx, ny = y + dy;
+            if (nx >= 0 && nx < _worldGenConfig.Size && ny >= 0 && ny < _worldGenConfig.Size)
+                if (_grid[nx, ny].Type == type) count++;
+        }
+        return count;
+    }
+    private void ComputeBiomeMap()
+    {
+        int size = _worldGenConfig.Size;
+        _biomeMap = new Biome[size, size];
+
+        for (int x = 0; x < size; x++)
+        {
+            for (int y = 0; y < size; y++)
+            {
+                Vector2 pos = new Vector2(x, y);
+                Biome closestBiome = _biomes[0];
+                float minDistSq = Mathf.Infinity;
+
+                foreach (Biome b in _biomes)
+                {
+                    float distSq = (pos - b.Position).sqrMagnitude;
+                    if (distSq < minDistSq)
+                    {
+                        minDistSq = distSq;
+                        closestBiome = b;
+                    }
+                }
+                _biomeMap[x, y] = closestBiome;
+            }
+        }
+    }
+
     private Biome GetClosestBiome(Vector2 position)
     {
+        if (_biomeMap != null)
+        {
+            int x = Mathf.Clamp(Mathf.RoundToInt(position.x), 0, _worldGenConfig.Size - 1);
+            int y = Mathf.Clamp(Mathf.RoundToInt(position.y), 0, _worldGenConfig.Size - 1);
+            return _biomeMap[x, y];
+        }
+
         Biome closestBiome = _biomes[0];
         float minDistSq = Mathf.Infinity;
 
@@ -530,11 +664,11 @@ public class GridWorld : MonoBehaviour
             int lakesCreated = 0;
             int attempts = 0;
             
-            while (lakesCreated < _maxLakesPerBiome && attempts < 100)
+            while (lakesCreated < _worldGenConfig.MaxLakesPerBiome && attempts < 100)
             {
                 attempts++;
-                int startX = Random.Range(1, _size - 1);
-                int startY = Random.Range(1, _size - 1);
+                int startX = Random.Range(1, _worldGenConfig.Size - 1);
+                int startY = Random.Range(1, _worldGenConfig.Size - 1);
 
                 // Si on a trouvé un bout de terre de ce biome, on creuse un lac
                 if (_grid[startX, startY].Type == TileType.GROUND && _grid[startX, startY].Biome == biome.Type)
@@ -548,30 +682,94 @@ public class GridWorld : MonoBehaviour
 
     private void CarveLake(int startX, int startY)
     {
-        int targetSize = Random.Range(_maxLakeSize / 2, _maxLakeSize);
-        List<Vector2Int> currentLakeTiles = new List<Vector2Int> { new Vector2Int(startX, startY) };
-        int currentSize = 0;
-        
-        while (currentSize < targetSize && currentLakeTiles.Count > 0) //Flood filled
+        int targetSize = Random.Range(_worldGenConfig.MaxLakeSize / 2, _worldGenConfig.MaxLakeSize);
+        int minViableSize = _worldGenConfig.MinLakeSize;
+
+        List<Vector2Int> carvedTiles = new List<Vector2Int>();
+        List<Vector2Int> frontier = new List<Vector2Int> { new Vector2Int(startX, startY) };
+
+        while (carvedTiles.Count < targetSize && frontier.Count > 0) //Flood filled
         {
-            int randomIndex = Random.Range(0, currentLakeTiles.Count);
-            Vector2Int pos = currentLakeTiles[randomIndex];
-            currentLakeTiles.RemoveAt(randomIndex);
+            int randomIndex = Random.Range(0, frontier.Count);
+            Vector2Int pos = frontier[randomIndex];
+            frontier.RemoveAt(randomIndex);
 
-            if (pos.x >= 0 && pos.x < _size && pos.y >= 0 && pos.y < _size)
+            if (pos.x < 0 || pos.x >= _worldGenConfig.Size || pos.y < 0 || pos.y >= _worldGenConfig.Size)
+                continue;
+
+            if (_grid[pos.x, pos.y].Type != TileType.GROUND)
+                continue;
+
+            // On ne change que le Type : Height et Biome restent intacts
+            _grid[pos.x, pos.y].Type = TileType.WATER;
+            carvedTiles.Add(pos);
+
+            // On ajoute les voisins pour la prochaine itération
+            frontier.Add(new Vector2Int(pos.x + 1, pos.y));
+            frontier.Add(new Vector2Int(pos.x - 1, pos.y));
+            frontier.Add(new Vector2Int(pos.x, pos.y + 1));
+            frontier.Add(new Vector2Int(pos.x, pos.y - 1));
+        }
+
+        // Un lac trop petit est disgracieux : on annule plutôt que de laisser une flaque
+        if (carvedTiles.Count < minViableSize)
+        {
+            foreach (Vector2Int pos in carvedTiles)
+                _grid[pos.x, pos.y].Type = TileType.GROUND;
+        }
+    }
+
+    /// <summary>
+    /// Supprime les petites poches d'eau parasites (produites par le bruit dans ComputeTile).
+    /// On regroupe l'eau en composantes connexes : on garde la mer (touche le bord) et les
+    /// vrais lacs (>= MinLakeSize) ; le reste est reconverti en terre (biome local + type selon Height).
+    /// </summary>
+    private void RemoveSmallWaterBodies()
+    {
+        int size = _worldGenConfig.Size;
+        bool[,] visited = new bool[size, size];
+        Vector2Int[] dirs = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+
+        for (int y = 0; y < size; y++)
+        for (int x = 0; x < size; x++)
+        {
+            if (_grid[x, y].Type != TileType.WATER || visited[x, y]) continue;
+
+            // BFS pour collecter toute la composante d'eau connexe (4-connexité).
+            List<Vector2Int> component = new List<Vector2Int>();
+            Queue<Vector2Int> queue = new Queue<Vector2Int>();
+            queue.Enqueue(new Vector2Int(x, y));
+            visited[x, y] = true;
+            bool touchesBorder = false;
+
+            while (queue.Count > 0)
             {
-                if (_grid[pos.x, pos.y].Type == TileType.GROUND)
-                {
-                    // On transforme la terre en eau
-                    _grid[pos.x, pos.y] = new TileData(pos, BiomeType.WATER, TileType.WATER);
-                    currentSize++;
+                Vector2Int cur = queue.Dequeue();
+                component.Add(cur);
 
-                    // On ajoute les voisins pour la prochaine itération
-                    currentLakeTiles.Add(new Vector2Int(pos.x + 1, pos.y));
-                    currentLakeTiles.Add(new Vector2Int(pos.x - 1, pos.y));
-                    currentLakeTiles.Add(new Vector2Int(pos.x, pos.y + 1));
-                    currentLakeTiles.Add(new Vector2Int(pos.x, pos.y - 1));
+                if (cur.x == 0 || cur.x == size - 1 || cur.y == 0 || cur.y == size - 1)
+                    touchesBorder = true;
+
+                foreach (Vector2Int d in dirs)
+                {
+                    int nx = cur.x + d.x, ny = cur.y + d.y;
+                    if (nx < 0 || nx >= size || ny < 0 || ny >= size) continue;
+                    if (visited[nx, ny] || _grid[nx, ny].Type != TileType.WATER) continue;
+                    visited[nx, ny] = true;
+                    queue.Enqueue(new Vector2Int(nx, ny));
                 }
+            }
+
+            // Mer (touche le bord) ou vrai lac (assez grand) : on garde.
+            if (touchesBorder || component.Count >= _worldGenConfig.MinLakeSize) continue;
+
+            // Sinon : flaque parasite -> retour à la terre.
+            foreach (Vector2Int cell in component)
+            {
+                _grid[cell.x, cell.y].Biome = GetClosestBiome(new Vector2(cell.x, cell.y)).Type;
+                _grid[cell.x, cell.y].Type = _grid[cell.x, cell.y].Height > _worldGenConfig.CliffLevel
+                    ? TileType.FLOOR
+                    : TileType.GROUND;
             }
         }
     }
@@ -580,16 +778,44 @@ public class GridWorld : MonoBehaviour
     {
         foreach (Biome biome in _biomes)
         {
-            for (int i = 0; i < _maxRiversPerBiome; i++)
+            List<Vector2Int> possibleSources = new List<Vector2Int>();
+            for (int y = 1; y < _worldGenConfig.Size - 1; y++)
             {
-                int startX = Random.Range(1, _size - 1);
-                int startY = Random.Range(1, _size - 1);
-
-                if (_grid[startX, startY].Type == TileType.GROUND && _grid[startX, startY].Biome == biome.Type)
+                for (int x = 1; x < _worldGenConfig.Size - 1; x++)
                 {
-                    CarveRiver(startX, startY);
+                    // On ne garde que les FLOOR en bordure de plateau (au moins un voisin GROUND) :
+                    // une source en plein centre d'un plateau n'a pas de vraie pente à suivre.
+                    if (_grid[x, y].Type == TileType.FLOOR && _grid[x, y].Biome == biome.Type
+                        && GetNeighbours(x, y, TileType.GROUND) > 0)
+                    {
+                        possibleSources.Add(new Vector2Int(x, y));
+                    }
                 }
             }
+
+            if (possibleSources.Count == 0) continue;
+
+            int numRivers = Random.Range(0, _worldGenConfig.MaxRiversPerBiome + 1);
+            int riversPlaced = 0;
+            int attempts = 0;
+            int maxAttempts = possibleSources.Count * 2;
+
+            // On ré-essaie avec d'autres sources : une rivière n'est retenue que si
+            // son tracé atteint réellement de l'eau (mer, lac) ou le bord de la carte.
+            while (riversPlaced < numRivers && attempts < maxAttempts)
+            {
+                attempts++;
+                Vector2Int source = possibleSources[Random.Range(0, possibleSources.Count)];
+
+                List<Vector2Int> path = new List<Vector2Int>();
+                if (TryTraceRiver(source.x, source.y, path))
+                {
+                    CarveRiverPath(path);
+                    riversPlaced++;
+                }
+            }
+
+            Debug.Log($"[Rivers] Biome {biome.Type} : {riversPlaced}/{numRivers} rivière(s) placée(s) en {attempts} essais ({possibleSources.Count} sources).");
         }
     }
 
@@ -603,21 +829,21 @@ public class GridWorld : MonoBehaviour
 
         int currentLength = 0;
 
-        while (currentLength < _maxRiverLength)
+        while (currentLength < _worldGenConfig.MaxRiverLength)
         {
             int cx = Mathf.RoundToInt(currentPos.x);
             int cy = Mathf.RoundToInt(currentPos.y);
             
-            for (int tx = -_maxRiverThickness; tx <= _maxRiverThickness; tx++)
+            for (int tx = -_worldGenConfig.MaxRiverThickness; tx <= _worldGenConfig.MaxRiverThickness; tx++)
             {
-                for (int ty = -_maxRiverThickness; ty <= _maxRiverThickness; ty++)
+                for (int ty = -_worldGenConfig.MaxRiverThickness; ty <= _worldGenConfig.MaxRiverThickness; ty++)
                 {
-                    if (tx * tx + ty * ty <= _maxRiverThickness * _maxRiverThickness)  //si on est dans le cercle
+                    if (tx * tx + ty * ty <= _worldGenConfig.MaxRiverThickness * _worldGenConfig.MaxRiverThickness)  //si on est dans le cercle
                     {
                         int carveX = cx + tx;
                         int carveY = cy + ty;
 
-                        if (carveX >= 0 && carveX < _size && carveY >= 0 && carveY < _size)
+                        if (carveX >= 0 && carveX < _worldGenConfig.Size && carveY >= 0 && carveY < _worldGenConfig.Size)
                         {
                             // On creuse si ce n'est pas une montagne/étage et que ce n'est pas DÉJÀ de l'eau
                             if (_grid[carveX, carveY].Type != TileType.FLOOR && _grid[carveX, carveY].Type != TileType.WATER) 
@@ -635,13 +861,131 @@ public class GridWorld : MonoBehaviour
             currentPos += direction;
             currentLength++;
             
-            int forwardX = Mathf.RoundToInt(currentPos.x + direction.x * (_maxRiverThickness + 2));
-            int forwardY = Mathf.RoundToInt(currentPos.y + direction.y * (_maxRiverThickness + 2));
+            int forwardX = Mathf.RoundToInt(currentPos.x + direction.x * (_worldGenConfig.MaxRiverThickness + 2));
+            int forwardY = Mathf.RoundToInt(currentPos.y + direction.y * (_worldGenConfig.MaxRiverThickness + 2));
             
-            if (forwardX >= 0 && forwardX < _size && forwardY >= 0 && forwardY < _size)
+            if (forwardX >= 0 && forwardX < _worldGenConfig.Size && forwardY >= 0 && forwardY < _worldGenConfig.Size)
             {
                 if (_grid[forwardX, forwardY].Type == TileType.WATER) break; 
             }
         }
     }
+
+    /// <summary>
+    /// Simule le trajet d'une goutte depuis (startX, startY) par descente de gradient + inertie,
+    /// SANS rien creuser. Remplit 'path' avec les cellules terrestres traversées.
+    /// Retourne true si la goutte atteint de l'eau (mer/lac) ou le bord de carte (océan),
+    /// false si elle s'arrête en pleine terre (MaxRiverLength) : dans ce cas la rivière ne relie rien.
+    /// </summary>
+    private bool TryTraceRiver(int startX, int startY, List<Vector2Int> path)
+    {
+        Vector2 pos = new Vector2(startX, startY);
+        Vector2 dir = Vector2.zero;
+        float inertia = _worldGenConfig.RiverInertia;
+
+        for (int i = 0; i < _worldGenConfig.MaxRiverLength; i++)
+        {
+            int cx = Mathf.RoundToInt(pos.x);
+            int cy = Mathf.RoundToInt(pos.y);
+
+            // Gradient de MONTÉE du terrain. La descente est donc -gradient.
+            Vector2 gradient = HeightGradient(cx, cy);
+
+            // On mélange l'élan précédent (inertie) avec la direction de descente.
+            dir = dir * inertia - gradient * (1f - inertia);
+
+            // Terrain plat + aucun élan : petite poussée aléatoire pour ne pas rester bloqué.
+            if (dir.sqrMagnitude < 1e-6f)
+            {
+                float a = Random.value * Mathf.PI * 2f;
+                dir = new Vector2(Mathf.Cos(a), Mathf.Sin(a));
+            }
+            dir.Normalize();
+
+            pos += dir;
+
+            int nx = Mathf.RoundToInt(pos.x);
+            int ny = Mathf.RoundToInt(pos.y);
+
+            // Atteint le bord : l'océan entoure l'île -> la rivière se jette dans la mer.
+            if (nx < 0 || nx >= _worldGenConfig.Size || ny < 0 || ny >= _worldGenConfig.Size)
+                return true;
+
+            // Atteint de l'eau pré-existante (mer, lac, autre rivière) -> connexion réussie.
+            if (_grid[nx, ny].Type == TileType.WATER)
+                return true;
+
+            path.Add(new Vector2Int(nx, ny));
+        }
+
+        // Longueur max atteinte sans jamais rencontrer d'eau : la rivière ne relie rien.
+        return false;
+    }
+
+    /// <summary>
+    /// Creuse le tracé validé d'une rivière, avec largeur (MaxRiverThickness comme rayon)
+    /// et cellules-pont sur les pas diagonaux pour garder l'eau connectée orthogonalement.
+    /// </summary>
+    private void CarveRiverPath(List<Vector2Int> path)
+    {
+        int radius = _worldGenConfig.MaxRiverThickness;
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            Vector2Int p = path[i];
+
+            if (i > 0)
+            {
+                Vector2Int prev = path[i - 1];
+                if (p.x != prev.x && p.y != prev.y)
+                    CarveCell(p.x, prev.y); // pont anti-diagonale
+            }
+
+            CarveRiverPoint(p.x, p.y, radius);
+        }
+    }
+
+    /// <summary>
+    /// Gradient de hauteur (direction de MONTÉE) par différences finies centrées.
+    /// </summary>
+    private Vector2 HeightGradient(int x, int y)
+    {
+        float hL = HeightAtClamped(x - 1, y);
+        float hR = HeightAtClamped(x + 1, y);
+        float hD = HeightAtClamped(x, y - 1);
+        float hU = HeightAtClamped(x, y + 1);
+        return new Vector2((hR - hL) * 0.5f, (hU - hD) * 0.5f);
+    }
+
+    private float HeightAtClamped(int x, int y)
+    {
+        x = Mathf.Clamp(x, 0, _worldGenConfig.Size - 1);
+        y = Mathf.Clamp(y, 0, _worldGenConfig.Size - 1);
+        return _grid[x, y].Height;
+    }
+
+    /// <summary>
+    /// Creuse un disque d'eau de rayon donné (0 = 1 cellule, 1 = 3 cases de large, etc.).
+    /// </summary>
+    private void CarveRiverPoint(int centerX, int centerY, int radius)
+    {
+        for (int tx = -radius; tx <= radius; tx++)
+        for (int ty = -radius; ty <= radius; ty++)
+        {
+            if (tx * tx + ty * ty > radius * radius) continue;
+            CarveCell(centerX + tx, centerY + ty);
+        }
+    }
+
+    /// <summary>
+    /// Transforme une cellule en eau si elle est valide (dans la grille, pas une falaise),
+    /// en préservant Height et Biome.
+    /// </summary>
+    private void CarveCell(int x, int y)
+    {
+        if (x < 0 || x >= _worldGenConfig.Size || y < 0 || y >= _worldGenConfig.Size) return;
+        if (_grid[x, y].Type == TileType.FLOOR) return;
+        _grid[x, y].Type = TileType.WATER;
+    }
 }
+

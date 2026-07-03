@@ -5,5 +5,5 @@ using UnityEngine;
 public class BiomeInteractiveItem : ScriptableObject
 {
     public BiomeType Biome;
-    public List<GameObject> Prefabs;
+    public List<InteractiveItem> Items;
 }

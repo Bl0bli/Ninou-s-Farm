@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class WorldItemsGeneration : MonoBehaviour
 {
     [SerializeField] private Tilemap _tilemap;
-    [SerializeField] private List<TileBase> _basicCommonTiles;
+    [SerializeField] private List<CommonItem> _basicCommonItems;
     [SerializeField] private List<BiomeCommonItem> _basicBiomeTiles;
     [SerializeField] private List<GameObject> _basicCommonInteractiveItems;
     [SerializeField] private List<BiomeInteractiveItem> _biomeInteractiveItems;
@@ -21,22 +21,37 @@ public class WorldItemsGeneration : MonoBehaviour
     [SerializeField] private float _interactiveItemSpawnRate = 0.1f;
 
     private BasicItemData[,] _gridBasicItems;
+    private bool[,] _occupied;
     private int _gridSize;
     private int _gridItemSize;
     
+    private Dictionary<BiomeType, List<CommonItem>> _biomeCommonItemsDict;
+    private Dictionary<BiomeType, List<InteractiveItem>> _biomeInteractiveItemsDict;
 
     /// <summary>
     /// Initialise la génération des objets et éléments de décor dans le monde.
     /// </summary>
     public IEnumerator InitRoutine()
     {
+        _biomeCommonItemsDict = new Dictionary<BiomeType, List<CommonItem>>();
+        foreach (var biomeItems in _basicBiomeTiles)
+        {
+            _biomeCommonItemsDict[biomeItems.Biome] = biomeItems.ItemTiles;
+        }
+
+        _biomeInteractiveItemsDict = new Dictionary<BiomeType, List<InteractiveItem>>();
+        foreach (var entry in _biomeInteractiveItems)
+        {
+            _biomeInteractiveItemsDict[entry.Biome] = entry.Items;
+        }
+
         float xoffset = Random.Range(-1000, 1000);
         float yOffset = Random.Range(-1000, 1000);
 
         _gridSize = GridWorld.Instance.GridSize;
         _gridItemSize = _gridSize * 3;
         _gridBasicItems = new BasicItemData[_gridItemSize, _gridItemSize];
-        
+        _occupied = new bool[_gridItemSize, _gridItemSize];
         float[,] noiseMap = new float[_gridItemSize, _gridItemSize];
         for (int y = 0; y < _gridItemSize; y++)
         {
@@ -44,10 +59,11 @@ public class WorldItemsGeneration : MonoBehaviour
             {
                 noiseMap[x, y] = Mathf.PerlinNoise(xoffset + x * _scale, yOffset + y * _scale);
             }
-            if (y % 10 == 0) yield return null;
+            if (!GridWorld.Instance.SkipGeneration && !(UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.spaceKey.isPressed) && y % 10 == 0) yield return null;
         }
 
-        yield return StartCoroutine(GenerateTileMapRoutine(noiseMap));    }
+        yield return StartCoroutine(GenerateTileMapRoutine(noiseMap));    
+	}
 
     public void Clear()
     {
@@ -62,66 +78,156 @@ public class WorldItemsGeneration : MonoBehaviour
 
     private IEnumerator GenerateTileMapRoutine(float[,] noiseMap)
     {
-        for (int worldY = 0; worldY < _gridSize; worldY++)
+        int chunkSize = 32;
+
+        for (int chunkX = 0; chunkX < _gridSize; chunkX += chunkSize)
         {
-            for (int worldX = 0; worldX < _gridSize; worldX++)
+            for (int chunkY = 0; chunkY < _gridSize; chunkY += chunkSize)
             {
-               TileData currentTile = GridWorld.Instance.GetTileAt(new Vector2Int(worldX, worldY));
-                
-                if (currentTile.Type == TileType.WATER) continue;
+                bool skip = GridWorld.Instance.SkipGeneration || (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.spaceKey.isPressed);
 
-                bool diffLeft = worldX == 0 || IsDifferent(currentTile, worldX - 1, worldY);
-                bool diffRight = worldX == _gridSize - 1 || IsDifferent(currentTile, worldX + 1, worldY);
-                bool diffBottom = worldY == 0 || IsDifferent(currentTile, worldX, worldY - 1);
-                bool diffTop = worldY == _gridSize - 1 || IsDifferent(currentTile, worldX, worldY + 1);
-                
-                for (int subY = 0; subY < 3; subY++)
+                List<Vector3Int> tilePositions = new List<Vector3Int>();
+                List<TileBase> tiles = new List<TileBase>();
+
+                int endX = Mathf.Min(chunkX + chunkSize, _gridSize);
+                int endY = Mathf.Min(chunkY + chunkSize, _gridSize);
+
+                for (int worldX = chunkX; worldX < endX; worldX++)
                 {
-                    for (int subX = 0; subX < 3; subX++)
+                    for (int worldY = chunkY; worldY < endY; worldY++)
                     {
-                        if (diffLeft && subX <= 1) continue;
-                        if (diffRight && subX >= 1) continue; 
-                        if (diffBottom && subY <= 1) continue;
-                        if (diffTop && subY >= 1) continue;
+                        TileData currentTile = GridWorld.Instance.GetTileAt(new Vector2Int(worldX, worldY));
                         
-                        int itemX = (worldX * 3) + subX;
-                        int itemY = (worldY * 3) + subY;
+                        if (currentTile.Type == TileType.WATER) continue;
 
-                        if (Random.value < 1 - _gridItemSpawnRate) continue;
-
-                        if (Random.value < _interactiveItemSpawnRate)
+                        bool diffLeft = worldX == 0 || IsDifferent(currentTile, worldX - 1, worldY);
+                        bool diffRight = worldX == _gridSize - 1 || IsDifferent(currentTile, worldX + 1, worldY);
+                        bool diffBottom = worldY == 0 || IsDifferent(currentTile, worldX, worldY - 1);
+                        bool diffTop = worldY == _gridSize - 1 || IsDifferent(currentTile, worldX, worldY + 1);
+                        
+                        for (int subY = 0; subY < 3; subY++)
                         {
-                            GameObject prefab = GetInteractivePrefabForBiome(currentTile.Biome);
-                            if (prefab != null)
+                            for (int subX = 0; subX < 3; subX++)
                             {
-                                Vector3 worldPos = _tilemap.GetCellCenterWorld(new Vector3Int(itemX, itemY, 0));
-                                Instantiate(prefab, worldPos, Quaternion.identity, _interactiveItemsParent);
-                                continue;
-                            }
-                        }
+                                if (diffLeft && subX <= 1) continue;
+                                if (diffRight && subX >= 1) continue; 
+                                if (diffBottom && subY <= 1) continue;
+                                if (diffTop && subY >= 1) continue;
+                                
+                                int itemX = (worldX * 3) + subX;
+                                int itemY = (worldY * 3) + subY;
 
-                        TileBase tile = null;
+                                if (Random.value < 1 - _gridItemSpawnRate) continue;
+
+                                // --- Interactive Items ---
+                                if (Random.value < _interactiveItemSpawnRate)
+                                {
+                                    InteractiveItem interactiveItem = GetInteractiveItemForBiomeFast(currentTile.Biome);
+                                    if (interactiveItem != null && CanPlace(itemX, itemY, interactiveItem.FootPrint) && IsValidBiomeArea(itemX, itemY, interactiveItem.FootPrint, currentTile))
+                                    {
+                                        Vector3 worldPos = _tilemap.GetCellCenterWorld(new Vector3Int(itemX, itemY, 0));
+                                        Instantiate(interactiveItem.Prefab, worldPos, Quaternion.identity, _interactiveItemsParent);
+                                        Occupy(itemX, itemY, interactiveItem.FootPrint);
+                                        continue;
+                                    }
+                                }
+                                
+                                // --- Common Items ---
+                                if(_occupied[itemX, itemY]) continue;
+
+                                CommonItem commonItem = null;
+                                
+                                if (Random.value < _gridItemBiomeSpawnRate) 
+                                {
+                                    List<CommonItem> biomeItems = GetCommonItemsForBiomeFast(currentTile.Biome);
+                                    if (biomeItems != null && biomeItems.Count > 0)
+                                    {
+                                        int index = NoiseValueToIndex(noiseMap[itemX, itemY], biomeItems.Count);
+                                        if(index != -1) commonItem = biomeItems[index];
+                                    }
+                                }
+                                else
+                                {
+                                    int index = NoiseValueToIndex(noiseMap[itemX, itemY], _basicCommonItems.Count);
+                                    if(index != -1) commonItem = _basicCommonItems[index];
+                                }
                         
-                        if (Random.value < _gridItemBiomeSpawnRate) 
-                        {
-                            int index = NoiseValueToIndex(noiseMap[itemX, itemY], GetSizeListOfItemsBiome(currentTile.Biome));
-                            if(index != -1) tile = GetTileToSpawnInBiome(currentTile.Biome, index);
-                        }
-                        else
-                        {
-                            int index = NoiseValueToIndex(noiseMap[itemX, itemY], _basicCommonTiles.Count);
-                            if(index != -1) tile = _basicCommonTiles[index];
-                        }
-
-                        if (tile != null)
-                        {
-                            _tilemap.SetTile(new Vector3Int(itemX, itemY, 0), tile);
+                                if (commonItem != null && CanPlace(itemX, itemY, commonItem.FootPrint) && IsValidBiomeArea(itemX, itemY, commonItem.FootPrint, currentTile))
+                                {
+                                    tilePositions.Add(new Vector3Int(itemX, itemY, 0));
+                                    tiles.Add(commonItem.ItemTile);
+                                    Occupy(itemX, itemY, commonItem.FootPrint);
+                                }
+                            }
                         }
                     }
                 }
+                
+                if (tilePositions.Count > 0) _tilemap.SetTiles(tilePositions.ToArray(), tiles.ToArray());
+
+                if (!skip)
+                {
+                    yield return null;
+                }
             }
-            yield return null;
         }
+    }
+
+    private bool CanPlace(int x, int y, Vector2Int footPrint)
+    {
+        for (int offsetY = 0; offsetY < footPrint.y; offsetY++)
+        {
+            for (int offsetX = 0; offsetX < footPrint.x; offsetX++)
+            {
+                int checkX = x + offsetX;
+                int checkY = y + offsetY;
+
+                if (checkX < 0 || checkX >= _gridItemSize || checkY < 0 || checkY >= _gridItemSize)
+                    return false;
+
+                if (_occupied[checkX, checkY])
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void Occupy(int x, int y, Vector2Int footPrint)
+    {
+        for (int offsetY = 0; offsetY < footPrint.y; offsetY++)
+        {
+            for (int offsetX = 0; offsetX < footPrint.x; offsetX++)
+            {
+                int occupyX = x + offsetX;
+                int occupyY = y + offsetY;
+
+                if (occupyX >= 0 && occupyX < _gridItemSize && occupyY >= 0 && occupyY < _gridItemSize)
+                {
+                    _occupied[occupyX, occupyY] = true;
+                }
+            }
+        }
+    }
+
+    private bool IsValidBiomeArea(int startX, int startY, Vector2Int footPrint, TileData tile)
+    {
+        for (int offsetY = 0; offsetY < footPrint.y; offsetY++)
+        {
+            for (int offsetX = 0; offsetX < footPrint.x; offsetX++)
+            {
+                int checkWorldX = (startX + offsetX) / 3;
+                int checkWorldY = (startY + offsetY) / 3;
+
+                if (checkWorldX < 0 || checkWorldX >= _gridSize || checkWorldY < 0 || checkWorldY >= _gridSize)
+                    return false;
+
+                if(IsDifferent(tile, checkWorldX, checkWorldY))
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     private bool IsDifferent(TileData currentTile, int worldX, int worldY)
@@ -130,42 +236,21 @@ public class WorldItemsGeneration : MonoBehaviour
         return neighbor.Type != currentTile.Type || neighbor.Biome != currentTile.Biome;
     }
 
-    private GameObject GetInteractivePrefabForBiome(BiomeType biome)
+    private InteractiveItem GetInteractiveItemForBiomeFast(BiomeType biome)
     {
-        foreach (BiomeInteractiveItem entry in _biomeInteractiveItems)
+        if (_biomeInteractiveItemsDict != null && _biomeInteractiveItemsDict.TryGetValue(biome, out List<InteractiveItem> items) && items != null && items.Count > 0)
         {
-            if (entry.Biome == biome && entry.Prefabs != null && entry.Prefabs.Count > 0)
-            {
-                return entry.Prefabs[Random.Range(0, entry.Prefabs.Count)];
-            }
+            return items[Random.Range(0, items.Count)];
         }
-
         return null;
     }
 
-    private int GetSizeListOfItemsBiome(BiomeType biome)
+    private List<CommonItem> GetCommonItemsForBiomeFast(BiomeType biome)
     {
-        foreach (BiomeCommonItem biomeItems in _basicBiomeTiles)
+        if (_biomeCommonItemsDict != null && _biomeCommonItemsDict.TryGetValue(biome, out List<CommonItem> items))
         {
-            if (biomeItems.Biome == biome)
-            {
-                return biomeItems.ItemTiles.Count;
-            }
+            return items;
         }
-
-        return 0;
-    }
-
-    private TileBase GetTileToSpawnInBiome(BiomeType biome, int index)
-    {
-        foreach (BiomeCommonItem biomeItems in _basicBiomeTiles)
-        {
-            if (biomeItems.Biome == biome)
-            {
-                return biomeItems.ItemTiles[index].ItemTile;
-            }
-        }
-
         return null;
     }
 

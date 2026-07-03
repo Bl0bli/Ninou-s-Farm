@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ee6579e3c7896541a4f3d3c1da7bb24, type: 3}
-  m_Name: FOREST_InteractiveItems
-  m_EditorClassIdentifier: Assembly-CSharp::BiomeInteractiveItem
+  m_Script: {fileID: 11500000, guid: 94056d258a2f4604588ed490cb15ac04, type: 3}
+  m_Name: SO_BiomeConfig_FOREST
+  m_EditorClassIdentifier: Assembly-CSharp::SO_BiomeConfig
   Biome: 2
-  Items:
-  - {fileID: 11400000, guid: 266ff2e964eb54f458cd9d805a6d52a8, type: 2}
+  GroundSprites: []
+  FloorSprites: []

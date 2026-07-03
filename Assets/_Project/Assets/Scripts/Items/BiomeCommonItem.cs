@@ -7,4 +7,5 @@ public class BiomeCommonItem : ScriptableObject
 {
     public BiomeType Biome;
     public List<CommonItem> ItemTiles;
+
 }
