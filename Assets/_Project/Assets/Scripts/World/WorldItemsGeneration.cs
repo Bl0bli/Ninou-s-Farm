@@ -20,7 +20,6 @@ public class WorldItemsGeneration : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float _interactiveItemSpawnRate = 0.1f;
 
-    private BasicItemData[,] _gridBasicItems;
     private bool[,] _occupied;
     private int _gridSize;
     private int _gridItemSize;
@@ -50,7 +49,6 @@ public class WorldItemsGeneration : MonoBehaviour
 
         _gridSize = GridWorld.Instance.GridSize;
         _gridItemSize = _gridSize * 3;
-        _gridBasicItems = new BasicItemData[_gridItemSize, _gridItemSize];
         _occupied = new bool[_gridItemSize, _gridItemSize];
         float[,] noiseMap = new float[_gridItemSize, _gridItemSize];
         for (int y = 0; y < _gridItemSize; y++)
