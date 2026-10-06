@@ -21,7 +21,7 @@ public struct Slope
     public BiomeType Biome;
     public TileBase[] Tile;
 }
-public class GridWorld : MonoBehaviour
+public class GridWorld : MonoBehaviour, ITileGrid
 {
     [SerializeField] private UnityEvent _onWorldInit;
     [SerializeField] private Camera _camera;
@@ -62,33 +62,52 @@ public class GridWorld : MonoBehaviour
     
     private int _rows, _cols;
 
+    // Règles d'accès à la grille, partagées avec la scène de test. Créé dès que _grid est alloué.
+    private TileGridData _gridData;
+
+    public event Action<Vector2Int> OnTileChanged;
+
     /// <summary>
     /// Récupère les données de la tuile à une position de grille spécifique.
+    /// Hors limites (ou avant génération), renvoie une tuile WATER par défaut.
     /// </summary>
-    /// <param name="gridPos">La position dans la grille.</param>
-    /// <returns>Les données de la tuile à cette position.</returns>
-    public TileData GetTileAt(Vector2Int gridPos) => _grid[gridPos.x, gridPos.y];
+    public TileData GetTileAt(Vector2Int gridPos) =>
+        _gridData != null ? _gridData.GetTileAt(gridPos) : new TileData(gridPos, BiomeType.WATER, TileType.WATER);
 
     /// <summary>
     /// Récupère les données de la tuile correspondant à une position dans le monde.
     /// </summary>
-    /// <param name="worldPos">La position dans l'espace mondial.</param>
-    /// <returns>Les données de la tuile correspondante.</returns>
-    public TileData GetTileAt(Vector3 worldPos)
+    public TileData GetTileAt(Vector3 worldPos) => GetTileAt(WorldToGrid(worldPos));
+
+    public Vector2Int WorldToGrid(Vector2 worldPosition)
     {
-        //Debug.Log(dir);
-        Vector3Int cellPos = _groundTilemap.WorldToCell(worldPos);
-        if (cellPos.x >= 0 && cellPos.x < _worldGenConfig.Size && cellPos.y >= 0 && cellPos.y < _worldGenConfig.Size)
-            return _grid[cellPos.x, cellPos.y];
-        return new TileData(new Vector2Int(cellPos.x, cellPos.y), BiomeType.WATER, TileType.WATER);
+        Vector3Int cell = _groundTilemap.WorldToCell(worldPosition);
+        return new Vector2Int(cell.x, cell.y);
     }
+
+    public bool SetTileState(Vector2Int gridPos, TileState state) => _gridData != null && _gridData.SetTileState(gridPos, state);
+    public bool SetTileWatered(Vector2Int gridPos, bool isWatered) => _gridData != null && _gridData.SetTileWatered(gridPos, isWatered);
+    public bool CanBeFarmed(Vector2Int gridPos) => _gridData != null && _gridData.CanBeFarmed(gridPos);
+
     public int GridSize => _worldGenConfig.Size;
     public static GridWorld Instance;
     public event Action<Vector2> OnWorldInit;
     private void Awake()
     {
-        if(Instance != null) Destroy(this);
+        if (Instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+
         Instance = this;
+        TileGridLocator.Register(this);
+    }
+
+    private void OnDestroy()
+    {
+        TileGridLocator.Unregister(this);
+        if (Instance == this) Instance = null;
     }
 
     private void Start()
@@ -118,6 +137,25 @@ public class GridWorld : MonoBehaviour
         ResetWorld();
         StartCoroutine(GenerateWorldRoutine());   
         
+    }
+
+    [ContextMenu("Test Hoe Center")]
+    private void TestHoeCenter()
+    {
+        if (!Application.isPlaying || _grid == null)
+        {
+            Debug.LogError("Test Hoe Center : uniquement en PlayMode, une fois le monde généré.");
+            return;
+        }
+
+        Vector2Int center = new Vector2Int(_worldGenConfig.Size / 2, _worldGenConfig.Size / 2);
+
+        Debug.Log($"[TestHoe] Avant : State={GetTileAt(center).State}, CanBeFarmed={CanBeFarmed(center)}");
+
+        bool applied = SetTileState(center, TileState.HOED);
+
+        Debug.Log($"[TestHoe] SetTileState a retourné {applied}. " +
+                   $"Après : State={GetTileAt(center).State}");
     }
 
     [ContextMenu("Debug HeightMap")]
@@ -187,6 +225,9 @@ public class GridWorld : MonoBehaviour
         float xoffset = Random.Range(-1000, 1000);
         float yOffset = Random.Range(-1000, 1000);
         _grid = new TileData[_worldGenConfig.Size, _worldGenConfig.Size];
+        _gridData = new TileGridData(_grid);
+        // Relais : les abonnés de GridWorld restent abonnés même quand la grille est recréée.
+        _gridData.OnTileChanged += cell => OnTileChanged?.Invoke(cell);
         SkipGeneration = false;
 
         SetupBiomes();
@@ -816,58 +857,6 @@ public class GridWorld : MonoBehaviour
             }
 
             Debug.Log($"[Rivers] Biome {biome.Type} : {riversPlaced}/{numRivers} rivière(s) placée(s) en {attempts} essais ({possibleSources.Count} sources).");
-        }
-    }
-
-    private void CarveRiver(int x, int y)
-    {
-        Vector2 currentPos = new Vector2(x, y);
-
-        //angle aleatoiure
-        float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-
-        int currentLength = 0;
-
-        while (currentLength < _worldGenConfig.MaxRiverLength)
-        {
-            int cx = Mathf.RoundToInt(currentPos.x);
-            int cy = Mathf.RoundToInt(currentPos.y);
-            
-            for (int tx = -_worldGenConfig.MaxRiverThickness; tx <= _worldGenConfig.MaxRiverThickness; tx++)
-            {
-                for (int ty = -_worldGenConfig.MaxRiverThickness; ty <= _worldGenConfig.MaxRiverThickness; ty++)
-                {
-                    if (tx * tx + ty * ty <= _worldGenConfig.MaxRiverThickness * _worldGenConfig.MaxRiverThickness)  //si on est dans le cercle
-                    {
-                        int carveX = cx + tx;
-                        int carveY = cy + ty;
-
-                        if (carveX >= 0 && carveX < _worldGenConfig.Size && carveY >= 0 && carveY < _worldGenConfig.Size)
-                        {
-                            // On creuse si ce n'est pas une montagne/étage et que ce n'est pas DÉJÀ de l'eau
-                            if (_grid[carveX, carveY].Type != TileType.FLOOR && _grid[carveX, carveY].Type != TileType.WATER) 
-                            {
-                                _grid[carveX, carveY] = new TileData(new Vector2Int(carveX, carveY), BiomeType.WATER, TileType.WATER);
-                            }
-                        }
-                    }
-                }
-            }
-            
-            angle += Random.Range(-0.25f, 0.25f); 
-            direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-            
-            currentPos += direction;
-            currentLength++;
-            
-            int forwardX = Mathf.RoundToInt(currentPos.x + direction.x * (_worldGenConfig.MaxRiverThickness + 2));
-            int forwardY = Mathf.RoundToInt(currentPos.y + direction.y * (_worldGenConfig.MaxRiverThickness + 2));
-            
-            if (forwardX >= 0 && forwardX < _worldGenConfig.Size && forwardY >= 0 && forwardY < _worldGenConfig.Size)
-            {
-                if (_grid[forwardX, forwardY].Type == TileType.WATER) break; 
-            }
         }
     }
 

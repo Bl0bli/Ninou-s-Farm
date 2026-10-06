@@ -22,13 +22,17 @@ public class HoeData : ToolData
                 player.TriggerAnimation(_animationTriggerName);
             }
 
-            TileData tile = GridWorld.Instance.GetTileAt(targetPosition);
-            
-            //TODO si la tile est non null on essaie de la labourer (toggle)
-            if (tile.Type != TileType.FLOOR) return false;
-            
-            //tile.
-			return true;
+            ITileGrid grid = TileGridLocator.Current;
+            if (grid == null) return false;
+
+            Vector2Int cell = grid.WorldToGrid(targetPosition);
+
+            // Bascule : une case labourée redevient du sol, une case labourable est labourée.
+            if (grid.GetTileAt(cell).State == TileState.HOED)
+                return grid.SetTileState(cell, TileState.NONE);
+
+            if (!grid.CanBeFarmed(cell)) return false;
+            return grid.SetTileState(cell, TileState.HOED);
 
         }
 }
