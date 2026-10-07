@@ -85,6 +85,13 @@ public class GridWorld : MonoBehaviour, ITileGrid
         return new Vector2Int(cell.x, cell.y);
     }
 
+    public Vector2 GridToWorld(Vector2Int gridPosition) =>
+        _groundTilemap.GetCellCenterWorld(new Vector3Int(gridPosition.x, gridPosition.y, 0));
+
+    public bool IsOccupied(Vector2Int gridPosition) => _gridData != null && _gridData.IsOccupied(gridPosition);
+    public bool TryOccupy(Vector2Int gridPosition) => _gridData != null && _gridData.TryOccupy(gridPosition);
+    public void Release(Vector2Int gridPosition) => _gridData?.Release(gridPosition);
+
     public bool SetTileState(Vector2Int gridPos, TileState state) => _gridData != null && _gridData.SetTileState(gridPos, state);
     public bool SetTileWatered(Vector2Int gridPos, bool isWatered) => _gridData != null && _gridData.SetTileWatered(gridPos, isWatered);
     public bool CanBeFarmed(Vector2Int gridPos) => _gridData != null && _gridData.CanBeFarmed(gridPos);

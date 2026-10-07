@@ -67,6 +67,13 @@ public class TestTileGrid : MonoBehaviour, ITileGrid
         return new Vector2Int(cell.x, cell.y);
     }
 
+    public Vector2 GridToWorld(Vector2Int gridPosition) =>
+        _groundTilemap.GetCellCenterWorld(new Vector3Int(gridPosition.x, gridPosition.y, 0));
+
+    public bool IsOccupied(Vector2Int gridPosition) => _data.IsOccupied(gridPosition);
+    public bool TryOccupy(Vector2Int gridPosition) => _data.TryOccupy(gridPosition);
+    public void Release(Vector2Int gridPosition) => _data.Release(gridPosition);
+
     public TileData GetTileAt(Vector2Int gridPosition) => _data.GetTileAt(gridPosition);
     public bool CanBeFarmed(Vector2Int gridPosition) => _data.CanBeFarmed(gridPosition);
 

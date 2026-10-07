@@ -227,7 +227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8012740981104139929, guid: f75277c5b6945ca4bb4cb99581c727fe, type: 3}
       propertyPath: _startingItems.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8012740981104139929, guid: f75277c5b6945ca4bb4cb99581c727fe, type: 3}
       propertyPath: '_startingItems.Array.data[0]'
@@ -237,6 +237,14 @@ PrefabInstance:
       propertyPath: '_startingItems.Array.data[1]'
       value: 
       objectReference: {fileID: 11400000, guid: 8aa233b88524133489f1dfac70943b67, type: 2}
+    - target: {fileID: 8012740981104139929, guid: f75277c5b6945ca4bb4cb99581c727fe, type: 3}
+      propertyPath: '_startingItems.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 288063391f8ed6c499960f6af11f594c, type: 2}
+    - target: {fileID: 8012740981104139929, guid: f75277c5b6945ca4bb4cb99581c727fe, type: 3}
+      propertyPath: '_startingItems.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7809e98b6f72a6a4c80e437a9a9109a5, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11422,7 +11430,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 0
-      m_TileSpriteIndex: 0
+      m_TileSpriteIndex: 16
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -14413,8 +14421,8 @@ Tilemap:
   - m_RefCount: 299
     m_Data: {fileID: 11400000, guid: 66aee608c1266914081524557027b701, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 1
-    m_Data: {fileID: 1405009662, guid: 52078c8ed297f6c4a9ca484a9981698c, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 101
     m_Data: {fileID: -1730146675, guid: 52078c8ed297f6c4a9ca484a9981698c, type: 3}
   - m_RefCount: 11
@@ -14445,8 +14453,8 @@ Tilemap:
     m_Data: {fileID: 1725735556, guid: 52078c8ed297f6c4a9ca484a9981698c, type: 3}
   - m_RefCount: 5
     m_Data: {fileID: -1085874128, guid: 52078c8ed297f6c4a9ca484a9981698c, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 1405009662, guid: 52078c8ed297f6c4a9ca484a9981698c, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: -228467326, guid: 52078c8ed297f6c4a9ca484a9981698c, type: 3}
   - m_RefCount: 1

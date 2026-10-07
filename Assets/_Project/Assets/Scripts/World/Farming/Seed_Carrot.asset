@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d6c796f6d4c6aa48af9ef4a78c918fc, type: 3}
+  m_Name: Seed_Carrot
+  m_EditorClassIdentifier: Assembly-CSharp::SeedData
+  WorldSprite: {fileID: -1820743261052749542, guid: c560b4e85a25bb14486b17c837dc2d3f, type: 3}
+  Icon: {fileID: 6499957318792860802, guid: c560b4e85a25bb14486b17c837dc2d3f, type: 3}
+  Name: Carrot seeds
+  Description: 
+  Amount: 1
+  _cropData: {fileID: 11400000, guid: 0dc68841358332242868965964c072ff, type: 2}

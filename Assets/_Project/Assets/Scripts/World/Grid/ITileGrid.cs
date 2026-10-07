@@ -21,6 +21,26 @@ public interface ITileGrid
     Vector2Int WorldToGrid(Vector2 worldPosition);
 
     /// <summary>
+    /// Position monde du centre d'une case.
+    /// </summary>
+    Vector2 GridToWorld(Vector2Int gridPosition);
+
+    /// <summary>
+    /// Indique si une culture occupe déjà la case.
+    /// </summary>
+    bool IsOccupied(Vector2Int gridPosition);
+
+    /// <summary>
+    /// Réserve la case pour une culture. Renvoie false si elle est hors grille ou déjà occupée.
+    /// </summary>
+    bool TryOccupy(Vector2Int gridPosition);
+
+    /// <summary>
+    /// Libère la case (culture récoltée ou détruite).
+    /// </summary>
+    void Release(Vector2Int gridPosition);
+
+    /// <summary>
     /// Renvoie les données de la case. Hors de la grille, renvoie une case WATER.
     /// </summary>
     TileData GetTileAt(Vector2Int gridPosition);

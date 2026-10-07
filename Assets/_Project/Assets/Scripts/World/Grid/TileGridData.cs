@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -51,6 +52,19 @@ public class TileGridData
         OnTileChanged?.Invoke(gridPosition);
         return true;
     }
+
+    // Cases portant une culture. Creux : seules les cases plantées y figurent.
+    private readonly HashSet<Vector2Int> _occupied = new HashSet<Vector2Int>();
+
+    public bool IsOccupied(Vector2Int gridPosition) => _occupied.Contains(gridPosition);
+
+    /// <summary>
+    /// Réserve la case pour une culture. Renvoie false si elle est hors grille ou déjà occupée :
+    /// le test et la réservation sont faits ensemble, deux plantations ne peuvent pas se croiser.
+    /// </summary>
+    public bool TryOccupy(Vector2Int gridPosition) => IsInBounds(gridPosition) && _occupied.Add(gridPosition);
+
+    public void Release(Vector2Int gridPosition) => _occupied.Remove(gridPosition);
 
     /// <summary>
     /// Une case est labourable si elle est dans la grille, sur un sol GROUND

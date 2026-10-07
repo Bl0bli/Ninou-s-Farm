@@ -4,7 +4,7 @@ using UnityEngine;
 public class TimeManager : MonoBehaviour
 {
     public static Action OnMinuteChanged;
-    public static Action OnHourChanged;
+    public static Action<float> OnHourChanged;
     
     public static Action OnSunrise;
     public static Action OnMorning;
@@ -41,7 +41,7 @@ public class TimeManager : MonoBehaviour
 
                 if (Hour >= 24) Hour = 0;
 
-                OnHourChanged?.Invoke();
+                OnHourChanged?.Invoke(Hour + Minute / 60f);
                 CheckDayTime();
             }
 
