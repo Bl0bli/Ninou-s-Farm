@@ -89,8 +89,13 @@ public class GridWorld : MonoBehaviour, ITileGrid
         _groundTilemap.GetCellCenterWorld(new Vector3Int(gridPosition.x, gridPosition.y, 0));
 
     public bool IsOccupied(Vector2Int gridPosition) => _gridData != null && _gridData.IsOccupied(gridPosition);
-    public bool TryOccupy(Vector2Int gridPosition) => _gridData != null && _gridData.TryOccupy(gridPosition);
-    public void Release(Vector2Int gridPosition) => _gridData?.Release(gridPosition);
+    public bool TryOccupy(Vector2Int gridPosition, CropInstance crop) => _gridData != null && _gridData.TryOccupy(gridPosition, crop);
+    public bool TryGetCrop(Vector2Int gridPosition, out CropInstance crop)
+    {
+        crop = null;
+        return _gridData != null && _gridData.TryGetCrop(gridPosition, out crop);
+    }
+    public void Release(Vector2Int gridPosition, CropInstance crop) => _gridData?.Release(gridPosition, crop);
 
     public bool SetTileState(Vector2Int gridPos, TileState state) => _gridData != null && _gridData.SetTileState(gridPos, state);
     public bool SetTileWatered(Vector2Int gridPos, bool isWatered) => _gridData != null && _gridData.SetTileWatered(gridPos, isWatered);

@@ -21,3 +21,5 @@ MonoBehaviour:
   - {fileID: 7448935753994061408, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
   - {fileID: 1116706725642825598, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
   - {fileID: 8796380703106566107, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  _loot: {fileID: 11400000, guid: b2d16ab6b4ee56947b43b62d108d8378, type: 2}
+  _seed: {fileID: 11400000, guid: 288063391f8ed6c499960f6af11f594c, type: 2}

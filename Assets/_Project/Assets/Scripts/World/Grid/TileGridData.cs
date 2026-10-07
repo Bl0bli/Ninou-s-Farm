@@ -53,18 +53,28 @@ public class TileGridData
         return true;
     }
 
-    // Cases portant une culture. Creux : seules les cases plantées y figurent.
-    private readonly HashSet<Vector2Int> _occupied = new HashSet<Vector2Int>();
+    // Culture posée sur chaque case. Creux : seules les cases plantées y figurent.
+    private readonly Dictionary<Vector2Int, CropInstance> _crops = new Dictionary<Vector2Int, CropInstance>();
 
-    public bool IsOccupied(Vector2Int gridPosition) => _occupied.Contains(gridPosition);
+    public bool IsOccupied(Vector2Int gridPosition) => _crops.ContainsKey(gridPosition);
 
     /// <summary>
-    /// Réserve la case pour une culture. Renvoie false si elle est hors grille ou déjà occupée :
-    /// le test et la réservation sont faits ensemble, deux plantations ne peuvent pas se croiser.
+    /// Enregistre la culture sur la case. Renvoie false si elle est hors grille ou déjà occupée :
+    /// le test et l'enregistrement sont faits ensemble, deux plantations ne peuvent pas se croiser.
     /// </summary>
-    public bool TryOccupy(Vector2Int gridPosition) => IsInBounds(gridPosition) && _occupied.Add(gridPosition);
+    public bool TryOccupy(Vector2Int gridPosition, CropInstance crop) =>
+        IsInBounds(gridPosition) && _crops.TryAdd(gridPosition, crop);
 
-    public void Release(Vector2Int gridPosition) => _occupied.Remove(gridPosition);
+    public bool TryGetCrop(Vector2Int gridPosition, out CropInstance crop) => _crops.TryGetValue(gridPosition, out crop);
+
+    /// <summary>
+    /// Libère la case, uniquement si c'est bien cette culture qui l'occupe.
+    /// </summary>
+    public void Release(Vector2Int gridPosition, CropInstance crop)
+    {
+        if (_crops.TryGetValue(gridPosition, out CropInstance current) && current == crop)
+            _crops.Remove(gridPosition);
+    }
 
     /// <summary>
     /// Une case est labourable si elle est dans la grille, sur un sol GROUND

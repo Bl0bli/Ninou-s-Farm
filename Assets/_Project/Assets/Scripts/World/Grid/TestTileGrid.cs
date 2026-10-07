@@ -71,8 +71,9 @@ public class TestTileGrid : MonoBehaviour, ITileGrid
         _groundTilemap.GetCellCenterWorld(new Vector3Int(gridPosition.x, gridPosition.y, 0));
 
     public bool IsOccupied(Vector2Int gridPosition) => _data.IsOccupied(gridPosition);
-    public bool TryOccupy(Vector2Int gridPosition) => _data.TryOccupy(gridPosition);
-    public void Release(Vector2Int gridPosition) => _data.Release(gridPosition);
+    public bool TryOccupy(Vector2Int gridPosition, CropInstance crop) => _data.TryOccupy(gridPosition, crop);
+    public bool TryGetCrop(Vector2Int gridPosition, out CropInstance crop) => _data.TryGetCrop(gridPosition, out crop);
+    public void Release(Vector2Int gridPosition, CropInstance crop) => _data.Release(gridPosition, crop);
 
     public TileData GetTileAt(Vector2Int gridPosition) => _data.GetTileAt(gridPosition);
     public bool CanBeFarmed(Vector2Int gridPosition) => _data.CanBeFarmed(gridPosition);

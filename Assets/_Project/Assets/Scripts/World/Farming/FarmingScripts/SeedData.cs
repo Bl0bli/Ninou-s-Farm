@@ -22,10 +22,13 @@ public class SeedData : ItemData, IUsable
 
         if (grid.GetTileAt(cell).State != TileState.HOED) return false;
 
-        if (!grid.TryOccupy(cell)) return false;
+        // Une seule culture par case.
+        if (grid.IsOccupied(cell)) return false;
 
+        // Centre de la case, pas la position visée par le joueur.
         CropInstance crop = Instantiate(_cropData.Prefab, grid.GridToWorld(cell), Quaternion.identity).GetComponent<CropInstance>();
         crop.Init(_cropData, cell);
+        grid.TryOccupy(cell, crop);
         return true;
     }
 }

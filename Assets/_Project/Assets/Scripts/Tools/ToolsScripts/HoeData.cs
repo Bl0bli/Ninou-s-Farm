@@ -27,6 +27,13 @@ public class HoeData : ToolData
 
             Vector2Int cell = grid.WorldToGrid(targetPosition);
 
+            // Une culture sur la case : la houe l'arrache (récolte ou graine), le labour reste en place.
+            if (grid.TryGetCrop(cell, out CropInstance crop))
+            {
+                crop.Harvest();
+                return true;
+            }
+
             // Bascule : une case labourée redevient du sol, une case labourable est labourée.
             if (grid.GetTileAt(cell).State == TileState.HOED)
                 return grid.SetTileState(cell, TileState.NONE);

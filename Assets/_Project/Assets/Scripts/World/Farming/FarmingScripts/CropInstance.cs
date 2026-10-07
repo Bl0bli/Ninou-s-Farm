@@ -1,6 +1,7 @@
+using DG.Tweening;
 using UnityEngine;
 
-public class CropInstance : MonoBehaviour
+public class CropInstance : Dropable
 {
     private SpriteRenderer _spriteRenderer;
     private CropData _cropData;
@@ -17,7 +18,7 @@ public class CropInstance : MonoBehaviour
         _cell = cell;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _elapsedHours = 0;
-
+        _itemDropped = _cropData.Loot;
         SetStage(0);
         TimeManager.OnHourChanged += OnHourChanged;
     }
@@ -25,7 +26,18 @@ public class CropInstance : MonoBehaviour
     private void OnDestroy()
     {
         TimeManager.OnHourChanged -= OnHourChanged;
-        TileGridLocator.Current?.Release(_cell);
+        TileGridLocator.Current?.Release(_cell, this);
+    }
+
+    /// <summary>
+    /// Arrache la culture : une plante mûre donne sa récolte, une plante encore en pousse rend sa graine.
+    /// </summary>
+    public void Harvest()
+    {
+        _itemDropped = IsGrown ? _cropData.Loot : _cropData.Seed;
+
+        if (_itemDropped == null) Destroy(gameObject);
+        else DropItem(true);
     }
 
     private void OnHourChanged(float _)

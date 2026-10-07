@@ -31,14 +31,19 @@ public interface ITileGrid
     bool IsOccupied(Vector2Int gridPosition);
 
     /// <summary>
-    /// Réserve la case pour une culture. Renvoie false si elle est hors grille ou déjà occupée.
+    /// Enregistre la culture sur la case. Renvoie false si elle est hors grille ou déjà occupée.
     /// </summary>
-    bool TryOccupy(Vector2Int gridPosition);
+    bool TryOccupy(Vector2Int gridPosition, CropInstance crop);
 
     /// <summary>
-    /// Libère la case (culture récoltée ou détruite).
+    /// Récupère la culture plantée sur la case, s'il y en a une.
     /// </summary>
-    void Release(Vector2Int gridPosition);
+    bool TryGetCrop(Vector2Int gridPosition, out CropInstance crop);
+
+    /// <summary>
+    /// Libère la case (culture récoltée ou détruite), si c'est bien cette culture qui l'occupe.
+    /// </summary>
+    void Release(Vector2Int gridPosition, CropInstance crop);
 
     /// <summary>
     /// Renvoie les données de la case. Hors de la grille, renvoie une case WATER.
