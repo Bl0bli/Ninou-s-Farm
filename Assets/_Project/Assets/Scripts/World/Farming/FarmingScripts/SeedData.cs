@@ -4,7 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ItemData", menuName = "Items/ItemData/SeedData")]
 public class SeedData : ItemData, IUsable
 {
-    [SerializeField] private CropData _cropData;    
+    [SerializeField] private CropData _cropData;
+
+    public override bool IsConsumable => true;    
 
     public bool Use(PlayerController player, Vector2 targetPosition)
     {

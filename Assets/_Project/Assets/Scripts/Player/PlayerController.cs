@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private Animator _animator;
     [SerializeField] private GameObject _uiInventory;
     [SerializeField] private PlayerInventory _inventory;
+    [SerializeField] private UIInventory _uiInventoryView;
     [SerializeField] private PlayerMovements _movements;
     [SerializeField] private PlayerActions _actions;
 
@@ -25,7 +26,14 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _inventory.OnSlotChanged += OnSlotChanged;
+        if (_uiInventoryView != null) _uiInventoryView.OnSelectSlot += SelectSlot;
         SelectSlot(0);
+    }
+
+    private void OnDestroy()
+    {
+        if (_inventory != null) _inventory.OnSlotChanged -= OnSlotChanged;
+        if (_uiInventoryView != null) _uiInventoryView.OnSelectSlot -= SelectSlot;
     }
 
     /// <summary>
@@ -77,7 +85,11 @@ public class PlayerController : MonoBehaviour
         {
             if (_currentItem != null && _currentItem is IUsable usable)
             {
-                usable.Use(this, (Vector2)transform.position + _movements.LastDirection / 2/*GridWorld.Instance.WorldToGridPos((Vector2)transform.position + Vector2.up)*/);
+                ItemData usedItem = _currentItem;
+                bool used = usable.Use(this, (Vector2)transform.position + _movements.LastDirection / 2/*GridWorld.Instance.WorldToGridPos((Vector2)transform.position + Vector2.up)*/);
+
+                // Retrait après l'utilisation, sur l'objet utilisé : seul un usage réussi consomme.
+                if (used && usedItem.IsConsumable) _inventory.Remove(_currentSlotIndex);
             }
         }
     }

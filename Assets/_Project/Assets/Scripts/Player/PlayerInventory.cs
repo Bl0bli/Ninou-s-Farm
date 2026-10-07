@@ -62,6 +62,25 @@ public class PlayerInventory : MonoBehaviour
         return TryAddNewItem(item);
     }
     
+    /// <summary>
+    /// Retire une quantité d'un emplacement et vide l'emplacement s'il tombe à zéro.
+    /// </summary>
+    /// <param name="index">L'index de l'emplacement.</param>
+    /// <param name="quantity">La quantité à retirer.</param>
+    /// <returns>Retourne true si la quantité a pu être retirée, sinon false.</returns>
+    public bool Remove(int index, int quantity = 1)
+    {
+        if (_inventory == null || index < 0 || index >= _inventory.Length) return false;
+        if (_inventory[index].IsEmpty || _inventory[index].Quantity < quantity) return false;
+
+        // Écriture directe dans le tableau : InventorySlot est une struct, une copie locale serait perdue.
+        _inventory[index].Quantity -= quantity;
+        if (_inventory[index].Quantity <= 0) _inventory[index].Clear();
+
+        OnSlotChanged?.Invoke(index);
+        return true;
+    }
+
     private bool TryAddNewItem(ItemData item)
     {
         for (int i = 0; i < _inventory.Length; i++)

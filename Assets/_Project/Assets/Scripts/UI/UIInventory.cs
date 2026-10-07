@@ -34,6 +34,8 @@ public class UIInventory : MonoBehaviour
     
     private List<UIInventorySlot> _inventorySlots = new List<UIInventorySlot>();
 
+    public event Action<int> OnSelectSlot;
+
     private void Init()
     {
         for (int i = 0; i < _toolbar.transform.childCount; i++)
@@ -43,10 +45,14 @@ public class UIInventory : MonoBehaviour
             slot.Quantity = _toolbar.transform.GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>();
             slot.Icon = _toolbar.transform.GetChild(i).GetChild(1).GetComponent<Image>();
             _inventorySlots.Add(slot);
+
+            // Un clic sur un slot de la toolbar équipe l'objet de l'emplacement correspondant.
+            int slotIndex = i; // copie locale : la lambda ne doit pas capturer la variable de boucle
+            slot.Slot.GetComponent<Button>().onClick.AddListener(() => OnSelectSlot?.Invoke(slotIndex));
         }
         for (int i = 0; i < 36; i++)
         {
-            CreateSlot();
+            CreateSlot(i);
         }
         RefreshAllInventory();
     }
@@ -69,7 +75,7 @@ public class UIInventory : MonoBehaviour
         }
     }
 
-    private void CreateSlot()
+    private void CreateSlot(int id)
     {
         GameObject slot = Instantiate(_inventorySlotPrefab, _inventorySlotParent);
         UIInventorySlot uiSlot = new UIInventorySlot();
@@ -77,6 +83,7 @@ public class UIInventory : MonoBehaviour
         uiSlot.Icon = slot.transform.GetChild(1).GetComponent<Image>();
         uiSlot.Quantity = slot.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         
+        slot.GetComponent<Button>().onClick.AddListener(() => OnSelectSlot?.Invoke(id));
         _inventorySlots.Add(uiSlot);
 
     }
@@ -84,7 +91,11 @@ public class UIInventory : MonoBehaviour
     {
         UIInventorySlot uiSlot = GetUISlot(index);
         InventorySlot inventorySlot = _playerInventory.Inventory[index];
-        if (inventorySlot.IsEmpty) return;
+        if (inventorySlot.IsEmpty)
+        {
+            ClearUISlot(uiSlot);
+            return;
+        }
 
         bool isNewItem = (uiSlot.Icon.sprite == null);
         
@@ -102,6 +113,13 @@ public class UIInventory : MonoBehaviour
         }
     }
     
+    private void ClearUISlot(UIInventorySlot uiSlot)
+    {
+        uiSlot.Icon.sprite = null;
+        uiSlot.Icon.color = Color.clear;
+        uiSlot.Quantity.text = string.Empty;
+    }
+
     private UIInventorySlot GetUISlot(int index) => _inventorySlots[index];
     
     private void RefreshAllInventory()
