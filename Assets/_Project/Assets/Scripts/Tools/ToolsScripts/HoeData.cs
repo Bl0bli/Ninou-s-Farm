@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class HoeData : ToolData
 {
-        [Header("Specific Settings")] 
-        [SerializeField] private LayerMask _treeLayer;
-        [SerializeField] private int _damage;
-        [SerializeField] private float _hitRadius;
-    
         /// <summary>
         /// Utilise la houe pour labourer le sol.
         /// </summary>

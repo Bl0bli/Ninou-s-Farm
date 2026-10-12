@@ -198,6 +198,6 @@ public class TimeUI : MonoBehaviour
         Color color = image.color;
         color.a = alpha;
         image.color = color;
-        Debug.Log($"Time : {TimeManager.Hour}:{TimeManager.Minute} - Set alpha of {image.gameObject.name} to {alpha}");
+        //Debug.Log($"Time : {TimeManager.Hour}:{TimeManager.Minute} - Set alpha of {image.gameObject.name} to {alpha}");
     }
 }
