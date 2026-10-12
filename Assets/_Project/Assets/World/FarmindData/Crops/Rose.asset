@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ead87fe4cf3f1c49937846008b39a19, type: 3}
+  m_Name: Rose
+  m_EditorClassIdentifier: Assembly-CSharp::CropData
+  _prefab: {fileID: 3626135228176985377, guid: afbf878303ffcf14ba1b9fe0afd26e2d, type: 3}
+  _cropName: Rose
+  _icon: {fileID: -1759165690256950850, guid: c560b4e85a25bb14486b17c837dc2d3f, type: 3}
+  _growTime: 3
+  _growStages:
+  - {fileID: 1135652761176964885, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: 8764029024336308573, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: 148012229996709633, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: -7574556534369598227, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  _loot: {fileID: 11400000, guid: a9dc1c64b4975e04d8555b6a772ac12a, type: 2}
+  _seed: {fileID: 11400000, guid: 46ab48c2a6e89514fb6d34e08e03121c, type: 2}

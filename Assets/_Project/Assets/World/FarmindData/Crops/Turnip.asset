@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ead87fe4cf3f1c49937846008b39a19, type: 3}
+  m_Name: Turnip
+  m_EditorClassIdentifier: Assembly-CSharp::CropData
+  _prefab: {fileID: 3626135228176985377, guid: afbf878303ffcf14ba1b9fe0afd26e2d, type: 3}
+  _cropName: Turnip
+  _icon: {fileID: 6911385280211639432, guid: c560b4e85a25bb14486b17c837dc2d3f, type: 3}
+  _growTime: 3
+  _growStages:
+  - {fileID: 6165657481621290884, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: 826091489802236462, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: 4992162155970904034, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: 2340613614041932094, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  _loot: {fileID: 11400000, guid: 404352f18ae27e141a12dd844b32e08e, type: 2}
+  _seed: {fileID: 11400000, guid: 02bde28929a658547b12aa48fa99de0a, type: 2}

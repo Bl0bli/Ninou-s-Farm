@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ead87fe4cf3f1c49937846008b39a19, type: 3}
-  m_Name: Sunflower
+  m_Name: Corn
   m_EditorClassIdentifier: Assembly-CSharp::CropData
-  _cropName: Sunflower
-  _icon: {fileID: 3482569451149137530, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
-  _growTime: 4
+  _prefab: {fileID: 3626135228176985377, guid: afbf878303ffcf14ba1b9fe0afd26e2d, type: 3}
+  _cropName: Corn
+  _icon: {fileID: -8254367786029600004, guid: c560b4e85a25bb14486b17c837dc2d3f, type: 3}
+  _growTime: 3
   _growStages:
-  - {fileID: 6194069981415278876, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
-  - {fileID: 1302930124755786175, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
   - {fileID: -7528199513585423542, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
   - {fileID: 736865317306615500, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
   - {fileID: 3482569451149137530, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
-  _seed: {fileID: 11400000, guid: 7809e98b6f72a6a4c80e437a9a9109a5, type: 2}
+  - {fileID: -5784410927573482350, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  _loot: {fileID: 11400000, guid: 7d758552fb9ef4c43bea13de8866e6f7, type: 2}
+  _seed: {fileID: 11400000, guid: 99362a72f7d75654aa3c9be2afece8fd, type: 2}

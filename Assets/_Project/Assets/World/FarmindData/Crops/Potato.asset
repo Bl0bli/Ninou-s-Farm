@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ead87fe4cf3f1c49937846008b39a19, type: 3}
+  m_Name: Potato
+  m_EditorClassIdentifier: Assembly-CSharp::CropData
+  _prefab: {fileID: 3626135228176985377, guid: afbf878303ffcf14ba1b9fe0afd26e2d, type: 3}
+  _cropName: Potato
+  _icon: {fileID: -1820743261052749542, guid: c560b4e85a25bb14486b17c837dc2d3f, type: 3}
+  _growTime: 3
+  _growStages:
+  - {fileID: -1975231421049208761, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: -7682574386745198715, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: 2296300339379097373, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: 837022769627655913, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  _loot: {fileID: 11400000, guid: 8feb1c20ead3069479ade9ef3f2ea8fc, type: 2}
+  _seed: {fileID: 11400000, guid: 73aa7611fa0be3d4c8898507073cafa4, type: 2}

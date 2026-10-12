@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ead87fe4cf3f1c49937846008b39a19, type: 3}
+  m_Name: Starfruit
+  m_EditorClassIdentifier: Assembly-CSharp::CropData
+  _prefab: {fileID: 3626135228176985377, guid: afbf878303ffcf14ba1b9fe0afd26e2d, type: 3}
+  _cropName: Starfruit
+  _icon: {fileID: -59917773, guid: c560b4e85a25bb14486b17c837dc2d3f, type: 3}
+  _growTime: 3
+  _growStages:
+  - {fileID: -2227832012819510273, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: -7827499416449815192, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: 4513640947493604732, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: -847789920, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  _loot: {fileID: 11400000, guid: b9a186d7d2c21b6439bbd5f9757d551e, type: 2}
+  _seed: {fileID: 11400000, guid: d12b62a8439f5da468d82090b46d17ea, type: 2}
