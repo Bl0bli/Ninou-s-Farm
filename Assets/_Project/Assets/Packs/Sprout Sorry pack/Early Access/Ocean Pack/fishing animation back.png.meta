@@ -364,7 +364,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -378,7 +378,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -443,12 +443,12 @@ TextureImporter:
       name: fishing animation back_0
       rect:
         serializedVersion: 2
-        x: 16
-        y: 255
-        width: 16
-        height: 17
+        x: 0
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -465,12 +465,12 @@ TextureImporter:
       name: fishing animation back_1
       rect:
         serializedVersion: 2
-        x: 64
-        y: 255
-        width: 16
-        height: 19
+        x: 48
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -487,12 +487,12 @@ TextureImporter:
       name: fishing animation back_2
       rect:
         serializedVersion: 2
-        x: 112
-        y: 255
-        width: 16
-        height: 21
+        x: 96
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -509,12 +509,12 @@ TextureImporter:
       name: fishing animation back_3
       rect:
         serializedVersion: 2
-        x: 160
-        y: 255
-        width: 16
-        height: 20
+        x: 144
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -531,12 +531,12 @@ TextureImporter:
       name: fishing animation back_4
       rect:
         serializedVersion: 2
-        x: 208
-        y: 257
-        width: 16
-        height: 19
+        x: 192
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -553,12 +553,12 @@ TextureImporter:
       name: fishing animation back_5
       rect:
         serializedVersion: 2
-        x: 256
-        y: 255
-        width: 16
-        height: 22
+        x: 240
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -575,12 +575,12 @@ TextureImporter:
       name: fishing animation back_6
       rect:
         serializedVersion: 2
-        x: 304
-        y: 256
-        width: 16
-        height: 19
+        x: 288
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -597,12 +597,12 @@ TextureImporter:
       name: fishing animation back_7
       rect:
         serializedVersion: 2
-        x: 352
-        y: 255
-        width: 16
-        height: 18
+        x: 336
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -619,12 +619,12 @@ TextureImporter:
       name: fishing animation back_8
       rect:
         serializedVersion: 2
-        x: 400
-        y: 255
-        width: 16
-        height: 18
+        x: 384
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -641,12 +641,12 @@ TextureImporter:
       name: fishing animation back_9
       rect:
         serializedVersion: 2
-        x: 448
-        y: 255
-        width: 16
-        height: 18
+        x: 432
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -663,12 +663,12 @@ TextureImporter:
       name: fishing animation back_10
       rect:
         serializedVersion: 2
-        x: 496
-        y: 255
-        width: 16
-        height: 18
+        x: 480
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -685,12 +685,12 @@ TextureImporter:
       name: fishing animation back_11
       rect:
         serializedVersion: 2
-        x: 544
-        y: 255
-        width: 16
-        height: 18
+        x: 528
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -707,12 +707,12 @@ TextureImporter:
       name: fishing animation back_12
       rect:
         serializedVersion: 2
-        x: 592
-        y: 255
-        width: 16
-        height: 18
+        x: 576
+        y: 240
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -729,12 +729,12 @@ TextureImporter:
       name: fishing animation back_13
       rect:
         serializedVersion: 2
-        x: 16
-        y: 207
-        width: 16
-        height: 17
+        x: 0
+        y: 192
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -751,12 +751,12 @@ TextureImporter:
       name: fishing animation back_14
       rect:
         serializedVersion: 2
-        x: 64
-        y: 207
-        width: 16
-        height: 19
+        x: 48
+        y: 192
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -773,12 +773,12 @@ TextureImporter:
       name: fishing animation back_15
       rect:
         serializedVersion: 2
-        x: 112
-        y: 207
-        width: 16
-        height: 21
+        x: 96
+        y: 192
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -795,12 +795,12 @@ TextureImporter:
       name: fishing animation back_16
       rect:
         serializedVersion: 2
-        x: 160
-        y: 207
-        width: 16
-        height: 20
+        x: 144
+        y: 192
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -817,12 +817,12 @@ TextureImporter:
       name: fishing animation back_17
       rect:
         serializedVersion: 2
-        x: 208
-        y: 207
-        width: 16
-        height: 20
+        x: 192
+        y: 192
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -839,12 +839,12 @@ TextureImporter:
       name: fishing animation back_18
       rect:
         serializedVersion: 2
-        x: 256
-        y: 207
-        width: 16
-        height: 24
+        x: 240
+        y: 192
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -861,12 +861,12 @@ TextureImporter:
       name: fishing animation back_19
       rect:
         serializedVersion: 2
-        x: 304
-        y: 207
-        width: 16
-        height: 23
+        x: 288
+        y: 192
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -883,12 +883,12 @@ TextureImporter:
       name: fishing animation back_20
       rect:
         serializedVersion: 2
-        x: 16
-        y: 159
-        width: 16
-        height: 24
+        x: 0
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -905,12 +905,12 @@ TextureImporter:
       name: fishing animation back_21
       rect:
         serializedVersion: 2
-        x: 64
-        y: 159
-        width: 16
-        height: 23
+        x: 48
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -927,12 +927,12 @@ TextureImporter:
       name: fishing animation back_22
       rect:
         serializedVersion: 2
-        x: 112
-        y: 159
-        width: 16
-        height: 23
+        x: 96
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -949,12 +949,12 @@ TextureImporter:
       name: fishing animation back_23
       rect:
         serializedVersion: 2
-        x: 160
-        y: 159
-        width: 16
-        height: 23
+        x: 144
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -971,12 +971,12 @@ TextureImporter:
       name: fishing animation back_24
       rect:
         serializedVersion: 2
-        x: 208
-        y: 159
-        width: 16
-        height: 24
+        x: 192
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -993,12 +993,12 @@ TextureImporter:
       name: fishing animation back_25
       rect:
         serializedVersion: 2
-        x: 256
-        y: 159
-        width: 16
-        height: 25
+        x: 240
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1015,12 +1015,12 @@ TextureImporter:
       name: fishing animation back_26
       rect:
         serializedVersion: 2
-        x: 304
-        y: 159
-        width: 16
-        height: 25
+        x: 288
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1037,12 +1037,12 @@ TextureImporter:
       name: fishing animation back_27
       rect:
         serializedVersion: 2
-        x: 352
-        y: 159
-        width: 16
-        height: 25
+        x: 336
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1059,12 +1059,12 @@ TextureImporter:
       name: fishing animation back_28
       rect:
         serializedVersion: 2
-        x: 400
-        y: 159
-        width: 16
-        height: 24
+        x: 384
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1081,12 +1081,12 @@ TextureImporter:
       name: fishing animation back_29
       rect:
         serializedVersion: 2
-        x: 448
-        y: 159
-        width: 16
-        height: 23
+        x: 432
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1103,12 +1103,12 @@ TextureImporter:
       name: fishing animation back_30
       rect:
         serializedVersion: 2
-        x: 496
-        y: 159
-        width: 16
-        height: 23
+        x: 480
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1125,12 +1125,12 @@ TextureImporter:
       name: fishing animation back_31
       rect:
         serializedVersion: 2
-        x: 544
-        y: 159
-        width: 16
-        height: 23
+        x: 528
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1147,12 +1147,12 @@ TextureImporter:
       name: fishing animation back_32
       rect:
         serializedVersion: 2
-        x: 592
-        y: 159
-        width: 16
-        height: 24
+        x: 576
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1169,12 +1169,12 @@ TextureImporter:
       name: fishing animation back_33
       rect:
         serializedVersion: 2
-        x: 640
-        y: 159
-        width: 16
-        height: 25
+        x: 624
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1191,12 +1191,12 @@ TextureImporter:
       name: fishing animation back_34
       rect:
         serializedVersion: 2
-        x: 688
-        y: 159
-        width: 16
-        height: 25
+        x: 672
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1213,12 +1213,12 @@ TextureImporter:
       name: fishing animation back_35
       rect:
         serializedVersion: 2
-        x: 736
-        y: 159
-        width: 16
-        height: 25
+        x: 720
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1235,12 +1235,12 @@ TextureImporter:
       name: fishing animation back_36
       rect:
         serializedVersion: 2
-        x: 784
-        y: 159
-        width: 16
-        height: 24
+        x: 768
+        y: 144
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1257,12 +1257,12 @@ TextureImporter:
       name: fishing animation back_37
       rect:
         serializedVersion: 2
-        x: 16
-        y: 111
-        width: 16
-        height: 29
+        x: 0
+        y: 96
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1279,12 +1279,12 @@ TextureImporter:
       name: fishing animation back_38
       rect:
         serializedVersion: 2
-        x: 64
-        y: 111
-        width: 16
-        height: 28
+        x: 48
+        y: 96
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1301,12 +1301,12 @@ TextureImporter:
       name: fishing animation back_39
       rect:
         serializedVersion: 2
-        x: 112
-        y: 111
-        width: 16
-        height: 28
+        x: 96
+        y: 96
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1323,12 +1323,12 @@ TextureImporter:
       name: fishing animation back_40
       rect:
         serializedVersion: 2
-        x: 160
-        y: 111
-        width: 16
-        height: 25
+        x: 144
+        y: 96
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1345,12 +1345,12 @@ TextureImporter:
       name: fishing animation back_41
       rect:
         serializedVersion: 2
-        x: 208
-        y: 111
-        width: 16
-        height: 26
+        x: 192
+        y: 96
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1367,12 +1367,12 @@ TextureImporter:
       name: fishing animation back_42
       rect:
         serializedVersion: 2
-        x: 256
-        y: 111
-        width: 16
-        height: 26
+        x: 240
+        y: 96
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1389,12 +1389,12 @@ TextureImporter:
       name: fishing animation back_43
       rect:
         serializedVersion: 2
-        x: 304
-        y: 111
-        width: 16
-        height: 29
+        x: 288
+        y: 96
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1411,12 +1411,12 @@ TextureImporter:
       name: fishing animation back_44
       rect:
         serializedVersion: 2
-        x: 352
-        y: 111
-        width: 16
-        height: 28
+        x: 336
+        y: 96
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1433,12 +1433,12 @@ TextureImporter:
       name: fishing animation back_45
       rect:
         serializedVersion: 2
-        x: 400
-        y: 111
-        width: 16
-        height: 28
+        x: 384
+        y: 96
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1455,12 +1455,12 @@ TextureImporter:
       name: fishing animation back_46
       rect:
         serializedVersion: 2
-        x: 448
-        y: 111
-        width: 16
-        height: 25
+        x: 432
+        y: 96
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1477,12 +1477,12 @@ TextureImporter:
       name: fishing animation back_47
       rect:
         serializedVersion: 2
-        x: 496
-        y: 111
-        width: 16
-        height: 26
+        x: 480
+        y: 96
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1499,12 +1499,12 @@ TextureImporter:
       name: fishing animation back_48
       rect:
         serializedVersion: 2
-        x: 64
-        y: 63
-        width: 16
-        height: 27
+        x: 0
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1521,12 +1521,12 @@ TextureImporter:
       name: fishing animation back_49
       rect:
         serializedVersion: 2
-        x: 112
-        y: 63
-        width: 16
-        height: 28
+        x: 48
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1543,12 +1543,12 @@ TextureImporter:
       name: fishing animation back_50
       rect:
         serializedVersion: 2
-        x: 201
-        y: 89
-        width: 6
-        height: 6
+        x: 96
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1565,12 +1565,12 @@ TextureImporter:
       name: fishing animation back_51
       rect:
         serializedVersion: 2
-        x: 255
-        y: 90
-        width: 6
-        height: 6
+        x: 144
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1587,12 +1587,12 @@ TextureImporter:
       name: fishing animation back_52
       rect:
         serializedVersion: 2
-        x: 16
-        y: 63
-        width: 16
-        height: 26
+        x: 192
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1609,12 +1609,12 @@ TextureImporter:
       name: fishing animation back_53
       rect:
         serializedVersion: 2
-        x: 160
-        y: 63
-        width: 16
-        height: 21
+        x: 240
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1631,12 +1631,12 @@ TextureImporter:
       name: fishing animation back_54
       rect:
         serializedVersion: 2
-        x: 208
-        y: 63
-        width: 16
-        height: 20
+        x: 288
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1653,12 +1653,12 @@ TextureImporter:
       name: fishing animation back_55
       rect:
         serializedVersion: 2
-        x: 256
-        y: 63
-        width: 16
-        height: 20
+        x: 336
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1675,12 +1675,12 @@ TextureImporter:
       name: fishing animation back_56
       rect:
         serializedVersion: 2
-        x: 304
-        y: 63
-        width: 16
-        height: 18
+        x: 0
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1697,12 +1697,12 @@ TextureImporter:
       name: fishing animation back_57
       rect:
         serializedVersion: 2
-        x: 352
-        y: 63
-        width: 16
-        height: 18
+        x: 48
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1719,12 +1719,12 @@ TextureImporter:
       name: fishing animation back_58
       rect:
         serializedVersion: 2
-        x: 110
-        y: 15
-        width: 20
-        height: 21
+        x: 96
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1741,12 +1741,12 @@ TextureImporter:
       name: fishing animation back_59
       rect:
         serializedVersion: 2
-        x: 117
-        y: 33
-        width: 6
-        height: 9
+        x: 144
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1763,12 +1763,12 @@ TextureImporter:
       name: fishing animation back_60
       rect:
         serializedVersion: 2
-        x: 164
-        y: 36
-        width: 8
-        height: 8
+        x: 192
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1785,12 +1785,12 @@ TextureImporter:
       name: fishing animation back_61
       rect:
         serializedVersion: 2
-        x: 206
-        y: 15
-        width: 20
-        height: 34
+        x: 240
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1807,12 +1807,12 @@ TextureImporter:
       name: fishing animation back_62
       rect:
         serializedVersion: 2
-        x: 254
-        y: 15
-        width: 20
-        height: 34
+        x: 288
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1829,12 +1829,12 @@ TextureImporter:
       name: fishing animation back_63
       rect:
         serializedVersion: 2
-        x: 302
-        y: 15
-        width: 20
-        height: 34
+        x: 336
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1851,12 +1851,12 @@ TextureImporter:
       name: fishing animation back_64
       rect:
         serializedVersion: 2
-        x: 350
-        y: 15
-        width: 20
-        height: 34
+        x: 384
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1873,12 +1873,12 @@ TextureImporter:
       name: fishing animation back_65
       rect:
         serializedVersion: 2
-        x: 398
-        y: 15
-        width: 20
-        height: 34
+        x: 432
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1895,12 +1895,12 @@ TextureImporter:
       name: fishing animation back_66
       rect:
         serializedVersion: 2
-        x: 448
-        y: 32
-        width: 16
-        height: 16
+        x: 480
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1917,12 +1917,12 @@ TextureImporter:
       name: fishing animation back_67
       rect:
         serializedVersion: 2
-        x: 497
-        y: 33
-        width: 14
-        height: 14
+        x: 528
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1939,12 +1939,12 @@ TextureImporter:
       name: fishing animation back_68
       rect:
         serializedVersion: 2
-        x: 545
-        y: 33
-        width: 14
-        height: 14
+        x: 576
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1961,12 +1961,12 @@ TextureImporter:
       name: fishing animation back_69
       rect:
         serializedVersion: 2
-        x: 593
-        y: 33
-        width: 14
-        height: 14
+        x: 624
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1983,12 +1983,12 @@ TextureImporter:
       name: fishing animation back_70
       rect:
         serializedVersion: 2
-        x: 641
-        y: 33
-        width: 14
-        height: 14
+        x: 672
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2005,12 +2005,12 @@ TextureImporter:
       name: fishing animation back_71
       rect:
         serializedVersion: 2
-        x: 688
-        y: 32
-        width: 16
-        height: 16
+        x: 720
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2027,12 +2027,12 @@ TextureImporter:
       name: fishing animation back_72
       rect:
         serializedVersion: 2
-        x: 734
-        y: 15
-        width: 20
-        height: 34
+        x: 768
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2049,12 +2049,12 @@ TextureImporter:
       name: fishing animation back_73
       rect:
         serializedVersion: 2
-        x: 782
-        y: 15
-        width: 20
-        height: 34
+        x: 816
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2071,12 +2071,12 @@ TextureImporter:
       name: fishing animation back_74
       rect:
         serializedVersion: 2
-        x: 830
-        y: 15
-        width: 20
-        height: 34
+        x: 864
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2093,12 +2093,12 @@ TextureImporter:
       name: fishing animation back_75
       rect:
         serializedVersion: 2
-        x: 878
-        y: 15
-        width: 20
-        height: 34
+        x: 912
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2115,12 +2115,12 @@ TextureImporter:
       name: fishing animation back_76
       rect:
         serializedVersion: 2
-        x: 928
-        y: 32
-        width: 16
-        height: 16
+        x: 960
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2137,12 +2137,12 @@ TextureImporter:
       name: fishing animation back_77
       rect:
         serializedVersion: 2
-        x: 977
-        y: 33
-        width: 14
-        height: 14
+        x: 1008
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2159,12 +2159,12 @@ TextureImporter:
       name: fishing animation back_78
       rect:
         serializedVersion: 2
-        x: 1025
-        y: 33
-        width: 14
-        height: 14
+        x: 1056
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2181,12 +2181,12 @@ TextureImporter:
       name: fishing animation back_79
       rect:
         serializedVersion: 2
-        x: 1073
-        y: 33
-        width: 14
-        height: 14
+        x: 1104
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2203,12 +2203,12 @@ TextureImporter:
       name: fishing animation back_80
       rect:
         serializedVersion: 2
-        x: 1121
-        y: 33
-        width: 14
-        height: 14
+        x: 1152
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2225,12 +2225,12 @@ TextureImporter:
       name: fishing animation back_81
       rect:
         serializedVersion: 2
-        x: 1168
-        y: 32
-        width: 16
-        height: 16
+        x: 1200
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2247,12 +2247,12 @@ TextureImporter:
       name: fishing animation back_82
       rect:
         serializedVersion: 2
-        x: 1214
-        y: 15
-        width: 20
-        height: 34
+        x: 1248
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2269,12 +2269,12 @@ TextureImporter:
       name: fishing animation back_83
       rect:
         serializedVersion: 2
-        x: 1262
-        y: 15
-        width: 20
-        height: 34
+        x: 1296
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2291,12 +2291,12 @@ TextureImporter:
       name: fishing animation back_84
       rect:
         serializedVersion: 2
-        x: 1316
-        y: 36
-        width: 8
-        height: 8
+        x: 1344
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2313,12 +2313,12 @@ TextureImporter:
       name: fishing animation back_85
       rect:
         serializedVersion: 2
-        x: 1365
-        y: 36
-        width: 6
-        height: 6
+        x: 1392
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2335,12 +2335,12 @@ TextureImporter:
       name: fishing animation back_86
       rect:
         serializedVersion: 2
-        x: 16
-        y: 15
-        width: 16
-        height: 18
+        x: 1440
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2357,12 +2357,12 @@ TextureImporter:
       name: fishing animation back_87
       rect:
         serializedVersion: 2
-        x: 62
-        y: 15
-        width: 6
-        height: 6
+        x: 1488
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2375,495 +2375,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: fishing animation back_88
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 15
-        width: 16
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b2c6774eddfb98ce0800000000000000
-      internalID: -1402378849207489493
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_89
-      rect:
-        serializedVersion: 2
-        x: 76
-        y: 15
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3dfa5d7e6f833f760800000000000000
-      internalID: 7490393238349918163
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_90
-      rect:
-        serializedVersion: 2
-        x: 158
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a4382231eab20b690800000000000000
-      internalID: -7588517345473952950
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_91
-      rect:
-        serializedVersion: 2
-        x: 446
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0c04cd92de4a18070800000000000000
-      internalID: 8106942142760108224
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_92
-      rect:
-        serializedVersion: 2
-        x: 494
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 838f6f67c41c6d190800000000000000
-      internalID: -7937944759036348360
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_93
-      rect:
-        serializedVersion: 2
-        x: 542
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5f9bf866a4dd4ddf0800000000000000
-      internalID: -156256775433111051
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_94
-      rect:
-        serializedVersion: 2
-        x: 590
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4a9c38456261f8470800000000000000
-      internalID: 8398956183951755684
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_95
-      rect:
-        serializedVersion: 2
-        x: 638
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3fe70d87979d97530800000000000000
-      internalID: 3853350071933370099
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_96
-      rect:
-        serializedVersion: 2
-        x: 686
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5a372b0b72ff38650800000000000000
-      internalID: 6234106855144190885
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_97
-      rect:
-        serializedVersion: 2
-        x: 926
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 41dc4e7b6a45676d0800000000000000
-      internalID: -2993111827314586348
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_98
-      rect:
-        serializedVersion: 2
-        x: 974
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: dc35446825e119140800000000000000
-      internalID: 4724590823877137357
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_99
-      rect:
-        serializedVersion: 2
-        x: 1022
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b595ffc23bf4de4a0800000000000000
-      internalID: -6562501451036272293
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_100
-      rect:
-        serializedVersion: 2
-        x: 1070
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5a2e5bf5f9303ca00800000000000000
-      internalID: 775467543878296229
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_101
-      rect:
-        serializedVersion: 2
-        x: 1118
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c87a2d95f69d3f980800000000000000
-      internalID: -8506216198901160052
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_102
-      rect:
-        serializedVersion: 2
-        x: 1166
-        y: 15
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 22d386e9b4905f140800000000000000
-      internalID: 4752715202144255266
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_103
-      rect:
-        serializedVersion: 2
-        x: 1310
-        y: 15
-        width: 20
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f640b672a27ea1830800000000000000
-      internalID: 4042797783754409071
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_104
-      rect:
-        serializedVersion: 2
-        x: 1358
-        y: 15
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4d93bcce2b99ec550800000000000000
-      internalID: 6183048332182239700
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_105
-      rect:
-        serializedVersion: 2
-        x: 1360
-        y: 15
-        width: 16
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: acb85ecdfabee51a0800000000000000
-      internalID: -6818753645234517046
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_106
-      rect:
-        serializedVersion: 2
-        x: 1372
-        y: 15
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: eb461cb80cacb38f0800000000000000
-      internalID: -559630800350255938
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_107
-      rect:
-        serializedVersion: 2
-        x: 1408
-        y: 15
-        width: 16
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1c2feb848dd875640800000000000000
-      internalID: 5068675865701708481
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_108
-      rect:
-        serializedVersion: 2
-        x: 1456
-        y: 15
-        width: 16
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d4503bb745bb9d2b0800000000000000
-      internalID: -5559206293485189811
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fishing animation back_109
-      rect:
-        serializedVersion: 2
-        x: 1504
-        y: 15
-        width: 16
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 367bc8c0c8163d680800000000000000
-      internalID: -8731527998407395485
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 7a35998a40312804689a8e25eb2d2490
     internalID: 0
     vertices: []
     indices: 
@@ -2871,21 +2387,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":48.0,"y":48.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       fishing animation back_0: 3096965428726825625
       fishing animation back_1: 1699914962904642407
       fishing animation back_10: -383929383630382893
-      fishing animation back_100: 775467543878296229
-      fishing animation back_101: -8506216198901160052
-      fishing animation back_102: 4752715202144255266
-      fishing animation back_103: 4042797783754409071
-      fishing animation back_104: 6183048332182239700
-      fishing animation back_105: -6818753645234517046
-      fishing animation back_106: -559630800350255938
-      fishing animation back_107: 5068675865701708481
-      fishing animation back_108: -5559206293485189811
-      fishing animation back_109: -8731527998407395485
       fishing animation back_11: 8196909579312000219
       fishing animation back_12: 2214896195857046112
       fishing animation back_13: -3873048588007939299
@@ -2970,19 +2478,7 @@ TextureImporter:
       fishing animation back_85: -1041107668431305012
       fishing animation back_86: 4520770192003021472
       fishing animation back_87: -671318655270650090
-      fishing animation back_88: -1402378849207489493
-      fishing animation back_89: 7490393238349918163
       fishing animation back_9: 2154784858708988395
-      fishing animation back_90: -7588517345473952950
-      fishing animation back_91: 8106942142760108224
-      fishing animation back_92: -7937944759036348360
-      fishing animation back_93: -156256775433111051
-      fishing animation back_94: 8398956183951755684
-      fishing animation back_95: 3853350071933370099
-      fishing animation back_96: 6234106855144190885
-      fishing animation back_97: -2993111827314586348
-      fishing animation back_98: 4724590823877137357
-      fishing animation back_99: -6562501451036272293
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
