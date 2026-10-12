@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerMovements _movements;
     [SerializeField] private PlayerActions _actions;
 
+    [Header("Targeting")]
+    [Tooltip("Distance de la cible devant les pieds du joueur, en cases.")]
+    [SerializeField] private float _targetDistance = 1f;
+
     public PlayerActions Actions => _actions;
     public PlayerFishing Fishing { get; private set; }
 
@@ -22,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private int _currentSlotIndex = 0;
 
     private bool _inventoryToggle = false;
+    private BoxCollider2D _bodyCollider;
     private static readonly List<RaycastResult> UIRaycastResults = new List<RaycastResult>();
     
     public event Action<int> OnSlotSelected;
@@ -32,6 +37,9 @@ public class PlayerController : MonoBehaviour
         Fishing = GetComponent<PlayerFishing>();
         if (Fishing == null) Fishing = gameObject.AddComponent<PlayerFishing>();
         Fishing.Init(_animator, _movements);
+
+        // Collider du corps, porté par la racine du joueur : il est aux pieds du personnage.
+        _bodyCollider = GetComponentInParent<BoxCollider2D>();
     }
 
     private void Start()
@@ -102,11 +110,22 @@ public class PlayerController : MonoBehaviour
             if (_currentItem != null && _currentItem is IUsable usable)
             {
                 ItemData usedItem = _currentItem;
-                bool used = usable.Use(this, (Vector2)transform.position + _movements.LastDirection / 2/*GridWorld.Instance.WorldToGridPos((Vector2)transform.position + Vector2.up)*/);
+                bool used = usable.Use(this, GetTargetPosition());
 
                 if (used && usedItem.IsConsumable) _inventory.Remove(_currentSlotIndex);
             }
         }
+    }
+
+    /// <summary>
+    /// Position visée par les outils : devant les pieds du joueur, dans la dernière direction regardée.
+    /// Calculée depuis le collider et non depuis transform.position : la racine du prefab est décalée du corps
+    /// (sprites à +0,42 en X, collider à -0,43 en Y), ce qui faussait la portée selon la direction.
+    /// </summary>
+    private Vector2 GetTargetPosition()
+    {
+        Vector2 origin = _bodyCollider != null ? (Vector2)_bodyCollider.bounds.center : (Vector2)transform.position;
+        return origin + _movements.LastDirection.normalized * _targetDistance;
     }
 
     /// <summary>
