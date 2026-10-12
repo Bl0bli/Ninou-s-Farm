@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fec2cbb22954a6b952a8147f506955a, type: 3}
   m_Name: Fish_Purple
   m_EditorClassIdentifier: Assembly-CSharp::FishData
-  WorldSprite: {fileID: 4632762892669832198, guid: 7acc1a0d2e5b014449e24bab7a5e2ca5, type: 3}
-  Icon: {fileID: 4632762892669832198, guid: 7acc1a0d2e5b014449e24bab7a5e2ca5, type: 3}
+  WorldSprite: {fileID: 5951411785357035489, guid: 7acc1a0d2e5b014449e24bab7a5e2ca5, type: 3}
+  Icon: {fileID: 5951411785357035489, guid: 7acc1a0d2e5b014449e24bab7a5e2ca5, type: 3}
   Name: Purple Fish
   Description: 
   Amount: 1

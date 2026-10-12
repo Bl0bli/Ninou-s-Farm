@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fec2cbb22954a6b952a8147f506955a, type: 3}
   m_Name: Fish_Clownfish
   m_EditorClassIdentifier: Assembly-CSharp::FishData
-  WorldSprite: {fileID: 9130382852496493255, guid: 7acc1a0d2e5b014449e24bab7a5e2ca5, type: 3}
-  Icon: {fileID: 9130382852496493255, guid: 7acc1a0d2e5b014449e24bab7a5e2ca5, type: 3}
+  WorldSprite: {fileID: -5975527012522302357, guid: 7acc1a0d2e5b014449e24bab7a5e2ca5, type: 3}
+  Icon: {fileID: -5975527012522302357, guid: 7acc1a0d2e5b014449e24bab7a5e2ca5, type: 3}
   Name: Clownfish
   Description: 
   Amount: 1
