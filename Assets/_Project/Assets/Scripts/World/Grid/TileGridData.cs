@@ -41,6 +41,8 @@ public class TileGridData
     {
         if (!IsInBounds(gridPosition)) return false;
         _tiles[gridPosition.x, gridPosition.y].State = state;
+        if (state == TileState.NONE) _tiles[gridPosition.x, gridPosition.y].IsWatered = false;
+
         OnTileChanged?.Invoke(gridPosition);
         return true;
     }

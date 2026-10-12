@@ -242,6 +242,9 @@ public static class ToolsTestSceneBuilder
         if (axe != null) tools.Add(axe);
         tools.Add(GetOrCreateHoeAsset());
 
+        WateringCanData wateringCan = FindFirstAsset<WateringCanData>();
+        if (wateringCan != null) tools.Add(wateringCan);
+
         SerializedObject so = new SerializedObject(inventory);
         SerializedProperty startingItems = so.FindProperty("_startingItems");
 

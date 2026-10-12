@@ -42,10 +42,18 @@ public class CropInstance : Dropable
 
     private void OnHourChanged(float _)
     {
+        if (!IsWatered()) return;
+
         _elapsedHours++;
         SetStage(ComputeStage());
     }
     
+    private bool IsWatered()
+    {
+        ITileGrid grid = TileGridLocator.Current;
+        return grid != null && grid.GetTileAt(_cell).IsWatered;
+    }
+
     private int ComputeStage()
     {
         int lastStage = _cropData.GrowStages.Count - 1;

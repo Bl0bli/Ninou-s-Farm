@@ -21,6 +21,12 @@ public class PlayerController : MonoBehaviour
     public PlayerActions Actions => _actions;
     public PlayerFishing Fishing { get; private set; }
 
+    /// <summary>SpriteRenderer du personnage (porté par l'objet de l'Animator) : position et tri des effets calés sur le sprite.</summary>
+    public SpriteRenderer Visual => _animator.GetComponent<SpriteRenderer>();
+
+    /// <summary>Dernière direction regardée par le joueur.</summary>
+    public Vector2 FacingDirection => _movements.LastDirection;
+
     [Header("State")] 
     private ItemData _currentItem;
     private int _currentSlotIndex = 0;
