@@ -17,9 +17,9 @@ MonoBehaviour:
   _icon: {fileID: 8796380703106566107, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
   _growTime: 3
   _growStages:
-  - {fileID: 2072862404122990272, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
-  - {fileID: -1102263230651182495, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
   - {fileID: 1881330961402987585, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
   - {fileID: 3392196742602721534, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: -797183112896774214, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
+  - {fileID: -8226948184702604985, guid: 396d3223fda93f4489941f8301feec3d, type: 3}
   _loot: {fileID: 11400000, guid: 6532103b65d6f17418ff3d4b44782844, type: 2}
   _seed: {fileID: 11400000, guid: 6eb1e2f5cd029094c878e9cc0c32bae3, type: 2}
