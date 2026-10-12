@@ -20,21 +20,21 @@ AnimationClip:
   m_PPtrCurves:
   - serializedVersion: 2
     curve:
-    - time: 0
+    - time: 0.0
       value: {fileID: 2537848567546242354, guid: 1541d5bd55e5f424baf019a05622f6cf, type: 3}
-    - time: 0.13333334
+    - time: 0.1333
       value: {fileID: -1004689174341951383, guid: 1541d5bd55e5f424baf019a05622f6cf, type: 3}
-    - time: 0.21666667
+    - time: 0.2167
       value: {fileID: 7843901438540452665, guid: 1541d5bd55e5f424baf019a05622f6cf, type: 3}
-    - time: 0.36666667
+    - time: 0.3667
       value: {fileID: -5080661937418639913, guid: 1541d5bd55e5f424baf019a05622f6cf, type: 3}
-    - time: 0.46666667
+    - time: 0.4667
       value: {fileID: 169541720026308916, guid: 1541d5bd55e5f424baf019a05622f6cf, type: 3}
-    - time: 0.6166667
+    - time: 0.6167
       value: {fileID: 9137108652115989709, guid: 1541d5bd55e5f424baf019a05622f6cf, type: 3}
     - time: 0.7
       value: {fileID: -4680384356363607053, guid: 1541d5bd55e5f424baf019a05622f6cf, type: 3}
-    - time: 0.8333333
+    - time: 0.8333
       value: {fileID: -8443217990298860728, guid: 1541d5bd55e5f424baf019a05622f6cf, type: 3}
     attribute: m_Sprite
     path: 
