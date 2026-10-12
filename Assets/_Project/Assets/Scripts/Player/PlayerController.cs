@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerActions _actions;
 
     public PlayerActions Actions => _actions;
+    public PlayerFishing Fishing { get; private set; }
 
     [Header("State")] 
     private ItemData _currentItem;
@@ -22,6 +23,14 @@ public class PlayerController : MonoBehaviour
     private bool _isInUI = false;
     
     public event Action<int> OnSlotSelected;
+
+    private void Awake()
+    {
+        // Ajouté par code : aucun câblage à faire dans l'Inspector ni dans le prefab.
+        Fishing = GetComponent<PlayerFishing>();
+        if (Fishing == null) Fishing = gameObject.AddComponent<PlayerFishing>();
+        Fishing.Init(_animator, _movements);
+    }
 
     private void Start()
     {
@@ -83,6 +92,13 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
+            // Pendant une pêche, le clic valide la jauge au lieu de relancer l'outil.
+            if (Fishing.IsActive)
+            {
+                Fishing.Confirm();
+                return;
+            }
+
             if (_currentItem != null && _currentItem is IUsable usable)
             {
                 ItemData usedItem = _currentItem;
@@ -125,5 +141,10 @@ public class PlayerController : MonoBehaviour
     {
         if(index == _currentSlotIndex) 
             CheckSlot();
+    }
+
+    public void SetParameterBool(string isFishingParamName, bool b)
+    {
+        _animator.SetBool(isFishingParamName, b);
     }
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c75f9fc9193f415180d0c128d3da304d, type: 3}
+  m_Name: FishLootTable_Default
+  m_EditorClassIdentifier: Assembly-CSharp::FishLootTable
+  _entries:
+  - Fish: {fileID: 11400000, guid: 3bbb8a07d538406a9d9482c1975e1008, type: 2}
+    Weight: 60
+  - Fish: {fileID: 11400000, guid: bac4de0d30214469a47d52307503ba54, type: 2}
+    Weight: 30
+  - Fish: {fileID: 11400000, guid: a0cbc7407e0643efae9d786f2486c170, type: 2}
+    Weight: 10
