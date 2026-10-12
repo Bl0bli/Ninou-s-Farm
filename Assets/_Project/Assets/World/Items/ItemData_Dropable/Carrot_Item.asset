@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1824dead5d3f9944b8714c9b76f6ede2, type: 3}
   m_Name: Carrot_Item
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  WorldSprite: {fileID: 9221300307294225941, guid: 1b8cef3a0057cb744a13de324ac0ccd3, type: 3}
-  Icon: {fileID: 9221300307294225941, guid: 1b8cef3a0057cb744a13de324ac0ccd3, type: 3}
+  WorldSprite: {fileID: -763837288768503771, guid: c560b4e85a25bb14486b17c837dc2d3f, type: 3}
+  Icon: {fileID: -763837288768503771, guid: c560b4e85a25bb14486b17c837dc2d3f, type: 3}
   Name: Carrot
   Description: 
   Amount: 1

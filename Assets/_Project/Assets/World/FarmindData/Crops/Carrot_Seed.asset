@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d6c796f6d4c6aa48af9ef4a78c918fc, type: 3}
-  m_Name: Seed_Carrot
+  m_Name: Carrot_Seed
   m_EditorClassIdentifier: Assembly-CSharp::SeedData
-  WorldSprite: {fileID: -1820743261052749542, guid: c560b4e85a25bb14486b17c837dc2d3f, type: 3}
+  WorldSprite: {fileID: 6499957318792860802, guid: c560b4e85a25bb14486b17c837dc2d3f, type: 3}
   Icon: {fileID: 6499957318792860802, guid: c560b4e85a25bb14486b17c837dc2d3f, type: 3}
   Name: Carrot seeds
   Description: 

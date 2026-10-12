@@ -22,11 +22,11 @@ public static class ToolsTestSceneBuilder
     private const string SourceScenePath = "Assets/_Project/Scenes/Test_1.unity";
     private const string TargetScenePath = "Assets/_Project/Scenes/Test_Tools.unity";
 
-    private const string GroundTilePath = "Assets/_Project/Assets/World/RuleTile_Grass.asset";
-    private const string FloorTilePath = "Assets/_Project/Assets/World/RuleTile_Grass_High.asset";
-    private const string WaterTilePath = "Assets/_Project/Assets/World/RuleTile_Water.asset";
+    private const string GroundTilePath = "Assets/_Project/Assets/World/RuleTiles/RuleTile_Grass.asset";
+    private const string FloorTilePath = "Assets/_Project/Assets/World/RuleTiles/RuleTile_Grass_High.asset";
+    private const string WaterTilePath = "Assets/_Project/Assets/World/RuleTiles/RuleTile_Water.asset";
     private const string TreePrefabPath = "Assets/_Project/Assets/Prefabs/Trees/Tree.prefab";
-    private const string HoeAssetPath = "Assets/_Project/Assets/Scripts/Tools/HoeData.asset";
+    private const string HoeAssetPath = "Assets/_Project/Assets/World/ToolData/HoeData.asset";
 
     // Carte : un rectangle de terre bordé d'eau, avec un étang (eau) et un plateau (falaise).
     private const int MapWidth = 24;
