@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -20,7 +22,7 @@ public class PlayerController : MonoBehaviour
     private int _currentSlotIndex = 0;
 
     private bool _inventoryToggle = false;
-    private bool _isInUI = false;
+    private static readonly List<RaycastResult> UIRaycastResults = new List<RaycastResult>();
     
     public event Action<int> OnSlotSelected;
 
@@ -60,8 +62,6 @@ public class PlayerController : MonoBehaviour
     /// <param name="context">Le contexte de l'action contenant les données de défilement.</param>
     public void HandleScrollWheel(InputAction.CallbackContext context)
     {
-        if (_isInUI) return; 
-
         if (!context.performed) return;
 
         Vector2 scroll = context.ReadValue<Vector2>();
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            // Pendant une pêche, le clic valide la jauge au lieu de relancer l'outil.
+            if (IsPointerOverUI()) return;
             if (Fishing.IsActive)
             {
                 Fishing.Confirm();
@@ -104,10 +104,24 @@ public class PlayerController : MonoBehaviour
                 ItemData usedItem = _currentItem;
                 bool used = usable.Use(this, (Vector2)transform.position + _movements.LastDirection / 2/*GridWorld.Instance.WorldToGridPos((Vector2)transform.position + Vector2.up)*/);
 
-                // Retrait après l'utilisation, sur l'objet utilisé : seul un usage réussi consomme.
                 if (used && usedItem.IsConsumable) _inventory.Remove(_currentSlotIndex);
             }
         }
+    }
+
+    /// <summary>
+    /// Indique si le pointeur est au-dessus d'un élément d'interface (toolbar, inventaire...).
+    /// Lancer le rayon à la demande évite IsPointerOverGameObject, qui affiche un warning
+    /// quand il est appelé depuis un callback de l'Input System.
+    /// </summary>
+    private static bool IsPointerOverUI()
+    {
+        if (EventSystem.current == null || Pointer.current == null) return false;
+
+        PointerEventData pointer = new PointerEventData(EventSystem.current) { position = Pointer.current.position.ReadValue() };
+        UIRaycastResults.Clear();
+        EventSystem.current.RaycastAll(pointer, UIRaycastResults);
+        return UIRaycastResults.Count > 0;
     }
 
 	public void TriggerAnimation(string triggerName) 
