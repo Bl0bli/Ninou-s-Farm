@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
         else if (scroll.y < 0)
             newIndex++;
         
-        int maxSlots = _inventory.Inventory.Length; 
+        int maxSlots = _inventory.ToolbarSize; // la molette ne parcourt que la toolbar 
         
         if (newIndex < 0) 
             newIndex = maxSlots - 1;
@@ -157,8 +157,8 @@ public class PlayerController : MonoBehaviour
     private void SelectSlot(int index)
     {
         if (_inventory == null) return;
-        if (_inventory.Inventory == null || _inventory.Inventory.Length == 0) return;
-        if (index < 0 || index >= _inventory.Inventory.Length) return;
+        // Seuls les slots de la toolbar s'équipent ; ceux de la grille servent au rangement.
+        if (!_inventory.IsValidIndex(index) || index >= _inventory.ToolbarSize) return;
         
         _currentSlotIndex = index;
 
@@ -169,7 +169,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckSlot()
     {
-        InventorySlot selectedSlot = _inventory.Inventory[_currentSlotIndex];
+        StorageSlot selectedSlot = _inventory.GetSlot(_currentSlotIndex);
         
         _currentItem = selectedSlot.IsEmpty ? null : selectedSlot.Item;
 

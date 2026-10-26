@@ -5,6 +5,9 @@ public abstract class ToolData : ItemData, IUsable
     public float StaminaCost;
     public float Cooldown;
 
+    // Un outil ne s'empile pas : chaque outil occupe son propre slot.
+    public override int MaxStack => 1;
+
 	[Header("Animation Settings")]
     [Tooltip("Le nom du Trigger dans l'Animator (ex: 'Chop', 'Water')")]
     [SerializeField]protected string _animationTriggerName;

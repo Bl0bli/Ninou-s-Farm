@@ -1,115 +1,56 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 
-public struct InventorySlot
-{
-    public ItemData Item;
-    public int Quantity;
-    public bool IsEmpty => Item == null || Quantity <= 0;
-    public bool IsFull => Quantity >= 99;
-
-    /// <summary>
-    /// Réinitialise l'emplacement d'inventaire en le vidant de son contenu.
-    /// </summary>
-    public void Clear()
-    {
-        Item = null;
-        Quantity = 0;
-    }
-}
-public class PlayerInventory : MonoBehaviour
+/// <summary>
+/// Inventaire du joueur : un Storage, plus les objets de départ et le ramassage au sol.
+/// Sa taille vient de l'interface : autant de slots que la toolbar et la grille en affichent.
+/// </summary>
+public class PlayerInventory : Storage
 {
     [SerializeField] private ItemData[] _startingItems;
 
-    private InventorySlot[] _inventory;
-    private int _maxInventorySize = 10;
+    [Tooltip("Interface qui fixe la taille de l'inventaire (toolbar + grille). Cherchée dans le joueur si vide.")]
+    [SerializeField] private UIInventory _inventoryView;
 
-    public InventorySlot[] Inventory => _inventory;
+    /// <summary>Nombre de slots de la toolbar (les premiers index) : les seuls que le joueur peut équiper.</summary>
+    public int ToolbarSize { get; private set; }
 
-    public event Action OnInit;
-    public event Action<int> OnSlotChanged;
-
-    private void Start()
+    protected override void Start()
     {
-        _inventory = new InventorySlot[_maxInventorySize];
-        for (int i = 0; i < _maxInventorySize; i++)
-        {
-            _inventory[i] = new InventorySlot();
-        }
+        if (_inventoryView == null) _inventoryView = transform.root.GetComponentInChildren<UIInventory>(true);
 
-        OnInit?.Invoke();
+        if (_inventoryView != null)
+            Initialize(_inventoryView.SlotCount);
+        else
+            Debug.LogWarning("[PlayerInventory] Aucun UIInventory trouvé : la capacité de l'Inspector est utilisée.");
+
+        base.Start(); // n'initialise qu'à défaut, avec la capacité de l'Inspector
+        ToolbarSize = _inventoryView != null ? Mathf.Min(_inventoryView.ToolbarSize, Capacity) : Capacity;
 
         foreach (ItemData item in _startingItems)
         {
             if (item != null) PickUp(item);
         }
     }
-    
+
     /// <summary>
     /// Récupère un objet et tente de le stocker dans l'inventaire.
+    /// Tout ou rien : si la quantité ne tient pas entièrement, rien n'est ajouté
+    /// (sinon l'objet au sol resterait entier alors qu'une partie serait déjà rangée).
     /// </summary>
     /// <param name="item">Les données de l'objet à ajouter.</param>
     /// <returns>Retourne true si l'objet a pu être stocké, sinon false.</returns>
     public bool PickUp(ItemData item)
     {
-        if (TryStack(item))
+        if (item == null) return false;
+
+        int quantity = Mathf.Max(1, item.Amount);
+        if (!CanAdd(item, quantity))
         {
-            return true;
+            Debug.Log($"[PlayerInventory] Plus de place pour {item.Name}");
+            return false;
         }
 
-        return TryAddNewItem(item);
-    }
-    
-    /// <summary>
-    /// Retire une quantité d'un emplacement et vide l'emplacement s'il tombe à zéro.
-    /// </summary>
-    /// <param name="index">L'index de l'emplacement.</param>
-    /// <param name="quantity">La quantité à retirer.</param>
-    /// <returns>Retourne true si la quantité a pu être retirée, sinon false.</returns>
-    public bool Remove(int index, int quantity = 1)
-    {
-        if (_inventory == null || index < 0 || index >= _inventory.Length) return false;
-        if (_inventory[index].IsEmpty || _inventory[index].Quantity < quantity) return false;
-
-        // Écriture directe dans le tableau : InventorySlot est une struct, une copie locale serait perdue.
-        _inventory[index].Quantity -= quantity;
-        if (_inventory[index].Quantity <= 0) _inventory[index].Clear();
-
-        OnSlotChanged?.Invoke(index);
+        Add(item, quantity);
         return true;
-    }
-
-    private bool TryAddNewItem(ItemData item)
-    {
-        for (int i = 0; i < _inventory.Length; i++)
-        {
-            if (_inventory[i].IsEmpty)
-            {
-                _inventory[i].Item = item;
-                _inventory[i].Quantity = item.Amount;
-                OnSlotChanged?.Invoke(i);
-                return true; 
-            }
-        }
-        
-        Debug.Log($"[PlayerInventory] TryAddNewItem Failed {item.Name}");
-        return false;
-    }
-
-    private bool TryStack(ItemData item)
-    {
-        for (int i = 0; i < _inventory.Length; i++)
-        {
-            if (!_inventory[i].IsEmpty && !_inventory[i].IsFull && _inventory[i].Item == item)
-            {
-                _inventory[i].Quantity += item.Amount;
-                OnSlotChanged?.Invoke(i);
-                return true;
-            }
-        }
-        Debug.Log($"[PlayerInventory] Stack Failed {item.Name}");
-        return false;
     }
 }
