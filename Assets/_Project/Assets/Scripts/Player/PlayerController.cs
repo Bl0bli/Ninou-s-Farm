@@ -18,11 +18,22 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Distance de la cible devant les pieds du joueur, en cases.")]
     [SerializeField] private float _targetDistance = 1f;
 
+    [Header("Interaction")]
+    [Tooltip("Sprite affiché au-dessus du personnage quand un objet est à portée (future touche E). Vide : une touche dessinée par défaut.")]
+    [SerializeField] private Sprite _interactPromptSprite;
+    [SerializeField] private Vector2 _interactPromptOffset = new Vector2(0f, 1.1f);
+    [Tooltip("Layer du collider du joueur qui sert de zone d'interaction : un objet interactif qui le chevauche est à portée.")]
+    [SerializeField] private string _interactHitboxLayer = "IntaractHitBox";
+
     public PlayerActions Actions => _actions;
     public PlayerFishing Fishing { get; private set; }
+    public PlayerInteractor Interactor { get; private set; }
 
     /// <summary>SpriteRenderer du personnage (porté par l'objet de l'Animator) : position et tri des effets calés sur le sprite.</summary>
     public SpriteRenderer Visual => _animator.GetComponent<SpriteRenderer>();
+
+    /// <summary>Centre du collider du corps (les pieds), ou la position du joueur à défaut.</summary>
+    public Vector2 FeetPosition => _bodyCollider != null ? (Vector2)_bodyCollider.bounds.center : (Vector2)transform.position;
 
     /// <summary>Dernière direction regardée par le joueur.</summary>
     public Vector2 FacingDirection => _movements.LastDirection;
@@ -43,6 +54,10 @@ public class PlayerController : MonoBehaviour
         Fishing = GetComponent<PlayerFishing>();
         if (Fishing == null) Fishing = gameObject.AddComponent<PlayerFishing>();
         Fishing.Init(_animator, _movements);
+
+        Interactor = GetComponent<PlayerInteractor>();
+        if (Interactor == null) Interactor = gameObject.AddComponent<PlayerInteractor>();
+        Interactor.Init(this, _interactPromptSprite, _interactPromptOffset, _interactHitboxLayer);
 
         // Collider du corps, porté par la racine du joueur : il est aux pieds du personnage.
         _bodyCollider = GetComponentInParent<BoxCollider2D>();
