@@ -121,6 +121,8 @@ Pour régénérer les ressources après une modif côté Unity : `python Godot/t
 - Marche sur 8 directions : les 4 clips diagonaux (feuille « teemo 8 directions », cases de 16x16) sont convertis avec une
   marge transparente pour tomber au centre d'une case de 48x48, comme le pivot Unity. `PlayerMovements.MovingAnimation`
   choisit la diagonale quand le plus petit axe dépasse ~41 % du plus grand ; à l'arrêt le personnage regarde en 4 directions.
+  Les clips diagonaux durent 0,32 s contre 0,85 s pour les autres : `WalkCycleRatio` les ralentit pour que tous les pas
+  bouclent en autant de temps (le blend tree d'Unity synchronisait les clips), sinon les jambes allaient 2,7 fois trop vite.
 - Les animations du personnage sont lues directement dans les `.anim` Unity (la feuille est découpée en 48×48) ;
   le `model.json` de la skill `ninou-character-anims` ne sert plus au port.
 

@@ -150,8 +150,33 @@ public partial class PlayerMovements : CharacterBody2D
 
         bool moving = _isMoving && CanMove;
         Vector2 dir = moving ? _currentInput : _lastDirection;
-        _sprite.SpeedScale = moving ? _speedScaler / 2f : _speedIdle;
-        PlayAnimation(moving ? MovingAnimation(dir) : $"idle_{DirectionSuffix(dir)}");
+        string anim = moving ? MovingAnimation(dir) : $"idle_{DirectionSuffix(dir)}";
+        // Marche : la cadence des pas doit suivre la vitesse de déplacement, quelle que soit la direction.
+        _sprite.SpeedScale = moving ? _speedScaler / 2f * WalkCycleRatio(anim) : _speedIdle;
+        PlayAnimation(anim);
+    }
+
+    /// <summary>
+    /// Les clips diagonaux sont bien plus courts que les autres (0,32 s contre 0,85 s) : lus tels quels, les jambes
+    /// iraient 2,7 fois plus vite pour la même vitesse de déplacement. Le blend tree d'Unity synchronisait la durée
+    /// des clips ; ici on ralentit chaque clip de marche pour qu'il boucle en autant de temps que « moving_down ».
+    /// </summary>
+    private float WalkCycleRatio(string anim)
+    {
+        float reference = CycleSeconds("moving_down");
+        float own = CycleSeconds(anim);
+        return reference > 0f && own > 0f ? own / reference : 1f;
+    }
+
+    private float CycleSeconds(string anim)
+    {
+        SpriteFrames frames = _sprite.SpriteFrames;
+        if (!frames.HasAnimation(anim)) return 0f;
+
+        float total = 0f;
+        for (int i = 0; i < frames.GetFrameCount(anim); i++) total += frames.GetFrameDuration(anim, i);
+        float speed = (float)frames.GetAnimationSpeed(anim);
+        return speed > 0f ? total / speed : 0f;
     }
 
     /// <summary>
