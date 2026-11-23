@@ -123,6 +123,7 @@ Pour régénérer les ressources après une modif côté Unity : `python Godot/t
   choisit la diagonale quand le plus petit axe dépasse ~41 % du plus grand ; à l'arrêt le personnage regarde en 4 directions.
   Les clips diagonaux durent 0,32 s contre 0,85 s pour les autres : `WalkCycleRatio` les ralentit pour que tous les pas
   bouclent en autant de temps (le blend tree d'Unity synchronisait les clips), sinon les jambes allaient 2,7 fois trop vite.
+  Une synchronisation exacte paraissait un peu lente : `_diagonalWalkSpeed` (nœud Player, 1,25 par défaut) l'accélère en diagonale.
 - Les animations du personnage sont lues directement dans les `.anim` Unity (la feuille est découpée en 48×48) ;
   le `model.json` de la skill `ninou-character-anims` ne sert plus au port.
 

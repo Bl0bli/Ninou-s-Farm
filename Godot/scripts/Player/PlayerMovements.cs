@@ -21,6 +21,12 @@ public partial class PlayerMovements : CharacterBody2D
     /// <summary>Vitesse de marche, en cases par seconde (comme _speedScaler dans Unity).</summary>
     [Export] private float _speedScaler = 3f;
 
+    /// <summary>
+    /// Cadence des pas en diagonale, par rapport à une marche synchronisée sur les autres directions
+    /// (1 = même durée de cycle, 1,25 = 25 % plus rapide). 1 paraissait un peu lent, la lecture brute des clips (2,7) trop rapide.
+    /// </summary>
+    [Export(PropertyHint.Range, "0.5,3,0.05")] private float _diagonalWalkSpeed = 1.25f;
+
     /// <summary>Vitesse de lecture des animations au repos (Animator.speed dans Unity).</summary>
     [Export] private float _speedIdle = 1.25f;
 
@@ -165,7 +171,10 @@ public partial class PlayerMovements : CharacterBody2D
     {
         float reference = CycleSeconds("moving_down");
         float own = CycleSeconds(anim);
-        return reference > 0f && own > 0f ? own / reference : 1f;
+        if (reference <= 0f || own <= 0f) return 1f;
+
+        bool cardinal = anim is "moving_up" or "moving_down" or "moving_left" or "moving_right";
+        return own / reference * (cardinal ? 1f : _diagonalWalkSpeed);
     }
 
     private float CycleSeconds(string anim)
