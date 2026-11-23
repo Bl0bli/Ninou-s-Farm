@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="AxeData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/Tools/AxeData.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Objects/Items/tools_and_meterials.png" id="2_texture2d"]
+[ext_resource type="PackedScene" path="res://scenes/objects/axe_hitbox.tscn" id="3_packedscene"]
+
+[sub_resource type="AtlasTexture" id="atlas_1"]
+atlas = ExtResource("2_texture2d")
+region = Rect2(17, 0, 15, 17)
+
+[sub_resource type="AtlasTexture" id="atlas_2"]
+atlas = ExtResource("2_texture2d")
+region = Rect2(17, 0, 15, 17)
+
+[resource]
+script = ExtResource("1_script")
+WorldSprite = SubResource("atlas_1")
+Icon = SubResource("atlas_2")
+Name = "Axe"
+Amount = 1
+StaminaCost = 1
+Cooldown = 1
+_animationName = "chop"
+_actionScene = ExtResource("3_packedscene")
+_targetLayers = 32
+_damage = 1
+_actionDuration = 0.3
+_spawnOffset = 0.5

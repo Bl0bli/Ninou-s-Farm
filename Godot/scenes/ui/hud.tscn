@@ -1,0 +1,309 @@
+[gd_scene load_steps=21 format=3]
+
+[ext_resource type="Script" path="res://scripts/UI/PixelUIRoot.cs" id="1_root"]
+[ext_resource type="Theme" path="res://resources/ui/ui_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" path="res://resources/ui/panel.tres" id="3_panel"]
+[ext_resource type="Script" path="res://scripts/UI/UIInventory.cs" id="4_inventory"]
+[ext_resource type="Script" path="res://scripts/UI/UIToolbar.cs" id="5_toolbar"]
+[ext_resource type="Script" path="res://scripts/UI/MenuSelector.cs" id="6_selector"]
+[ext_resource type="Texture2D" path="res://resources/ui/selector_top_left.tres" id="7_tl"]
+[ext_resource type="Texture2D" path="res://resources/ui/selector_top_right.tres" id="8_tr"]
+[ext_resource type="Texture2D" path="res://resources/ui/selector_bottom_left.tres" id="9_bl"]
+[ext_resource type="Texture2D" path="res://resources/ui/selector_bottom_right.tres" id="10_br"]
+[ext_resource type="Script" path="res://scripts/UI/UIChest.cs" id="11_chest"]
+[ext_resource type="Script" path="res://scripts/UI/ClockLabel.cs" id="12_clock"]
+[ext_resource type="Script" path="res://scripts/UI/TimeUI.cs" id="13_time"]
+[ext_resource type="Texture2D" path="res://resources/ui/time_frame.tres" id="14_frame"]
+[ext_resource type="Texture2D" path="res://resources/ui/sky_day.tres" id="15_day"]
+[ext_resource type="Texture2D" path="res://resources/ui/sky_sunset.tres" id="16_sunset"]
+[ext_resource type="Texture2D" path="res://resources/ui/sky_night.tres" id="17_night"]
+[ext_resource type="Texture2D" path="res://resources/ui/portrait.tres" id="18_portrait"]
+[ext_resource type="Texture2D" path="res://resources/ui/time_weather.tres" id="19_weather"]
+[ext_resource type="Texture2D" path="res://resources/ui/time_arrow.tres" id="20_arrow"]
+
+[node name="HUD" type="CanvasLayer"]
+
+[node name="UIRoot" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_root")
+
+[node name="TimeUI" type="TextureRect" parent="UIRoot" node_paths=PackedStringArray("_dayImage", "_sunsetImage", "_nightImage", "_arrowPivot")]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 98.0
+offset_bottom = 79.0
+mouse_filter = 2
+texture = ExtResource("14_frame")
+script = ExtResource("13_time")
+_dayImage = NodePath("SkyDay")
+_sunsetImage = NodePath("SkySunset")
+_nightImage = NodePath("SkyNight")
+_arrowPivot = NodePath("ArrowPivot")
+
+[node name="SkyNight" type="TextureRect" parent="UIRoot/TimeUI"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 7.0
+offset_right = 44.0
+offset_bottom = 43.0
+mouse_filter = 2
+texture = ExtResource("17_night")
+
+[node name="SkySunset" type="TextureRect" parent="UIRoot/TimeUI"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 7.0
+offset_right = 44.0
+offset_bottom = 43.0
+mouse_filter = 2
+texture = ExtResource("16_sunset")
+
+[node name="SkyDay" type="TextureRect" parent="UIRoot/TimeUI"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 7.0
+offset_right = 44.0
+offset_bottom = 43.0
+mouse_filter = 2
+texture = ExtResource("15_day")
+
+[node name="Portrait" type="TextureRect" parent="UIRoot/TimeUI"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 9.0
+offset_right = 42.0
+offset_bottom = 41.0
+mouse_filter = 2
+texture = ExtResource("18_portrait")
+
+[node name="Weather" type="TextureRect" parent="UIRoot/TimeUI"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 7.0
+offset_right = 74.0
+offset_bottom = 43.0
+mouse_filter = 2
+texture = ExtResource("19_weather")
+
+[node name="ArrowPivot" type="Control" parent="UIRoot/TimeUI"]
+layout_mode = 0
+offset_left = 55.0
+offset_top = 26.0
+offset_right = 55.0
+offset_bottom = 26.0
+mouse_filter = 2
+
+[node name="Arrow" type="TextureRect" parent="UIRoot/TimeUI/ArrowPivot"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = -7.0
+offset_right = 16.0
+offset_bottom = 7.0
+mouse_filter = 2
+texture = ExtResource("20_arrow")
+
+[node name="Clock" type="Label" parent="UIRoot/TimeUI"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 50.0
+offset_right = 86.0
+offset_bottom = 68.0
+theme_override_colors/font_color = Color(0.45, 0.28, 0.2, 1)
+horizontal_alignment = 1
+script = ExtResource("12_clock")
+
+[node name="Bottom" type="VBoxContainer" parent="UIRoot"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -151.0
+offset_top = -224.0
+offset_right = 151.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 2
+alignment = 2
+
+[node name="InventoryPanel" type="NinePatchRect" parent="UIRoot/Bottom"]
+custom_minimum_size = Vector2(302, 159)
+layout_mode = 2
+texture = ExtResource("3_panel")
+patch_margin_left = 9
+patch_margin_top = 11
+patch_margin_right = 9
+patch_margin_bottom = 10
+
+[node name="Grid" type="GridContainer" parent="UIRoot/Bottom/InventoryPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -138.0
+offset_top = -64.0
+offset_right = 138.0
+offset_bottom = 65.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 3
+theme_override_constants/v_separation = 3
+columns = 9
+
+[node name="ToolbarPanel" type="NinePatchRect" parent="UIRoot/Bottom"]
+custom_minimum_size = Vector2(302, 51)
+layout_mode = 2
+texture = ExtResource("3_panel")
+patch_margin_left = 9
+patch_margin_top = 11
+patch_margin_right = 9
+patch_margin_bottom = 10
+
+[node name="Toolbar" type="HBoxContainer" parent="UIRoot/Bottom/ToolbarPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -138.0
+offset_top = -15.0
+offset_right = 138.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="UIInventory" type="Control" parent="UIRoot" node_paths=PackedStringArray("_slotParent", "_toolbar", "_inventoryPanel")]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("4_inventory")
+_slotParent = NodePath("../Bottom/InventoryPanel/Grid")
+_toolbar = NodePath("../Bottom/ToolbarPanel/Toolbar")
+_inventoryPanel = NodePath("../Bottom/InventoryPanel")
+
+[node name="UIToolbar" type="Node" parent="UIRoot" node_paths=PackedStringArray("_inventoryView", "_menuSelector")]
+script = ExtResource("5_toolbar")
+_inventoryView = NodePath("../UIInventory")
+_menuSelector = NodePath("../Selector")
+
+[node name="Selector" type="Control" parent="UIRoot"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 28.0
+offset_bottom = 30.0
+mouse_filter = 2
+script = ExtResource("6_selector")
+
+[node name="TopLeft" type="TextureRect" parent="UIRoot/Selector"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 8.0
+offset_bottom = 9.0
+mouse_filter = 2
+texture = ExtResource("7_tl")
+
+[node name="TopRight" type="TextureRect" parent="UIRoot/Selector"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -8.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 9.0
+grow_horizontal = 0
+mouse_filter = 2
+texture = ExtResource("8_tr")
+
+[node name="BottomLeft" type="TextureRect" parent="UIRoot/Selector"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = -9.0
+offset_right = 8.0
+offset_bottom = 2.0
+grow_vertical = 0
+mouse_filter = 2
+texture = ExtResource("9_bl")
+
+[node name="BottomRight" type="TextureRect" parent="UIRoot/Selector"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+texture = ExtResource("10_br")
+
+[node name="UIChest" type="Control" parent="UIRoot" node_paths=PackedStringArray("_slotParent", "_panel")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("11_chest")
+_slotParent = NodePath("Panel/Clip/Grid")
+_panel = NodePath("Panel")
+
+[node name="Panel" type="NinePatchRect" parent="UIRoot/UIChest"]
+layout_mode = 0
+offset_right = 302.0
+offset_bottom = 126.0
+texture = ExtResource("3_panel")
+patch_margin_left = 9
+patch_margin_top = 11
+patch_margin_right = 9
+patch_margin_bottom = 10
+
+[node name="Clip" type="Control" parent="UIRoot/UIChest/Panel"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
+mouse_filter = 2
+
+[node name="Grid" type="GridContainer" parent="UIRoot/UIChest/Panel/Clip"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -138.0
+offset_top = -48.0
+offset_right = 138.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 3
+theme_override_constants/v_separation = 3
+columns = 9

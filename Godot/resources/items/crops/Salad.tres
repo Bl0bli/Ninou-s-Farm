@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CropData" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/World/Farming/CropData.cs" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/crop_instance.tscn" id="2_packedscene"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Objects/Farming_Plants.png" id="3_texture2d"]
+[ext_resource type="Resource" path="res://resources/items/loot/Salad_Item.tres" id="4_resource"]
+
+[sub_resource type="AtlasTexture" id="atlas_1"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="atlas_2"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(0, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="atlas_3"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(16, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="atlas_4"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(32, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="atlas_5"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(48, 112, 16, 16)
+
+[resource]
+script = ExtResource("1_script")
+_cropName = "Salad"
+_scene = ExtResource("2_packedscene")
+_icon = SubResource("atlas_1")
+_growTime = 3
+_growStages = Array[Texture2D]([SubResource("atlas_2"), SubResource("atlas_3"), SubResource("atlas_4"), SubResource("atlas_5")])
+_loot = ExtResource("4_resource")

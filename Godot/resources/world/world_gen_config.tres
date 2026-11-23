@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="WorldGenConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/World/WorldGenConfig.cs" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+Seed = 1
+UseRandomSeed = false
+Size = 200
+Scale = 0.1
+MixScale = 0.4
+IslandRadiusFactor = 0.75
+Octaves = 4
+Lacunarity = 2
+Persistence = 0.5
+CliffSmoothingIterations = 3
+FloorNeighboursRequired = 4
+SeaLevel = 0.1
+CliffLevel = 0.35
+HorizontalDistBetweenSlopes = 8
+MaxSlopesPerHill = 3
+MaxLakesPerBiome = 3
+MaxLakeSize = 40
+MinLakeSize = 10
+MaxRiversPerBiome = 4
+MaxRiverLength = 25
+MaxRiverThickness = 0
+RiverInertia = 0.5

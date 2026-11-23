@@ -1,0 +1,98 @@
+[gd_scene load_steps=21 format=3]
+
+[ext_resource type="Script" path="res://scripts/Player/PlayerMovements.cs" id="1_movements"]
+[ext_resource type="SpriteFrames" path="res://resources/characters/player_frames.tres" id="2_frames"]
+[ext_resource type="Script" path="res://scripts/Player/PlayerInventory.cs" id="3_inventory"]
+[ext_resource type="Script" path="res://scripts/Player/PlayerController.cs" id="4_controller"]
+[ext_resource type="Script" path="res://scripts/Player/PlayerCollector.cs" id="5_collector"]
+[ext_resource type="Resource" path="res://resources/items/tools/HoeData.tres" id="6_hoe"]
+[ext_resource type="Resource" path="res://resources/items/tools/WateringCanData.tres" id="7_can"]
+[ext_resource type="Resource" path="res://resources/items/crops/Tomato_Seed.tres" id="8_tomato"]
+[ext_resource type="Resource" path="res://resources/items/crops/Salad_Seed.tres" id="9_salad"]
+[ext_resource type="Script" path="res://scripts/Interactions/PlayerInteractor.cs" id="10_interactor"]
+[ext_resource type="Resource" path="res://resources/items/tools/AxeData.tres" id="11_axe"]
+[ext_resource type="Script" path="res://scripts/Actions/PlayerActions.cs" id="12_actions"]
+[ext_resource type="Script" path="res://scripts/PowerUps/Magnet.cs" id="13_magnet"]
+[ext_resource type="Resource" path="res://resources/items/tools/FishingRodData.tres" id="14_rod"]
+[ext_resource type="Script" path="res://scripts/Fishing/PlayerFishing.cs" id="15_fishing"]
+
+[sub_resource type="RectangleShape2D" id="feet_shape"]
+size = Vector2(7, 2)
+
+[sub_resource type="CircleShape2D" id="collector_shape"]
+radius = 4.0
+
+[sub_resource type="CircleShape2D" id="magnet_shape"]
+radius = 32.0
+
+[sub_resource type="RectangleShape2D" id="interact_shape"]
+size = Vector2(10, 12)
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("_sprite")]
+collision_layer = 2
+motion_mode = 1
+script = ExtResource("1_movements")
+_sprite = NodePath("Visual")
+
+[node name="Feet" type="CollisionShape2D" parent="."]
+shape = SubResource("feet_shape")
+
+[node name="Visual" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -15)
+sprite_frames = ExtResource("2_frames")
+animation = &"idle_down"
+
+[node name="Inventory" type="Node2D" parent="."]
+script = ExtResource("3_inventory")
+_startingItems = [ExtResource("11_axe"), ExtResource("6_hoe"), ExtResource("7_can"), ExtResource("14_rod"), ExtResource("8_tomato"), ExtResource("8_tomato"), ExtResource("8_tomato"), ExtResource("9_salad"), ExtResource("9_salad"), ExtResource("9_salad")]
+
+[node name="Actions" type="Node" parent="." node_paths=PackedStringArray("_movements")]
+script = ExtResource("12_actions")
+_movements = NodePath("..")
+
+[node name="Fishing" type="Node" parent="." node_paths=PackedStringArray("_movements")]
+script = ExtResource("15_fishing")
+_movements = NodePath("..")
+
+[node name="Controller" type="Node" parent="." node_paths=PackedStringArray("_movements", "_inventory", "_visual", "_actions", "_fishing")]
+script = ExtResource("4_controller")
+_movements = NodePath("..")
+_inventory = NodePath("../Inventory")
+_visual = NodePath("../Visual")
+_actions = NodePath("../Actions")
+_fishing = NodePath("../Fishing")
+
+[node name="Collector" type="Area2D" parent="." node_paths=PackedStringArray("_inventory")]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("5_collector")
+_inventory = NodePath("../Inventory")
+
+[node name="Shape" type="CollisionShape2D" parent="Collector"]
+shape = SubResource("collector_shape")
+
+[node name="Magnet" type="Area2D" parent="." node_paths=PackedStringArray("_shape")]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("13_magnet")
+_shape = NodePath("Shape")
+
+[node name="Shape" type="CollisionShape2D" parent="Magnet"]
+shape = SubResource("magnet_shape")
+
+[node name="Interactor" type="Area2D" parent="." node_paths=PackedStringArray("_player")]
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+script = ExtResource("10_interactor")
+_player = NodePath("../Controller")
+
+[node name="Shape" type="CollisionShape2D" parent="Interactor"]
+position = Vector2(0, -8)
+shape = SubResource("interact_shape")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2.25, 2.25)
+position_smoothing_enabled = true

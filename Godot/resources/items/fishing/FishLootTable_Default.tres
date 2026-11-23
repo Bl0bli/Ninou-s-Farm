@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="FishLootTable" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/Fishing/FishLootTable.cs" id="1_script"]
+[ext_resource type="Resource" path="res://resources/items/fishing/Fish_Purple.tres" id="2_resource"]
+[ext_resource type="Script" path="res://scripts/Fishing/FishLootEntry.cs" id="3_script"]
+[ext_resource type="Resource" path="res://resources/items/fishing/Fish_Clownfish.tres" id="4_resource"]
+[ext_resource type="Resource" path="res://resources/items/fishing/Fish_Blue.tres" id="5_resource"]
+
+[sub_resource type="Resource" id="resource_1"]
+script = ExtResource("3_script")
+Fish = ExtResource("2_resource")
+Weight = 60
+
+[sub_resource type="Resource" id="resource_2"]
+script = ExtResource("3_script")
+Fish = ExtResource("4_resource")
+Weight = 30
+
+[sub_resource type="Resource" id="resource_3"]
+script = ExtResource("3_script")
+Fish = ExtResource("5_resource")
+Weight = 10
+
+[resource]
+script = ExtResource("1_script")
+_entries = Array[Resource]([SubResource("resource_1"), SubResource("resource_2"), SubResource("resource_3")])

@@ -1,0 +1,62 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/World/Grid/TestTileGrid.cs" id="1_grid"]
+[ext_resource type="TileSet" path="res://resources/tiles/world_tileset.tres" id="2_tileset"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="3_player"]
+[ext_resource type="Script" path="res://scripts/World/Farming/FarmTilemapView.cs" id="4_farm"]
+[ext_resource type="Script" path="res://scripts/Time/TimeManager.cs" id="5_time"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="6_hud"]
+[ext_resource type="PackedScene" path="res://scenes/objects/chest.tscn" id="7_chest"]
+[ext_resource type="PackedScene" path="res://scenes/objects/tree.tscn" id="8_tree"]
+
+[node name="TestTools" type="Node2D"]
+
+[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("_waterLayer", "_groundLayer", "_floorLayer", "_collisionLayer")]
+script = ExtResource("1_grid")
+_waterLayer = NodePath("Water")
+_groundLayer = NodePath("Ground")
+_floorLayer = NodePath("Floor")
+_collisionLayer = NodePath("Collision")
+
+[node name="Water" type="TileMapLayer" parent="World"]
+tile_set = ExtResource("2_tileset")
+collision_enabled = false
+
+[node name="Ground" type="TileMapLayer" parent="World"]
+tile_set = ExtResource("2_tileset")
+
+[node name="Farm" type="TileMapLayer" parent="World" node_paths=PackedStringArray("_groundLayer")]
+tile_set = ExtResource("2_tileset")
+collision_enabled = false
+script = ExtResource("4_farm")
+_groundLayer = NodePath("../Ground")
+
+[node name="Floor" type="TileMapLayer" parent="World"]
+tile_set = ExtResource("2_tileset")
+
+[node name="Collision" type="TileMapLayer" parent="World"]
+visible = false
+tile_set = ExtResource("2_tileset")
+
+[node name="TimeManager" type="Node" parent="."]
+script = ExtResource("5_time")
+
+[node name="Entities" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="Entities" instance=ExtResource("3_player")]
+position = Vector2(136, 152)
+
+[node name="Chest" parent="Entities" instance=ExtResource("7_chest")]
+position = Vector2(88, 168)
+
+[node name="Tree1" parent="Entities" instance=ExtResource("8_tree")]
+position = Vector2(184, 184)
+
+[node name="Tree2" parent="Entities" instance=ExtResource("8_tree")]
+position = Vector2(232, 120)
+
+[node name="Tree3" parent="Entities" instance=ExtResource("8_tree")]
+position = Vector2(280, 184)
+
+[node name="HUD" parent="." instance=ExtResource("6_hud")]

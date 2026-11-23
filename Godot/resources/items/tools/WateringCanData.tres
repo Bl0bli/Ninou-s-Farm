@@ -1,0 +1,198 @@
+[gd_resource type="Resource" script_class="WateringCanData" load_steps=47 format=3]
+
+[ext_resource type="Script" path="res://scripts/Tools/WateringCanData.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Objects/Items/tools_and_meterials.png" id="2_texture2d"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Characters/water_from_wateringcan_frames.png" id="3_texture2d"]
+[ext_resource type="Script" path="res://scripts/Tools/SplashSet.cs" id="4_script"]
+
+[sub_resource type="AtlasTexture" id="atlas_1"]
+atlas = ExtResource("2_texture2d")
+region = Rect2(0, 3, 17, 12)
+
+[sub_resource type="AtlasTexture" id="atlas_2"]
+atlas = ExtResource("2_texture2d")
+region = Rect2(0, 3, 17, 12)
+
+[sub_resource type="AtlasTexture" id="atlas_3"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_4"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_5"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_6"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_7"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_8"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_9"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(288, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_10"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(336, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_11"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(384, 0, 48, 48)
+
+[sub_resource type="Resource" id="resource_12"]
+script = ExtResource("4_script")
+Frames = Array[Texture2D]([SubResource("atlas_3"), SubResource("atlas_4"), SubResource("atlas_5"), SubResource("atlas_6"), SubResource("atlas_7"), SubResource("atlas_8"), SubResource("atlas_9"), SubResource("atlas_10"), SubResource("atlas_11")])
+PixelOffset = Vector2i(0, 0)
+Behind = false
+
+[sub_resource type="AtlasTexture" id="atlas_13"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(0, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_14"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(48, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_15"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(96, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_16"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(144, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_17"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(192, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_18"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(240, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_19"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(288, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_20"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(336, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_21"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(384, 96, 48, 48)
+
+[sub_resource type="Resource" id="resource_22"]
+script = ExtResource("4_script")
+Frames = Array[Texture2D]([SubResource("atlas_13"), SubResource("atlas_14"), SubResource("atlas_15"), SubResource("atlas_16"), SubResource("atlas_17"), SubResource("atlas_18"), SubResource("atlas_19"), SubResource("atlas_20"), SubResource("atlas_21")])
+PixelOffset = Vector2i(0, 0)
+Behind = true
+
+[sub_resource type="AtlasTexture" id="atlas_23"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_24"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_25"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_26"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_27"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_28"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_29"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(288, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_30"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(336, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_31"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(384, 0, 48, 48)
+
+[sub_resource type="Resource" id="resource_32"]
+script = ExtResource("4_script")
+Frames = Array[Texture2D]([SubResource("atlas_23"), SubResource("atlas_24"), SubResource("atlas_25"), SubResource("atlas_26"), SubResource("atlas_27"), SubResource("atlas_28"), SubResource("atlas_29"), SubResource("atlas_30"), SubResource("atlas_31")])
+PixelOffset = Vector2i(-15, 0)
+Behind = false
+
+[sub_resource type="AtlasTexture" id="atlas_33"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_34"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_35"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_36"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_37"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_38"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_39"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(288, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_40"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(336, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="atlas_41"]
+atlas = ExtResource("3_texture2d")
+region = Rect2(384, 0, 48, 48)
+
+[sub_resource type="Resource" id="resource_42"]
+script = ExtResource("4_script")
+Frames = Array[Texture2D]([SubResource("atlas_33"), SubResource("atlas_34"), SubResource("atlas_35"), SubResource("atlas_36"), SubResource("atlas_37"), SubResource("atlas_38"), SubResource("atlas_39"), SubResource("atlas_40"), SubResource("atlas_41")])
+PixelOffset = Vector2i(26, 0)
+Behind = false
+
+[resource]
+script = ExtResource("1_script")
+WorldSprite = SubResource("atlas_1")
+Icon = SubResource("atlas_2")
+Name = "Watering Can"
+Amount = 1
+StaminaCost = 0
+Cooldown = 0
+_animationName = "watering"
+_splashFront = SubResource("resource_12")
+_splashBack = SubResource("resource_22")
+_splashLeft = SubResource("resource_32")
+_splashRight = SubResource("resource_42")
+_splashFrameRate = 15
+_splashDelay = 0.1

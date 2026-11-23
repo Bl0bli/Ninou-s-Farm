@@ -1,0 +1,603 @@
+{
+ "basic": [
+  {
+   "name": "CommonItem _Leaf 1",
+   "footprint": [
+    1,
+    1
+   ],
+   "frames": [
+    {
+     "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+     "region": [
+      32,
+      36,
+      16,
+      12
+     ],
+     "scale": 0.5,
+     "offset": [
+      0.0,
+      -3.6
+     ]
+    }
+   ],
+   "speed": 1.0
+  },
+  {
+   "name": "CommonItem_Leaf",
+   "footprint": [
+    1,
+    1
+   ],
+   "frames": [
+    {
+     "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+     "region": [
+      21,
+      41,
+      10,
+      7
+     ],
+     "scale": 0.5,
+     "offset": [
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "speed": 1.0
+  },
+  {
+   "name": "CommonItem_Leaf 2",
+   "footprint": [
+    1,
+    1
+   ],
+   "frames": [
+    {
+     "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+     "region": [
+      47,
+      33,
+      18,
+      15
+     ],
+     "scale": 0.5,
+     "offset": [
+      0.0,
+      -4.5
+     ]
+    }
+   ],
+   "speed": 1.0
+  },
+  {
+   "name": "CommonItem_Purple_Mushroom",
+   "footprint": [
+    1,
+    1
+   ],
+   "frames": [
+    {
+     "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+     "region": [
+      51,
+      5,
+      9,
+      10
+     ],
+     "scale": 0.5,
+     "offset": [
+      0.0,
+      -2.0
+     ]
+    }
+   ],
+   "speed": 1.0
+  },
+  {
+   "name": "CommonItem_Red_Mushroom",
+   "footprint": [
+    1,
+    1
+   ],
+   "frames": [
+    {
+     "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+     "region": [
+      3,
+      5,
+      9,
+      10
+     ],
+     "scale": 0.5,
+     "offset": [
+      0.0,
+      -2.0
+     ]
+    }
+   ],
+   "speed": 1.0
+  },
+  {
+   "name": "CommonItem_Rock",
+   "footprint": [
+    1,
+    1
+   ],
+   "frames": [
+    {
+     "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+     "region": [
+      4,
+      23,
+      8,
+      6
+     ],
+     "scale": 0.5,
+     "offset": [
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "speed": 1.0
+  },
+  {
+   "name": "CommonItem_Rock 1",
+   "footprint": [
+    1,
+    1
+   ],
+   "frames": [
+    {
+     "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+     "region": [
+      18,
+      22,
+      11,
+      8
+     ],
+     "scale": 0.5,
+     "offset": [
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "speed": 1.0
+  },
+  {
+   "name": "CommonItem_Rock 2",
+   "footprint": [
+    1,
+    1
+   ],
+   "frames": [
+    {
+     "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+     "region": [
+      34,
+      20,
+      12,
+      9
+     ],
+     "scale": 0.5,
+     "offset": [
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "speed": 1.0
+  },
+  {
+   "name": "CommonItem_Rock 3",
+   "footprint": [
+    1,
+    2
+   ],
+   "frames": [
+    {
+     "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+     "region": [
+      50,
+      20,
+      12,
+      10
+     ],
+     "scale": 0.5,
+     "offset": [
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "speed": 1.0
+  },
+  {
+   "name": "CommonItem_Rock 4",
+   "footprint": [
+    2,
+    2
+   ],
+   "frames": [
+    {
+     "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+     "region": [
+      99,
+      26,
+      27,
+      22
+     ],
+     "scale": 0.5,
+     "offset": [
+      0.0,
+      -6.6
+     ]
+    }
+   ],
+   "speed": 1.0
+  }
+ ],
+ "biomes": {
+  "WATER": [
+   {
+    "name": "CommonItem_Nenuphar",
+    "footprint": [
+     1,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Basic_Grass_Biom_things.png",
+      "region": [
+       111,
+       67,
+       15,
+       11
+      ],
+      "scale": 0.5,
+      "offset": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "speed": 1.0
+   },
+   {
+    "name": "CommonItem_Nenuphar 1",
+    "footprint": [
+     1,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Basic_Grass_Biom_things.png",
+      "region": [
+       127,
+       63,
+       17,
+       17
+      ],
+      "scale": 0.5,
+      "offset": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "speed": 1.0
+   },
+   {
+    "name": "CommonItem_WaterRock",
+    "footprint": [
+     1,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Basic_Grass_Biom_things_1.png",
+      "region": [
+       79,
+       66,
+       18,
+       14
+      ],
+      "scale": 0.16,
+      "offset": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "speed": 1.0
+   },
+   {
+    "name": "CommonItem_WaterRock 1",
+    "footprint": [
+     1,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Basic_Grass_Biom_things.png",
+      "region": [
+       98,
+       67,
+       12,
+       10
+      ],
+      "scale": 0.5,
+      "offset": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "speed": 1.0
+   }
+  ],
+  "HILLS": [
+   {
+    "name": "CommonItem_BlueFlower",
+    "footprint": [
+     2,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+      "region": [
+       111,
+       65,
+       18,
+       15
+      ],
+      "scale": 0.5,
+      "offset": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "speed": 1.0
+   },
+   {
+    "name": "CommonItem_YellowFlower",
+    "footprint": [
+     2,
+     2
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+      "region": [
+       48,
+       48,
+       16,
+       31
+      ],
+      "scale": 0.5,
+      "offset": [
+       0.0,
+       -12.4
+      ]
+     }
+    ],
+    "speed": 1.0
+   }
+  ],
+  "FOREST": [
+   {
+    "name": "CommonItem_PurpleMushroom",
+    "footprint": [
+     1,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+      "region": [
+       80,
+       2,
+       14,
+       13
+      ],
+      "scale": 0.5,
+      "offset": [
+       0.0,
+       -2.6
+      ]
+     }
+    ],
+    "speed": 1.0
+   },
+   {
+    "name": "CommonItem_RedMushroom",
+    "footprint": [
+     1,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Basic_Grass_Biom_things_1.png",
+      "region": [
+       81,
+       1,
+       15,
+       15
+      ],
+      "scale": 0.16,
+      "offset": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "speed": 1.0
+   },
+   {
+    "name": "CommonItem_RedMushroom 2",
+    "footprint": [
+     1,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+      "region": [
+       18,
+       3,
+       12,
+       13
+      ],
+      "scale": 0.5,
+      "offset": [
+       0.0,
+       -2.6
+      ]
+     }
+    ],
+    "speed": 1.0
+   }
+  ],
+  "DESERT": [],
+  "MOUNTAINS": [
+   {
+    "name": "CommonItem_Rock",
+    "footprint": [
+     1,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+      "region": [
+       4,
+       23,
+       8,
+       6
+      ],
+      "scale": 0.5,
+      "offset": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "speed": 1.0
+   },
+   {
+    "name": "CommonItem_Rock 1",
+    "footprint": [
+     1,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+      "region": [
+       18,
+       22,
+       11,
+       8
+      ],
+      "scale": 0.5,
+      "offset": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "speed": 1.0
+   },
+   {
+    "name": "CommonItem_Rock 2",
+    "footprint": [
+     1,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+      "region": [
+       34,
+       20,
+       12,
+       9
+      ],
+      "scale": 0.5,
+      "offset": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "speed": 1.0
+   },
+   {
+    "name": "CommonItem_Rock 3",
+    "footprint": [
+     1,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+      "region": [
+       50,
+       20,
+       12,
+       10
+      ],
+      "scale": 0.5,
+      "offset": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "speed": 1.0
+   },
+   {
+    "name": "CommonItem_Rock 4",
+    "footprint": [
+     1,
+     1
+    ],
+    "frames": [
+     {
+      "texture": "res://assets/sprites/Objects/Mushrooms,_Flowers,_Stones.png",
+      "region": [
+       99,
+       26,
+       27,
+       22
+      ],
+      "scale": 0.5,
+      "offset": [
+       0.0,
+       -6.6
+      ]
+     }
+    ],
+    "speed": 1.0
+   }
+  ],
+  "DEADZONE": []
+ },
+ "interactive": {
+  "FOREST": [
+   {
+    "scene": "res://scenes/objects/tree.tscn",
+    "footprint": [
+     3,
+     3
+    ]
+   }
+  ]
+ }
+}

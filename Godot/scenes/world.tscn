@@ -1,0 +1,113 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/World/GridWorld.cs" id="1_grid"]
+[ext_resource type="TileSet" path="res://resources/tiles/world_tileset.tres" id="2_tileset"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="3_player"]
+[ext_resource type="Script" path="res://scripts/World/Farming/FarmTilemapView.cs" id="4_farm"]
+[ext_resource type="Script" path="res://scripts/Time/TimeManager.cs" id="5_time"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="6_hud"]
+[ext_resource type="Resource" path="res://resources/world/world_gen_config.tres" id="7_config"]
+[ext_resource type="Script" path="res://scripts/World/WorldItemsGeneration.cs" id="8_items"]
+[ext_resource type="Script" path="res://scripts/World/DecorLayer.cs" id="9_decor"]
+[ext_resource type="Script" path="res://scripts/Manager/GameManager.cs" id="10_game"]
+[ext_resource type="Theme" path="res://resources/ui/ui_theme.tres" id="11_theme"]
+
+[node name="World" type="Node2D"]
+
+[node name="Grid" type="Node2D" parent="." node_paths=PackedStringArray("_waterLayer", "_groundLayer", "_floorLayer", "_collisionLayer", "_itemsGeneration")]
+script = ExtResource("1_grid")
+_worldGenConfig = ExtResource("7_config")
+_waterLayer = NodePath("Water")
+_groundLayer = NodePath("Ground")
+_floorLayer = NodePath("Floor")
+_collisionLayer = NodePath("Collision")
+_itemsGeneration = NodePath("../ItemsGeneration")
+
+[node name="Water" type="TileMapLayer" parent="Grid"]
+tile_set = ExtResource("2_tileset")
+collision_enabled = false
+
+[node name="Ground" type="TileMapLayer" parent="Grid"]
+tile_set = ExtResource("2_tileset")
+
+[node name="Farm" type="TileMapLayer" parent="Grid" node_paths=PackedStringArray("_groundLayer")]
+tile_set = ExtResource("2_tileset")
+collision_enabled = false
+script = ExtResource("4_farm")
+_groundLayer = NodePath("../Ground")
+
+[node name="Floor" type="TileMapLayer" parent="Grid"]
+tile_set = ExtResource("2_tileset")
+
+[node name="Decor" type="Node2D" parent="Grid"]
+script = ExtResource("9_decor")
+
+[node name="Collision" type="TileMapLayer" parent="Grid"]
+visible = false
+tile_set = ExtResource("2_tileset")
+
+[node name="ItemsGeneration" type="Node" parent="." node_paths=PackedStringArray("_decor", "_interactiveItemsParent")]
+script = ExtResource("8_items")
+_decor = NodePath("../Grid/Decor")
+_interactiveItemsParent = NodePath("../Entities")
+
+[node name="TimeManager" type="Node" parent="."]
+script = ExtResource("5_time")
+
+[node name="Entities" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="Entities" instance=ExtResource("3_player")]
+
+[node name="HUD" parent="." instance=ExtResource("6_hud")]
+
+[node name="Loading" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="Screen" type="ColorRect" parent="Loading"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("11_theme")
+color = Color(0.27, 0.17, 0.14, 1)
+
+[node name="Label" type="Label" parent="Loading/Screen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -40.0
+offset_right = 300.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "Génération du monde…"
+horizontal_alignment = 1
+
+[node name="Bar" type="ProgressBar" parent="Loading/Screen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = 10.0
+offset_right = 250.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+show_percentage = false
+
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("_player", "_loadingScreen", "_loadingLabel", "_loadingBar")]
+script = ExtResource("10_game")
+_player = NodePath("../Entities/Player")
+_loadingScreen = NodePath("../Loading/Screen")
+_loadingLabel = NodePath("../Loading/Screen/Label")
+_loadingBar = NodePath("../Loading/Screen/Bar")

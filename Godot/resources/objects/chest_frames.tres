@@ -1,0 +1,22 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/Objects/chest.png" id="sheet"]
+
+[sub_resource type="AtlasTexture" id="frame_0"]
+atlas = ExtResource("sheet")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="frame_1"]
+atlas = ExtResource("sheet")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="frame_2"]
+atlas = ExtResource("sheet")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="frame_3"]
+atlas = ExtResource("sheet")
+region = Rect2(192, 0, 48, 48)
+
+[resource]
+animations = [{"frames": [{"duration": 8, "texture": SubResource("frame_0")}, {"duration": 7, "texture": SubResource("frame_1")}, {"duration": 7, "texture": SubResource("frame_2")}, {"duration": 8, "texture": SubResource("frame_3")}, {"duration": 1, "texture": SubResource("frame_3")}], "loop": false, "name": &"open", "speed": 60.0}, {"frames": [{"duration": 8, "texture": SubResource("frame_3")}, {"duration": 7, "texture": SubResource("frame_3")}, {"duration": 7, "texture": SubResource("frame_2")}, {"duration": 8, "texture": SubResource("frame_1")}, {"duration": 1, "texture": SubResource("frame_0")}], "loop": false, "name": &"close", "speed": 60.0}]

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/Items/ItemData.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Objects/Items/Farming_Plants_items_FIXED.png" id="2_texture2d"]
+
+[sub_resource type="AtlasTexture" id="atlas_1"]
+atlas = ExtResource("2_texture2d")
+region = Rect2(16, 80, 16, 16)
+
+[sub_resource type="AtlasTexture" id="atlas_2"]
+atlas = ExtResource("2_texture2d")
+region = Rect2(16, 80, 16, 16)
+
+[resource]
+script = ExtResource("1_script")
+WorldSprite = SubResource("atlas_1")
+Icon = SubResource("atlas_2")
+Name = "Eggplant"
+Amount = 1

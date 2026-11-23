@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="HoeData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/Tools/HoeData.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Objects/Items/tools_and_meterials.png" id="2_texture2d"]
+
+[sub_resource type="AtlasTexture" id="atlas_1"]
+atlas = ExtResource("2_texture2d")
+region = Rect2(33, 0, 15, 16)
+
+[sub_resource type="AtlasTexture" id="atlas_2"]
+atlas = ExtResource("2_texture2d")
+region = Rect2(33, 0, 15, 16)
+
+[resource]
+script = ExtResource("1_script")
+WorldSprite = SubResource("atlas_1")
+Icon = SubResource("atlas_2")
+Name = "Hoe"
+Amount = 1
+StaminaCost = 0
+Cooldown = 0
+_animationName = "hoe"

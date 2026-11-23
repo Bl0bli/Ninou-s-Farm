@@ -1,0 +1,11 @@
+# Godot
+.godot/
+/android/
+# .NET
+.vs/
+bin/
+obj/
+*.user
+
+# Le .gitignore Unity de la racine ignore tous les *.csproj : celui du projet Godot doit être versionné.
+!NinousFarm.csproj

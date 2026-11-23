@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/Actions/AAction.cs" id="1_action"]
+
+[sub_resource type="RectangleShape2D" id="hitbox_shape"]
+size = Vector2(16, 16)
+
+[node name="AxeHitbox" type="Area2D"]
+collision_layer = 0
+collision_mask = 32
+monitorable = false
+script = ExtResource("1_action")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("hitbox_shape")
