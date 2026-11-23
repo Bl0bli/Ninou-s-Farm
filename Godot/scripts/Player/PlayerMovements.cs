@@ -151,7 +151,23 @@ public partial class PlayerMovements : CharacterBody2D
         bool moving = _isMoving && CanMove;
         Vector2 dir = moving ? _currentInput : _lastDirection;
         _sprite.SpeedScale = moving ? _speedScaler / 2f : _speedIdle;
-        PlayAnimation($"{(moving ? "moving" : "idle")}_{DirectionSuffix(dir)}");
+        PlayAnimation(moving ? MovingAnimation(dir) : $"idle_{DirectionSuffix(dir)}");
+    }
+
+    /// <summary>
+    /// Animation de marche sur 8 directions (le blend tree 2D d'Unity avait 8 clips). Chaque diagonale occupe
+    /// un octant de 45° : elle est choisie quand le plus petit des deux axes dépasse environ 41 % du plus grand
+    /// (tan 22,5°). Une direction de clavier en diagonale vaut (0,71 ; 0,71) : elle tombe donc en plein dedans.
+    /// </summary>
+    private string MovingAnimation(Vector2 dir)
+    {
+        float ax = Mathf.Abs(dir.X), ay = Mathf.Abs(dir.Y);
+        if (Mathf.Min(ax, ay) > Mathf.Max(ax, ay) * 0.414f)
+        {
+            string diagonal = $"moving_{(dir.Y < 0 ? "up" : "down")}{(dir.X < 0 ? "left" : "right")}";
+            if (_sprite.SpriteFrames.HasAnimation(diagonal)) return diagonal;
+        }
+        return $"moving_{DirectionSuffix(dir)}";
     }
 
     /// <summary>Direction dominante, comme le blend tree 2D de l'Animator (diagonales → côté le plus fort).</summary>

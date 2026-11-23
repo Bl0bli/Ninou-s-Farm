@@ -118,6 +118,9 @@ Pour régénérer les ressources après une modif côté Unity : `python Godot/t
 - Ajout : un anneau d'océan bloquant de 30 cases autour de la grille (les îles touchent le bord de la carte).
 - Le point d'apparition évite le pied des pentes ; l'écran de chargement affiche la progression (barre + étape).
 - Le décor ne s'anime pas (les tuiles animées du décor Unity n'ont qu'une image).
+- Marche sur 8 directions : les 4 clips diagonaux (feuille « teemo 8 directions », cases de 16x16) sont convertis avec une
+  marge transparente pour tomber au centre d'une case de 48x48, comme le pivot Unity. `PlayerMovements.MovingAnimation`
+  choisit la diagonale quand le plus petit axe dépasse ~41 % du plus grand ; à l'arrêt le personnage regarde en 4 directions.
 - Les animations du personnage sont lues directement dans les `.anim` Unity (la feuille est découpée en 48×48) ;
   le `model.json` de la skill `ninou-character-anims` ne sert plus au port.
 

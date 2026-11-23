@@ -659,7 +659,11 @@ def convert_items(guids):
 
 # --------------------------------------------------------------------------- Personnage
 # Direction Unity -> Godot (Front/Back = face/dos)
-DIRECTIONS = {"Front": "down", "Back": "up", "Left": "left", "Right": "right", "Down": "down", "Up": "up"}
+DIRECTIONS = {"Front": "down", "Back": "up", "Left": "left", "Right": "right", "Down": "down", "Up": "up",
+              # Déplacements en diagonale (feuille « teemo 8 directions », cases de 16x16)
+              "UpLeft": "upleft", "UpRight": "upright", "DownLeft": "downleft", "DownRight": "downright"}
+CELL = 48        # case d'une image du personnage
+SMALL_CELL = 16  # case de la feuille des diagonales : centrée dans une case de 48x48 par une marge transparente
 # Clips d'action : joués une fois (« Loop Time » activé par erreur sur certains clips Unity)
 ONE_SHOT = ("Chop", "Hoe", "Watering", "Show")
 
@@ -697,7 +701,7 @@ def convert_character(guids):
     for anim in sorted(CHARACTER_CLIPS.rglob("*.anim")):
         parts = anim.stem.split("_")
         if parts[-1] not in DIRECTIONS:
-            skipped.append(anim.stem)  # diagonales (feuille « teemo 8 directions », sprites non découpés en grille)
+            skipped.append(anim.stem)
             continue
         keys, stop, loop = read_clip(anim)
         sources = [guids.get(g) for _, g, _ in keys]
@@ -715,11 +719,11 @@ def convert_character(guids):
             if end <= t and i + 1 < len(keys):
                 continue  # deux clés au même instant : la seconde l'emporte
             sid, _, sprites, tex_h = sheet_for(png)
-            if fid not in sprites or sprites[fid]["rect"][2:] != (48, 48):
+            if fid not in sprites or sprites[fid]["rect"][2:] not in ((CELL, CELL), (SMALL_CELL, SMALL_CELL)):
                 ok = False
                 break
             x, y, w, h = sprites[fid]["rect"]
-            key = (sid, x, tex_h - y - h)
+            key = (sid, x, tex_h - y - h, w)
             regions.setdefault(key, f"frame_{len(regions)}")
             frames.append((regions[key], max(1.0, round((end - t) * fps, 3))))
         if not ok:
@@ -729,9 +733,12 @@ def convert_character(guids):
 
     lines = [f'[gd_resource type="SpriteFrames" load_steps={len(regions) + len(sheets) + 1} format=3]', ""]
     lines += [f'[ext_resource type="Texture2D" path="{path}" id="{sid}"]' for sid, path, _, _ in sheets.values()] + [""]
-    for (sid, x, y), rid in regions.items():
+    for (sid, x, y, w), rid in regions.items():
         lines += [f'[sub_resource type="AtlasTexture" id="{rid}"]', f'atlas = ExtResource("{sid}")',
-                  f"region = Rect2({x}, {y}, 48, 48)", ""]
+                  f"region = Rect2({x}, {y}, {w}, {w})"]
+        if w < CELL:  # petite image : marge transparente autour, elle reste au centre de la case comme le pivot Unity
+            lines.append(f"margin = Rect2({(CELL - w) // 2}, {(CELL - w) // 2}, {CELL - w}, {CELL - w})")
+        lines.append("")
     lines.append("[resource]")
     entries = []
     for name, loop, frames in sorted(anims):
