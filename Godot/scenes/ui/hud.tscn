@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://scripts/UI/PixelUIRoot.cs" id="1_root"]
 [ext_resource type="Theme" path="res://resources/ui/ui_theme.tres" id="2_theme"]
@@ -17,7 +17,9 @@
 [ext_resource type="Texture2D" path="res://resources/ui/sky_day.tres" id="15_day"]
 [ext_resource type="Texture2D" path="res://resources/ui/sky_sunset.tres" id="16_sunset"]
 [ext_resource type="Texture2D" path="res://resources/ui/sky_night.tres" id="17_night"]
-[ext_resource type="Texture2D" path="res://resources/ui/portrait.tres" id="18_portrait"]
+[ext_resource type="SpriteFrames" path="res://resources/ui/portrait_frames.tres" id="18_frames"]
+[ext_resource type="Script" path="res://scripts/UI/UICharacterAnimator.cs" id="19_animator"]
+[ext_resource type="Script" path="res://scripts/Player/Character/CharacterMoodController.cs" id="20_mood"]
 [ext_resource type="Texture2D" path="res://resources/ui/time_weather.tres" id="19_weather"]
 [ext_resource type="Texture2D" path="res://resources/ui/time_arrow.tres" id="20_arrow"]
 
@@ -71,14 +73,26 @@ offset_bottom = 43.0
 mouse_filter = 2
 texture = ExtResource("15_day")
 
-[node name="Portrait" type="TextureRect" parent="UIRoot/TimeUI"]
+[node name="Portrait" type="Control" parent="UIRoot/TimeUI"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 9.0
 offset_right = 42.0
 offset_bottom = 41.0
 mouse_filter = 2
-texture = ExtResource("18_portrait")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="UIRoot/TimeUI/Portrait"]
+sprite_frames = ExtResource("18_frames")
+animation = &"ears"
+centered = false
+
+[node name="UICharacterAnimator" type="Node" parent="UIRoot/TimeUI/Portrait" node_paths=PackedStringArray("_sprite")]
+script = ExtResource("19_animator")
+_sprite = NodePath("../Sprite")
+
+[node name="CharacterMoodController" type="Node" parent="UIRoot/TimeUI/Portrait" node_paths=PackedStringArray("_uiCharacterAnimator")]
+script = ExtResource("20_mood")
+_uiCharacterAnimator = NodePath("../UICharacterAnimator")
 
 [node name="Weather" type="TextureRect" parent="UIRoot/TimeUI"]
 layout_mode = 0

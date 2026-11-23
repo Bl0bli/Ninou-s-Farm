@@ -126,8 +126,10 @@ EXTRA_UI_SPRITES = {
     "sky_day": (WEATHER_DIR / "Weather_Icons_Big.png", "Weather_Icons_Big_58"),
     "sky_sunset": (WEATHER_DIR / "Weather_Icons_Big.png", "Weather_Icons_Big_62"),
     "sky_night": (WEATHER_DIR / "Weather_Icons_Big.png", "Weather_Icons_Big_65"),
-    "portrait": (PORTRAIT_SHEET, "Teemo premium emote animations sprite sheet-export_17"),
 }
+
+# Portrait animé du widget d'heure (Animator UserCharacter)
+PORTRAIT_CLIPS = UNITY / "UI" / "UserProfileAnimations"
 
 # Arbre : clips de l'Animator (nom Godot -> (clip, boucle)) et hitbox de la hache
 TREE_CLIPS = {
@@ -926,6 +928,44 @@ def convert_world(guids):
     return sum(len(v) for v in catalog["biomes"].values()) + len(catalog["basic"])
 
 
+def convert_portrait(guids):
+    """
+    Les 37 clips du portrait (UserCharacter.controller) -> un SpriteFrames, une animation par clip
+    (nom = nom du clip en minuscules : « angry_start », « verysleep_loop »...). Cases de 32x32 d'une même feuille.
+    Les transitions de l'Animator, elles, sont écrites à la main dans PortraitStateMachine.cs.
+    """
+    regions, anims, sheet = {}, [], None
+    for clip in sorted(PORTRAIT_CLIPS.rglob("*.anim")):
+        keys, stop, loop = read_clip(clip)
+        frames = []
+        for i, (t, guid, fid) in enumerate(keys):
+            end = keys[i + 1][0] if i + 1 < len(keys) else stop
+            if end <= t and i + 1 < len(keys):
+                continue  # deux clés au même instant : la seconde l'emporte
+            png = guids[guid]
+            sheet = sheet or png
+            x, y, w, h = read_texture_meta(png)[1][fid]["rect"]
+            key = (x, png_size(png)[1] - y - h, w, h)
+            regions.setdefault(key, f"frame_{len(regions)}")
+            frames.append((regions[key], max(1.0, round((end - t) * 60, 3))))
+        anims.append((clip.stem.lower(), loop, frames))
+
+    dest = GODOT / "assets" / "ui" / "portrait_sheet.png"
+    shutil.copyfile(sheet, dest)
+    lines = [f'[gd_resource type="SpriteFrames" load_steps={len(regions) + 2} format=3]', "",
+             '[ext_resource type="Texture2D" path="res://assets/ui/portrait_sheet.png" id="sheet"]', ""]
+    for (x, y, w, h), rid in regions.items():
+        lines += [f'[sub_resource type="AtlasTexture" id="{rid}"]', 'atlas = ExtResource("sheet")',
+                  f"region = Rect2({x}, {y}, {w}, {h})", ""]
+    lines.append("[resource]")
+    entries = ['{"frames": [%s], "loop": %s, "name": &"%s", "speed": 60.0}'
+               % (", ".join('{"duration": %s, "texture": SubResource("%s")}' % (fmt(d), r) for r, d in frames),
+                  "true" if loop else "false", name) for name, loop, frames in sorted(anims)]
+    lines.append("animations = [" + ", ".join(entries) + "]")
+    (GODOT / "resources" / "ui" / "portrait_frames.tres").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return len(anims)
+
+
 def convert_chest(guids):
     """SpriteFrames du coffre : cases entières de 48x48 (les sprites Unity sont rognés, la case évite les sauts)."""
     regions, anims = {}, []
@@ -969,6 +1009,7 @@ if __name__ == "__main__":
     item_warnings, item_count = convert_items(guids)
     ui_sprites = convert_ui(guids)
     convert_chest(guids)
+    print(f"Portrait : {convert_portrait(guids)} animations dans portrait_frames.tres")
     convert_pivot_frames(guids, TREE_CLIPS, GODOT / "resources" / "objects" / "tree_frames.tres")
     print(f"Monde : world_gen_config.tres + {convert_world(guids)} objets de décor dans world_items.json")
     print(f"UI : {', '.join(ui_sprites)} + police ; coffre : chest_frames.tres")

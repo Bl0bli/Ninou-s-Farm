@@ -98,8 +98,15 @@ Pour régénérer les ressources après une modif côté Unity : `python Godot/t
 - `Tree` s'appelle `WorldTree` : Godot a déjà une classe `Tree` (un contrôle d'interface).
 - La hitbox de la hache part du centre du corps ; dans Unity elle partait de la racine du prefab, décalée d'environ
   7 px vers la gauche par rapport au corps.
-- `TimeUI` : le ciel et la flèche sont portés ; le portrait est une image fixe (l'Animator d'émotions `UserCharacter`
-  et `UICharacterAnimator` / `CharacterMoodController` ne sont pas portés). L'heure en texte (`ClockLabel`) est un ajout.
+- `TimeUI` : ciel, flèche et portrait animé. L'heure en texte (`ClockLabel`) est un ajout.
+- Portrait : l'Animator `UserCharacter` (36 clips, 7 humeurs) est transcrit en code dans `PortraitStateMachine`
+  (logique pure : transitions, temps de sortie, Any State, déclencheurs) ; `UICharacterAnimator` joue le clip choisi.
+  Écarts : pas de fondu entre clips ; le point de sortie d'un clip qui boucle est testé une fois par boucle ;
+  une transition « Any State » vers l'état courant arrête l'évaluation (sinon « AngryYap » rebasculait sur « Yap »).
+  Les bizarreries de l'Animator sont conservées : « Tired » et « Blink » n'ont aucune transition entrante (jamais joués),
+  et depuis Sleep_Loop / VerySleep_Loop la transition vers « _End » passe avant celles d'intensité.
+- Comme dans Unity, rien dans le jeu n'appelle `CharacterMoodController` (SetAmbient / React) : pour voir une humeur,
+  régler `_debugEmotion` (et `_debugIntensity`) sur le nœud `CharacterMoodController` du HUD.
 - Pêche : sans Animator, `PlayerFishing` enchaîne lui-même `fishing_start` → `fishing_idle` → `fishing_struggle`
   → `show` (pris) ou `fishing_quit` (raté) ; la session se termine à la fin de l'animation (sécurité : 8 s).
 - `FishLootTable._entries` est un `Array<Resource>` (et non `FishLootEntry[]`) pour garder un `.tres` simple.
@@ -129,7 +136,8 @@ Pour régénérer les ressources après une modif côté Unity : `python Godot/t
 - [x] **Étape 4 — monde interactif** : `AxeData`, `PlayerActions`, hitbox `AAction`, `IDamageable`, arbres (`WorldTree` :
       coup, chute du côté opposé, bois), aimant (`Magnet`, `Magnetable`), `TimeUI` (ciel + flèche),
       glisser-déposer entre inventaire, toolbar et coffre.
-- [ ] **Étape 4 bis — portrait animé** : `UICharacterAnimator`, `CharacterMoodController`, Animator d'émotions `UserCharacter`.
+- [x] **Étape 4 bis — portrait animé** : `PortraitStateMachine` (Animator `UserCharacter`), `UICharacterAnimator`,
+      `CharacterMoodController` ; 36 animations de portrait converties.
 - [x] **Étape 5 — pêche** : `FishingRodData`, `PlayerFishing`, `FishingGauge` (logique pure), `UIFishingGauge`,
       `FishData`, `FishLootTable` (3 poissons pondérés), animations de pêche et « show » (feuilles front / back / side).
 - [x] **Étape 6 — monde procédural** : `GridWorld` (Perlin + falloff, 5 biomes, falaises lissées, lacs, rivières,

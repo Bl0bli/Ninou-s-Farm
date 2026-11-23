@@ -1,7 +1,0 @@
-[gd_resource type="AtlasTexture" load_steps=2 format=3]
-
-[ext_resource type="Texture2D" path="res://assets/ui/Teemo_premium_emote_animations_sprite_sheet-export.png" id="sheet"]
-
-[resource]
-atlas = ExtResource("sheet")
-region = Rect2(128, 32, 32, 32)
